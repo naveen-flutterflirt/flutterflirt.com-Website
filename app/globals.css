@@ -38,8 +38,9 @@ img, svg {
   max-width: 100%;
 }
 
-button, a {
+button, a, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], select, summary {
   font: inherit;
+  cursor: pointer;
 }
 
 .page-shell {
