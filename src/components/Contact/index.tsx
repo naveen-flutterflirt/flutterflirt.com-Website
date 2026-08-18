@@ -1,8 +1,107 @@
 "use client";
 
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import { motion } from "motion/react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function Contact() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    companyName: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    email: "",
+    phone: "",
+  });
+
+  const validateField = (id: string, value: string) => {
+    let errorMsg = "";
+    if (id === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value && !emailRegex.test(value)) {
+        errorMsg = "Please enter a valid email address.";
+      }
+    } else if (id === "phone") {
+      if (value.trim()) {
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(value.trim())) {
+          errorMsg = "Phone number must be exactly 10 digits.";
+        }
+      }
+    }
+    setErrors((prev) => ({ ...prev, [id]: errorMsg }));
+    return errorMsg;
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    if (id === "phone") {
+      const sanitized = value.replace(/\D/g, "").slice(0, 10);
+      setForm((prev) => ({ ...prev, [id]: sanitized }));
+    } else {
+      setForm((prev) => ({ ...prev, [id]: value }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    validateField(id, value);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    // Revalidate on submit
+    const emailErr = validateField("email", form.email);
+    const phoneErr = validateField("phone", form.phone);
+
+    if (emailErr || phoneErr) {
+      setError("Please fix the validation errors before submitting.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          companyName: form.companyName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to send message");
+      }
+
+      setSuccess("Your message has been sent successfully.");
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        companyName: "",
+        message: "",
+      });
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="overflow-hidden bg-[#edf5ff]">
 
@@ -48,7 +147,7 @@ export default function Contact() {
               lg:text-[105px]
             "
           >
-            Let's build something
+            Let&apos;s build something
             <span className="italic text-[#244572]">
               {" "}meaningful.
             </span>
@@ -71,7 +170,7 @@ export default function Contact() {
             "
           >
             Have a project in mind, need help with your existing systems, or
-            simply want to explore what's possible? We'd love to hear from you.
+            simply want to explore what&apos;s possible? We&apos;d love to hear from you.
           </motion.p>
         </div>
       </section>
@@ -150,7 +249,7 @@ export default function Contact() {
                   md:text-[48px]
                 "
               >
-                Let's start a conversation.
+                Let&apos;s start a conversation.
               </h2>
 
               <p
@@ -162,7 +261,7 @@ export default function Contact() {
                   text-[#58736d]
                 "
               >
-                Tell us what you're working on and we'll figure out the best
+                Tell us what you&apos;re working on and we&apos;ll figure out the best
                 way to move forward together.
               </p>
 
@@ -315,7 +414,7 @@ export default function Contact() {
               </h2>
             </div>
 
-            <form className="space-y-7">
+            <form className="space-y-7" onSubmit={handleSubmit}>
 
               {/* Name + Email */}
               <div className="grid gap-7 md:grid-cols-2">
@@ -331,6 +430,8 @@ export default function Contact() {
                   <input
                     id="name"
                     type="text"
+                    value={form.name}
+                    onChange={handleChange}
                     placeholder="John Doe"
                     className="
                       mt-2
@@ -346,6 +447,7 @@ export default function Contact() {
                       placeholder:text-[#a8b5c7]
                       focus:border-[#2563eb]
                     "
+                    required
                   />
                 </div>
 
@@ -360,6 +462,9 @@ export default function Contact() {
                   <input
                     id="email"
                     type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="john@company.com"
                     className="
                       mt-2
@@ -375,7 +480,9 @@ export default function Contact() {
                       placeholder:text-[#a8b5c7]
                       focus:border-[#2563eb]
                     "
+                    required
                   />
+                  {errors.email && <p className="mt-1.5 text-xs font-semibold text-red-500">{errors.email}</p>}
                 </div>
 
               </div>
@@ -389,10 +496,14 @@ export default function Contact() {
                   Phone number
                 </label>
 
-                <input
+                 <input
                   id="phone"
                   type="tel"
-                  placeholder="+91 00000 00000"
+                  maxLength={10}
+                  value={form.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="e.g. 9876543210"
                   className="
                     mt-2
                     w-full
@@ -408,20 +519,23 @@ export default function Contact() {
                     focus:border-[#2563eb]
                   "
                 />
+                {errors.phone && <p className="mt-1.5 text-xs font-semibold text-red-500">{errors.phone}</p>}
               </div>
 
               {/* Company */}
               <div>
                 <label
-                  htmlFor="company"
+                  htmlFor="companyName"
                   className="text-[14px] font-medium text-[#526987]"
                 >
                   Company
                 </label>
 
                 <input
-                  id="company"
+                  id="companyName"
                   type="text"
+                  value={form.companyName}
+                  onChange={handleChange}
                   placeholder="Your company"
                   className="
                     mt-2
@@ -452,6 +566,8 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={4}
+                  value={form.message}
+                  onChange={handleChange}
                   placeholder="What are you looking to build?"
                   className="
                     mt-2
@@ -468,13 +584,17 @@ export default function Contact() {
                     placeholder:text-[#a8b5c7]
                     focus:border-[#2563eb]
                   "
+                  required
                 />
               </div>
+
+              {error && <p className="text-sm font-medium text-red-600">{error}</p>}
 
               {/* Submit */}
               <div className="pt-3">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="
                     group
                     inline-flex
@@ -492,9 +612,11 @@ export default function Contact() {
                     hover:translate-x-1
                     hover:bg-[#1d56c7]
                     active:scale-[0.98]
+                    disabled:cursor-not-allowed
+                    disabled:opacity-70
                   "
                 >
-                  Send message
+                  {loading ? "Sending..." : "Send message"}
 
                   <span
                     className="
@@ -549,7 +671,7 @@ export default function Contact() {
               md:text-[52px]
             "
           >
-            Call us and let's talk.
+            Call us and let&apos;s talk.
           </h2>
 
           <a
@@ -575,6 +697,33 @@ export default function Contact() {
           </a>
         </div>
       </section>
+
+      {/* Success Popup Modal */}
+      {success && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full max-w-md overflow-hidden rounded-[28px] border border-[#cbe0fb] bg-white p-8 text-center shadow-2xl"
+          >
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="font-serif text-2xl font-bold text-[#1d2b42]">Message Sent!</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[#7185a2]">
+              {success}
+            </p>
+            <button
+              onClick={() => setSuccess("")}
+              className="mt-6 w-full rounded-2xl bg-[#2563eb] py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:bg-[#1d56c7]"
+            >
+              Okay, great
+            </button>
+          </motion.div>
+        </div>
+      )}
 
     </main>
   );

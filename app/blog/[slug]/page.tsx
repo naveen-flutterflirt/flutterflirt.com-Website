@@ -1,46 +1,44 @@
 import { notFound } from "next/navigation";
-import { blogs } from "@/data/blog";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BlogArticleClient from "@/components/Blog/BlogArticleClient";
+import { Blog } from "@/types/blog";
 
-export default async function BlogPost({
-  params,
-}: {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+interface PageProps {
   params: Promise<{ slug: string }>;
-}) {
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const blog = blogs.find((item) => item.slug === slug);
+  try {
+    // Cache for 60 seconds using Next.js ISR
+    const response = await fetch(`${API_URL}/api/blogs/${slug}`, {
+      next: { revalidate: 60 },
+    });
 
-  if (!blog) {
+    if (!response.ok) {
+      notFound();
+    }
+
+    const json = await response.json();
+    const blog: Blog = json.data || json.blog;
+
+    if (!blog) {
+      notFound();
+    }
+
+    return (
+      <>
+        <Navbar />
+        <BlogArticleClient blog={blog} />
+        <Footer />
+      </>
+    );
+  } catch (error) {
+    console.error("Failed to load blog:", error);
     notFound();
   }
-
-  return (
-    <main className="min-h-screen bg-[#edf5ff] px-6 pb-24 pt-32">
-      <article className="mx-auto max-w-[900px]">
-
-        <p className="text-[14px] font-medium text-[#2563eb]">
-          {blog.category}
-        </p>
-
-        <h1 className="mt-5 font-serif text-[52px] font-bold leading-[1] text-[#1d2b42] md:text-[76px]">
-          {blog.title}
-        </h1>
-
-        <div className="mt-6 text-[14px] text-[#8a9bb3]">
-          {blog.date} · {blog.readTime}
-        </div>
-
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="mt-12 h-[450px] w-full rounded-[28px] object-cover"
-        />
-
-        <div className="mt-12 text-[18px] leading-[1.8] text-[#526987]">
-          {blog.excerpt}
-        </div>
-
-      </article>
-    </main>
-  );
 }

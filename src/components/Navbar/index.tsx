@@ -45,32 +45,32 @@ export default function Navbar() {
           animate={
             scrolled
               ? {
-                  /* ── Floating pill — large screens ── */
-                  width: "82%",
-                  marginTop: 18,
-                  height: 70,
-                  borderRadius: 999,
-                  paddingLeft: 36,
-                  paddingRight: 36,
-                  backgroundColor: "rgba(255,255,255,0.88)",
-                  boxShadow:
-                    "0 12px 48px rgba(15,23,42,0.13), 0 2px 10px rgba(15,23,42,0.07), inset 0 1px 0 rgba(255,255,255,1)",
-                  borderColor: "rgba(255,255,255,0.8)",
-                  borderWidth: 1,
-                }
+                /* ── Floating pill — large screens ── */
+                width: "82%",
+                marginTop: 18,
+                height: 70,
+                borderRadius: 999,
+                paddingLeft: 36,
+                paddingRight: 36,
+                backgroundColor: "rgba(255,255,255,0.88)",
+                boxShadow:
+                  "0 12px 48px rgba(15,23,42,0.13), 0 2px 10px rgba(15,23,42,0.07), inset 0 1px 0 rgba(255,255,255,1)",
+                borderColor: "rgba(255,255,255,0.8)",
+                borderWidth: 0,
+              }
               : {
-                  /* ── Full-width top bar ── */
-                  width: "100%",
-                  marginTop: 0,
-                  height: 86,
-                  borderRadius: 0,
-                  paddingLeft: 48,
-                  paddingRight: 48,
-                  backgroundColor: "rgba(255,255,255,0.0)",
-                  boxShadow: "none",
-                  borderColor: "rgba(255,255,255,0.0)",
-                  borderWidth: 0,
-                }
+                /* ── Full-width top bar ── */
+                width: "100%",
+                marginTop: 0,
+                height: 86,
+                borderRadius: 0,
+                paddingLeft: 48,
+                paddingRight: 48,
+                backgroundColor: "rgba(255,255,255,0.0)",
+                boxShadow: "none",
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 0,
+              }
           }
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           /* Hidden entirely on mobile — replaced by the mobile bar below */
@@ -164,30 +164,30 @@ export default function Navbar() {
           animate={
             scrolled
               ? {
-                  width: "92%",
-                  marginTop: 14,
-                  height: 56,
-                  borderRadius: 999,
-                  paddingLeft: 16,
-                  paddingRight: 14,
-                  backgroundColor: "rgba(255,255,255,0.92)",
-                  boxShadow:
-                    "0 8px 32px rgba(15,23,42,0.14), 0 2px 8px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,1)",
-                  borderColor: "rgba(255,255,255,0.8)",
-                  borderWidth: 1,
-                }
+                width: "92%",
+                marginTop: 14,
+                height: 56,
+                borderRadius: 999,
+                paddingLeft: 16,
+                paddingRight: 14,
+                backgroundColor: "rgba(255,255,255,0.92)",
+                boxShadow:
+                  "0 8px 32px rgba(15,23,42,0.14), 0 2px 8px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,1)",
+                borderColor: "rgba(255,255,255,0.8)",
+                borderWidth: 1,
+              }
               : {
-                  width: "100%",
-                  marginTop: 0,
-                  height: 68,
-                  borderRadius: 0,
-                  paddingLeft: 20,
-                  paddingRight: 16,
-                  backgroundColor: "rgba(255,255,255,0.0)",
-                  boxShadow: "none",
-                  borderColor: "rgba(255,255,255,0.0)",
-                  borderWidth: 0,
-                }
+                width: "100%",
+                marginTop: 0,
+                height: 68,
+                borderRadius: 0,
+                paddingLeft: 20,
+                paddingRight: 16,
+                backgroundColor: "rgba(255,255,255,0.0)",
+                boxShadow: "none",
+                borderColor: "rgba(255,255,255,0.0)",
+                borderWidth: 0,
+              }
           }
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="
