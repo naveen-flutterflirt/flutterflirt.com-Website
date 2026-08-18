@@ -147,7 +147,7 @@ export default function Contact() {
               lg:text-[105px]
             "
           >
-            Let&apos;s build something
+            Let's build something
             <span className="italic text-[#244572]">
               {" "}meaningful.
             </span>
@@ -170,7 +170,7 @@ export default function Contact() {
             "
           >
             Have a project in mind, need help with your existing systems, or
-            simply want to explore what&apos;s possible? We&apos;d love to hear from you.
+            simply want to explore what's possible? We'd love to hear from you.
           </motion.p>
         </div>
       </section>
@@ -249,7 +249,7 @@ export default function Contact() {
                   md:text-[48px]
                 "
               >
-                Let&apos;s start a conversation.
+                Let's start a conversation.
               </h2>
 
               <p
@@ -261,7 +261,7 @@ export default function Contact() {
                   text-[#58736d]
                 "
               >
-                Tell us what you&apos;re working on and we&apos;ll figure out the best
+                Tell us what you're working on and we'll figure out the best
                 way to move forward together.
               </p>
 
@@ -496,7 +496,7 @@ export default function Contact() {
                   Phone number
                 </label>
 
-                 <input
+                <input
                   id="phone"
                   type="tel"
                   maxLength={10}
@@ -671,7 +671,7 @@ export default function Contact() {
               md:text-[52px]
             "
           >
-            Call us and let&apos;s talk.
+            Call us and let's talk.
           </h2>
 
           <a

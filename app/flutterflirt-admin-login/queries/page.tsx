@@ -25,10 +25,23 @@ export default function QueriesPage() {
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Search & Pagination state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+
   // Detail / Reply modal state
   const [selectedQuery, setSelectedQuery] = useState<ContactQuery | null>(null);
   const [replyText, setReplyText] = useState("");
   const [isSending, setIsSending] = useState(false);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("flutterflirt_admin_token");
@@ -169,10 +182,27 @@ export default function QueriesPage() {
 
           <div className="mt-10">
             <div className="overflow-hidden rounded-[24px] border border-[#cbe0fb] bg-white shadow-[0_12px_40px_rgba(20,50,90,0.05)] w-full">
-              <div className="border-b border-[#e5effb] bg-[#f8fbff] px-6 py-4">
+              <div className="flex flex-col gap-4 border-b border-[#e5effb] bg-[#f8fbff] px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3b60]">
                   All Queries ({queries.length})
                 </h2>
+                <div className="relative w-full max-w-sm">
+                  <input
+                    type="text"
+                    placeholder="Search name, email, or company..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full rounded-xl border border-[#cbe0fb] bg-white py-2 pl-4 pr-10 text-sm font-medium text-[#112239] focus:border-[#2563eb] focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8babc6] hover:text-[#1e3a60]"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
               </div>
               
               {loading ? (
@@ -180,63 +210,109 @@ export default function QueriesPage() {
                   <Loader2 className="h-10 w-10 animate-spin text-[#9bb5d6]" />
                   <p className="mt-4 text-sm font-semibold text-[#738ea8]">Loading queries...</p>
                 </div>
-              ) : queries.length === 0 ? (
-                <div className="p-16 text-center">
-                  <MessageSquare className="mx-auto h-12 w-12 text-[#9bb5d6]" />
-                  <p className="mt-4 font-serif text-xl font-bold text-[#1a2f4c]">No queries found</p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto p-0">
-                  <table className="w-full text-left text-sm text-[#3b577a]">
-                    <thead className="bg-[#f0f5fc] text-xs uppercase text-[#1e3b60]">
-                      <tr>
-                        <th className="px-6 py-4 font-bold">Name</th>
-                        <th className="px-6 py-4 font-bold">Email</th>
-                        <th className="px-6 py-4 font-bold">Company</th>
-                        <th className="px-6 py-4 font-bold">Status</th>
-                        <th className="px-6 py-4 font-bold">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#e5effb]">
-                      {queries.map((q) => (
-                        <tr key={q.id} className="transition hover:bg-[#f8fbff]">
-                          <td className="whitespace-nowrap px-6 py-4 font-medium text-[#112239]">{q.name}</td>
-                          <td className="whitespace-nowrap px-6 py-4">{q.email}</td>
-                          <td className="whitespace-nowrap px-6 py-4">{q.companyName || '-'}</td>
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
-                              q.status === 'pending' ? 'bg-[#fef3c7] text-[#b45309]' :
-                              q.status === 'replied' ? 'bg-[#dbeafe] text-[#1e40af]' :
-                              'bg-[#dcfce7] text-[#15803d]'
-                            }`}>
-                              {q.status}
-                            </span>
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <div className="flex gap-2">
-                              <button 
-                                onClick={() => {
-                                  setSelectedQuery(q);
-                                  setReplyText("");
-                                }} 
-                                className="rounded-md bg-[#2563eb] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#1d4ed8]"
-                              >
-                                View / Reply
-                              </button>
-                              <button 
-                                onClick={() => updateStatus(q.id, 'closed')} 
-                                className="rounded-md bg-[#475569] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#334155]"
-                              >
-                                Close
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              ) : (() => {
+                const filtered = queries.filter((q) => {
+                  const queryStr = debouncedSearchQuery.toLowerCase();
+                  return (
+                    q.name.toLowerCase().includes(queryStr) ||
+                    q.email.toLowerCase().includes(queryStr) ||
+                    (q.companyName && q.companyName.toLowerCase().includes(queryStr))
+                  );
+                });
+                const totalPages = Math.ceil(filtered.length / 10) || 1;
+                const paginated = filtered.slice((page - 1) * 10, page * 10);
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="p-16 text-center">
+                      <MessageSquare className="mx-auto h-12 w-12 text-[#9bb5d6]" />
+                      <p className="mt-4 font-serif text-xl font-bold text-[#1a2f4c]">No queries found</p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <>
+                    <div className="overflow-x-auto p-0">
+                      <table className="w-full text-left text-sm text-[#3b577a]">
+                        <thead className="bg-[#f0f5fc] text-xs uppercase text-[#1e3b60]">
+                          <tr>
+                            <th className="px-6 py-4 font-bold">Name</th>
+                            <th className="px-6 py-4 font-bold">Email</th>
+                            <th className="px-6 py-4 font-bold">Company</th>
+                            <th className="px-6 py-4 font-bold">Status</th>
+                            <th className="px-6 py-4 font-bold">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#e5effb]">
+                          {paginated.map((q) => (
+                            <tr key={q.id} className="transition hover:bg-[#f8fbff]">
+                              <td className="whitespace-nowrap px-6 py-4 font-medium text-[#112239]">{q.name}</td>
+                              <td className="whitespace-nowrap px-6 py-4">{q.email}</td>
+                              <td className="whitespace-nowrap px-6 py-4">{q.companyName || '-'}</td>
+                              <td className="whitespace-nowrap px-6 py-4">
+                                <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
+                                  q.status === 'pending' ? 'bg-[#fef3c7] text-[#b45309]' :
+                                  q.status === 'replied' ? 'bg-[#dbeafe] text-[#1e40af]' :
+                                  'bg-[#dcfce7] text-[#15803d]'
+                                }`}>
+                                  {q.status}
+                                </span>
+                              </td>
+                              <td className="whitespace-nowrap px-6 py-4">
+                                <div className="flex gap-2">
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedQuery(q);
+                                      setReplyText("");
+                                    }} 
+                                    className="rounded-md bg-[#2563eb] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#1d4ed8]"
+                                  >
+                                    View / Reply
+                                  </button>
+                                  <button 
+                                    onClick={() => updateStatus(q.id, 'closed')} 
+                                    className="rounded-md bg-[#475569] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#334155]"
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                      <div className="p-6 flex items-center justify-between border-t border-[#e5effb]">
+                        <span className="text-xs text-[#6984a6]">
+                          Page {page} of {totalPages} (Showing {paginated.length} of {filtered.length} queries)
+                        </span>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                            disabled={page === 1}
+                            className="rounded-lg border border-[#cbe0fb] bg-white px-3 py-1.5 text-xs font-bold text-[#1e3b60] transition hover:bg-[#edf5ff] disabled:opacity-50 disabled:pointer-events-none"
+                          >
+                            Previous
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                            disabled={page === totalPages}
+                            className="rounded-lg border border-[#cbe0fb] bg-white px-3 py-1.5 text-xs font-bold text-[#1e3b60] transition hover:bg-[#edf5ff] disabled:opacity-50 disabled:pointer-events-none"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>

@@ -52,6 +52,16 @@ export default function BlogsPage() {
   const [activeTab, setActiveTab] = useState<"list" | "create" | "edit">("list");
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   // Form State
   const [title, setTitle] = useState("");
@@ -427,96 +437,134 @@ export default function BlogsPage() {
                   </div>
                 ) : (
                   <div className="p-6">
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {blogs
-                        .filter(
-                          (b) =>
-                            b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            b.category?.toLowerCase().includes(searchQuery.toLowerCase())
-                        )
-                        .map((blog) => (
-                          <div
-                            key={blog.id}
-                            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#cbe0fb] bg-white shadow-sm transition hover:shadow-md hover:border-[#9cb9df]"
-                          >
-                            <div className="h-32 bg-[#eaf2fd] overflow-hidden relative">
-                              {blog.cover_image && (
-                                <img
-                                  src={blog.cover_image}
-                                  alt={blog.title}
-                                  className="h-full w-full object-cover"
-                                />
-                              )}
-                              <div className="absolute top-3 left-3 flex gap-2">
-                                <span
-                                  className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${blog.status === "published"
-                                    ? "bg-[#dcfce7] text-[#15803d]"
-                                    : "bg-[#fef3c7] text-[#b45309]"
-                                    }`}
-                                >
-                                  {blog.status}
-                                </span>
-                              </div>
-                            </div>
+                    {(() => {
+                      const filtered = blogs.filter(
+                        (b) =>
+                          b.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+                          b.category?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+                      );
+                      const totalPages = Math.ceil(filtered.length / 10) || 1;
+                      const paginated = filtered.slice((page - 1) * 10, page * 10);
 
-                            <div className="flex flex-1 flex-col justify-between p-5">
-                              <div>
-                                <span className="mb-2 inline-block rounded-md bg-[#f0f5fc] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#2563eb]">
-                                  {blog.category || "General"}
-                                </span>
-                                <h3 className="line-clamp-2 font-serif text-lg font-bold leading-tight text-[#142845]">
-                                  {blog.title}
-                                </h3>
-                                <p className="mt-1 line-clamp-2 text-xs text-[#6984a6]">
-                                  {blog.excerpt}
-                                </p>
-                              </div>
-
-                              <div className="mt-5 border-t border-[#f0f4fb] pt-4">
-                                <div className="flex items-center justify-between text-xs text-[#718dae]">
-                                  <span>{blog.sections?.length || 0} sections</span>
-                                  <span>
-                                    {blog.published_at || blog.publishedAt
-                                      ? new Date(blog.published_at || blog.publishedAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })
-                                      : "Draft"}
-                                  </span>
-                                </div>
-                                <div className="mt-4 flex items-center justify-end gap-2">
-                                  <Link
-                                    href={`/blog/${blog.slug}`}
-                                    target="_blank"
-                                    className="rounded-lg p-2 text-[#2563eb] transition hover:bg-[#e4efff]"
-                                    title="View Public Page"
-                                  >
-                                    <ExternalLink className="h-4 w-4" />
-                                  </Link>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleStartEdit(blog)}
-                                    className="rounded-lg p-2 text-[#3b577a] transition hover:bg-[#e4efff] hover:text-[#1d4ed8]"
-                                    title="Edit Blog"
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleDelete(blog.id)}
-                                    className="rounded-lg p-2 text-[#dc2626] transition hover:bg-[#fee2e2]"
-                                    title="Delete Blog"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
+                      if (filtered.length === 0) {
+                        return (
+                          <div className="py-12 text-center text-[#6984a6]">
+                            No articles match your search.
                           </div>
-                        ))}
-                    </div>
-                    {blogs.filter((b) => b.title.toLowerCase().includes(searchQuery.toLowerCase()) || b.category?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
-                      <div className="py-12 text-center text-[#6984a6]">
-                        No articles match your search.
-                      </div>
-                    )}
+                        );
+                      }
+
+                      return (
+                        <>
+                          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            {paginated.map((blog) => (
+                              <div
+                                key={blog.id}
+                                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#cbe0fb] bg-white shadow-sm transition hover:shadow-md hover:border-[#9cb9df]"
+                              >
+                                <div className="h-32 bg-[#eaf2fd] overflow-hidden relative">
+                                  {blog.cover_image && (
+                                    <img
+                                      src={blog.cover_image}
+                                      alt={blog.title}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  )}
+                                  <div className="absolute top-3 left-3 flex gap-2">
+                                    <span
+                                      className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${blog.status === "published"
+                                        ? "bg-[#dcfce7] text-[#15803d]"
+                                        : "bg-[#fef3c7] text-[#b45309]"
+                                        }`}
+                                    >
+                                      {blog.status}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-1 flex-col justify-between p-5">
+                                  <div>
+                                    <span className="mb-2 inline-block rounded-md bg-[#f0f5fc] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#2563eb]">
+                                      {blog.category || "General"}
+                                    </span>
+                                    <h3 className="line-clamp-2 font-serif text-lg font-bold leading-tight text-[#142845]">
+                                      {blog.title}
+                                    </h3>
+                                    <p className="mt-1 line-clamp-2 text-xs text-[#6984a6]">
+                                      {blog.excerpt}
+                                    </p>
+                                  </div>
+
+                                  <div className="mt-5 border-t border-[#f0f4fb] pt-4">
+                                    <div className="flex items-center justify-between text-xs text-[#718dae]">
+                                      <span>{blog.sections?.length || 0} sections</span>
+                                      <span>
+                                        {blog.published_at || blog.publishedAt
+                                          ? new Date(blog.published_at || blog.publishedAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+                                          : "Draft"}
+                                      </span>
+                                    </div>
+                                    <div className="mt-4 flex items-center justify-end gap-2">
+                                      <Link
+                                        href={`/blog/${blog.slug}`}
+                                        target="_blank"
+                                        className="rounded-lg p-2 text-[#2563eb] transition hover:bg-[#e4efff]"
+                                        title="View Public Page"
+                                      >
+                                        <ExternalLink className="h-4 w-4" />
+                                      </Link>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleStartEdit(blog)}
+                                        className="rounded-lg p-2 text-[#3b577a] transition hover:bg-[#e4efff] hover:text-[#1d4ed8]"
+                                        title="Edit Blog"
+                                      >
+                                        <Edit className="h-4 w-4" />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleDelete(blog.id)}
+                                        className="rounded-lg p-2 text-[#dc2626] transition hover:bg-[#fee2e2]"
+                                        title="Delete Blog"
+                                      >
+                                        <Trash2 className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Pagination Controls */}
+                          {totalPages > 1 && (
+                            <div className="mt-8 flex items-center justify-between border-t border-[#f0f4fb] pt-6">
+                              <span className="text-xs text-[#6984a6]">
+                                Page {page} of {totalPages} (Showing {paginated.length} of {filtered.length} articles)
+                              </span>
+                              <div className="flex gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                                  disabled={page === 1}
+                                  className="rounded-lg border border-[#cbe0fb] bg-white px-3 py-1.5 text-xs font-bold text-[#1e3b60] transition hover:bg-[#edf5ff] disabled:opacity-50 disabled:pointer-events-none"
+                                >
+                                  Previous
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                                  disabled={page === totalPages}
+                                  className="rounded-lg border border-[#cbe0fb] bg-white px-3 py-1.5 text-xs font-bold text-[#1e3b60] transition hover:bg-[#edf5ff] disabled:opacity-50 disabled:pointer-events-none"
+                                >
+                                  Next
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 )}
               </div>

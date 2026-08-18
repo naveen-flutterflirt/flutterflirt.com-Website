@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const INITIAL_BLOGS_LIMIT = 6;
+const INITIAL_BLOGS_LIMIT = 10;
 
 function BlogSkeleton() {
   return (
