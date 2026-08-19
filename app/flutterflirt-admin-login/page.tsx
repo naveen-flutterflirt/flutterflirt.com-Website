@@ -26,7 +26,7 @@ export default function LoginPage() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("flutterflirt_admin_token");
+    const savedToken = sessionStorage.getItem("flutterflirt_admin_token");
     if (savedToken) {
       setToken(savedToken);
       router.push("/flutterflirt-admin-login/blogs");
@@ -48,7 +48,7 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Invalid credentials");
 
-      localStorage.setItem("flutterflirt_admin_token", data.token);
+      sessionStorage.setItem("flutterflirt_admin_token", data.token);
       setToken(data.token);
       router.push("/flutterflirt-admin-login/blogs");
     } catch (err: any) {

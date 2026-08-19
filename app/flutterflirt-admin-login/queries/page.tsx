@@ -44,7 +44,7 @@ export default function QueriesPage() {
   }, [searchQuery]);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("flutterflirt_admin_token");
+    const savedToken = sessionStorage.getItem("flutterflirt_admin_token");
     if (savedToken) {
       setToken(savedToken);
     } else {
@@ -66,7 +66,7 @@ export default function QueriesPage() {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.status === 401) {
-        localStorage.removeItem("flutterflirt_admin_token");
+        sessionStorage.removeItem("flutterflirt_admin_token");
         router.push("/flutterflirt-admin-login");
         return;
       }

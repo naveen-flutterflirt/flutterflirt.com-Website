@@ -91,7 +91,7 @@ export default function BlogsPage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("flutterflirt_admin_token");
+    const savedToken = sessionStorage.getItem("flutterflirt_admin_token");
     if (savedToken) {
       setToken(savedToken);
     } else {
@@ -132,7 +132,7 @@ export default function BlogsPage() {
   }, [token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("flutterflirt_admin_token");
+    sessionStorage.removeItem("flutterflirt_admin_token");
     setToken(null);
     setBlogs([]);
     router.push("/flutterflirt-admin-login");
