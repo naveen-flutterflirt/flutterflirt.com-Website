@@ -5,15 +5,15 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 
 const SERVICES = [
-  { id: "d365",  label: "Dynamics 365",      icon: "⚙️" },
-  { id: "erp",   label: "ERP / CRM",          icon: "🔗" },
-  { id: "ai",    label: "AI & Automation",    icon: "🤖" },
-  { id: "dev",   label: "Custom Software",    icon: "💻" },
-  { id: "cloud", label: "Azure & Cloud",      icon: "☁️" },
-  { id: "power", label: "Power Platform",     icon: "⚡" },
+  { id: "d365", label: "Dynamics 365", icon: "⚙️" },
+  { id: "erp", label: "ERP / CRM", icon: "🔗" },
+  { id: "ai", label: "AI & Automation", icon: "🤖" },
+  { id: "dev", label: "Custom Software", icon: "💻" },
+  { id: "cloud", label: "Azure & Cloud", icon: "☁️" },
+  { id: "others", label: "Others", icon: "⚡" },
 ];
 
-const BUDGETS = ["< $10k", "$10k – $50k", "$50k – $200k", "$200k+", "Not sure"];
+
 
 function InputField({
   id, label, type = "text", placeholder, required = false,
@@ -30,11 +30,10 @@ function InputField({
         id={id} name={id} type={type} placeholder={placeholder} required={required}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`w-full rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${
-          focused
+        className={`w-full rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${focused
             ? "border-[#2563eb] shadow-[0_0_0_3px_rgba(37,99,235,0.10)]"
             : "border-[#a3b8e5] hover:border-[#7184a0]"
-        }`}
+          }`}
       />
     </div>
   );
@@ -51,11 +50,10 @@ function TextareaField({ id, label, placeholder }: { id: string; label: string; 
         id={id} name={id} rows={4} placeholder={placeholder}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`w-full resize-none rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${
-          focused
+        className={`w-full resize-none rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${focused
             ? "border-[#2563eb] shadow-[0_0_0_3px_rgba(37,99,235,0.10)]"
             : "border-[#a3b8e5] hover:border-[#7184a0]"
-        }`}
+          }`}
       />
     </div>
   );
@@ -63,7 +61,6 @@ function TextareaField({ id, label, placeholder }: { id: string; label: string; 
 
 export default function Contact() {
   const [services, setServices] = useState<string[]>([]);
-  const [budget, setBudget] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -93,7 +90,7 @@ export default function Contact() {
           email,
           phone,
           companyName: company,
-          message: `${message}\n\n[Budget: ${budget || "Not Specified"}]\n[Interested Services: ${services.join(", ") || "None"}]`,
+          message: `${message}\n\n[Interested Services: ${services.join(", ") || "None"}]`,
         }),
       });
 
@@ -174,8 +171,8 @@ export default function Contact() {
             className="mt-10 flex flex-wrap gap-8"
           >
             {[
-              { val: "6",    label: "Global offices" },
-              { val: "2",    label: "Countries" },
+              { val: "6", label: "Global offices" },
+              { val: "2", label: "Countries" },
               { val: "< 24h", label: "Response time" },
             ].map((s) => (
               <div key={s.label} className="flex flex-col">
@@ -269,11 +266,11 @@ export default function Contact() {
               <div className="mt-4 space-y-4">
                 {[
                   { city: "Bengaluru", sub: "Karnataka, India", hq: true },
-                  { city: "New York",  sub: "United States",    hq: false },
-                  { city: "Mumbai",    sub: "Maharashtra, India",hq: false },
-                  { city: "Kentucky",  sub: "United States",    hq: false },
-                  { city: "Bhubaneswar", sub: "Odisha, India",  hq: false },
-                  { city: "Bhopal",    sub: "Madhya Pradesh, India", hq: false },
+                  { city: "New York", sub: "United States", hq: false },
+                  { city: "Mumbai", sub: "Maharashtra, India", hq: false },
+                  { city: "Kentucky", sub: "United States", hq: false },
+                  { city: "Bhubaneswar", sub: "Odisha, India", hq: false },
+                  { city: "Bhopal", sub: "Madhya Pradesh, India", hq: false },
                 ].map((o) => (
                   <div key={o.city} className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
@@ -346,12 +343,12 @@ export default function Contact() {
                   <form onSubmit={handleSubmit} className="mt-8 space-y-6">
 
                     <div className="grid gap-6 sm:grid-cols-2">
-                      <InputField id="name"  label="Your name"     placeholder="Jane Smith"          required />
-                      <InputField id="email" label="Email address" placeholder="jane@company.com"    required type="email" />
+                      <InputField id="name" label="Your name" placeholder="Jane Smith" required />
+                      <InputField id="email" label="Email address" placeholder="jane@company.com" required type="email" />
                     </div>
                     <div className="grid gap-6 sm:grid-cols-2">
-                      <InputField id="phone"   label="Phone number" placeholder="+91 00000 00000"  type="tel" />
-                      <InputField id="company" label="Company"      placeholder="Your organisation" />
+                      <InputField id="phone" label="Phone number" placeholder="+91 00000 00000" type="tel" />
+                      <InputField id="company" label="Company" placeholder="Your organisation" />
                     </div>
 
                     {/* Services */}
@@ -365,11 +362,10 @@ export default function Contact() {
                           return (
                             <button
                               key={svc.id} type="button" onClick={() => toggleService(svc.id)}
-                              className={`flex items-center gap-2 rounded-[12px] border px-3.5 py-2.5 text-[13px] font-medium transition-all duration-200 ${
-                                on
+                              className={`flex items-center gap-2 rounded-[12px] border px-3.5 py-2.5 text-[13px] font-medium transition-all duration-200 ${on
                                   ? "border-[#2563eb] bg-[#edf3ff] text-[#2563eb] shadow-[0_0_0_2px_rgba(37,99,235,0.14)]"
                                   : "border-[#a3b8e5] bg-white text-[#526987] hover:border-[#2563eb] hover:text-[#2563eb]"
-                              }`}
+                                }`}
                             >
                               <span>{svc.icon}</span>{svc.label}
                             </button>
@@ -378,24 +374,7 @@ export default function Contact() {
                       </div>
                     </div>
 
-                    {/* Budget */}
-                    <div>
-                      <p className="mb-2.5 text-[13px] font-semibold tracking-wide text-[#526987]">Project budget</p>
-                      <div className="flex flex-wrap gap-2">
-                        {BUDGETS.map((b) => (
-                          <button
-                            key={b} type="button" onClick={() => setBudget(b)}
-                            className={`rounded-full border px-4 py-1.5 text-[12.5px] font-medium transition-all duration-200 ${
-                              budget === b
-                                ? "border-[#2563eb] bg-[#edf3ff] text-[#2563eb]"
-                                : "border-[#a3b8e5] bg-white text-[#526987] hover:border-[#2563eb] hover:text-[#2563eb]"
-                            }`}
-                          >
-                            {b}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+
 
                     <TextareaField
                       id="message"
