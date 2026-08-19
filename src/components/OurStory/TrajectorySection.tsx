@@ -24,7 +24,7 @@ const STEPS: MilestoneStep[] = [
     title: "Inception",
     description:
       "Founded in a small workspace with a singular focus on flawless architecture.",
-    image: "/slider1.png",
+    image: "/slider1.webp",
   },
   {
     id: 2,
@@ -34,7 +34,7 @@ const STEPS: MilestoneStep[] = [
     title: "Expansion",
     description:
       "First major international deployment. Team grows from 5 to 50.",
-    image: "/slider2.png",
+    image: "/slider2.webp",
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ const STEPS: MilestoneStep[] = [
     title: "Milestone",
     description:
       "Opening of our 5th global office, cementing our presence across two continents.",
-    image: "/slider3.png",
+    image: "/slider3.webp",
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const STEPS: MilestoneStep[] = [
     title: "The Future",
     description:
       "Scaling intelligent solutions. Redefining what enterprise consulting means.",
-    image: "/slider4.png",
+    image: "/slider4.webp",
   },
 ];
 

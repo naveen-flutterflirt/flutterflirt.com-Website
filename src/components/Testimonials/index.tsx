@@ -41,12 +41,12 @@ export default function Testimonials() {
             <p
               className="
                 max-w-[1350px]
-                text-[20px]
+                text-[16px]
                 font-normal
                 leading-[1.55]
                 text-[#1f2d43]
-                md:text-[22px]
-                lg:text-[23px]
+                md:text-[20px]
+                lg:text-[22px]
               "
             >
               FlutterFlirt simplified our operations and gave us a single
@@ -70,7 +70,7 @@ export default function Testimonials() {
               "
             >
               <img
-                src="avatar.jpg"
+                src="avatar.webp"
                 alt="Ava Chen"
                 className="h-full w-full object-cover"
               />

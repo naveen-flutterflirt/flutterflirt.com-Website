@@ -75,7 +75,9 @@ export default function Hero() {
             <h1
               className="
                 font-serif
-                text-[50px]
+                text-[38px]
+                sm:text-[46px]
+                md:text-[50px]
                 font-bold
                 leading-[0.95]
                 tracking-[-2px]
@@ -92,10 +94,12 @@ export default function Hero() {
               <span
                 className="
                   font-[family-name:var(--font-allura)]
-                   text-[68px]
-                    font-normal
-                    tracking-normal
-                    text-[#244572]
+                  text-[52px]
+                  sm:text-[60px]
+                  md:text-[68px]
+                  font-normal
+                  tracking-normal
+                  text-[#244572]
                 "
               >
                 Growth.
@@ -108,10 +112,11 @@ export default function Hero() {
                 mt-7
                 max-w-[650px]
                 space-y-6
-                text-[17px]
+                text-[15px]
                 leading-[1.65]
                 text-[#647b9b]
-                md:text-[18px]
+                md:text-[17px]
+                lg:text-[18px]
               "
             >
               <p>

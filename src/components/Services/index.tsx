@@ -9,7 +9,7 @@ const services = [
     color: "#D4E7E1",
     text_color : "#1A7A4A",
     title: "Dynamics 365 Finance & Operations",
-    image: "service-1.png",
+    image: "service-1.webp",
     description:
       "End-to-end ERP for finance, supply chain, manufacturing, and business operations.",
     tags: ["Finance", "Supply Chain", "Manufacturing", "Retail"],

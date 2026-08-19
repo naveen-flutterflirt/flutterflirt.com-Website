@@ -24,7 +24,7 @@ const OFFICES: OfficeLocation[] = [
     city: "Bengaluru",
     region: "Karnataka, India",
     coordinates: "12.9716° N, 77.5946° E",
-    image: "/Bhubneaswar.png",
+    image: "/Bengl.webp",
   },
   {
     id: "new-york",
@@ -34,7 +34,7 @@ const OFFICES: OfficeLocation[] = [
     city: "New York",
     region: "U.S.",
     coordinates: "40.7128° N, 74.0060° W",
-    image: "/NewYork.png",
+    image: "/City5.webp",
   },
   {
     id: "bhubaneswar",
@@ -44,7 +44,7 @@ const OFFICES: OfficeLocation[] = [
     city: "Bhubaneswar",
     region: "Odisha, India",
     coordinates: "20.2961° N, 85.8245° E",
-    image: "/Bhubneaswar.png",
+    image: "/City4.webp",
   },
   {
     id: "bhopal",
@@ -54,7 +54,7 @@ const OFFICES: OfficeLocation[] = [
     city: "Bhopal",
     region: "Madhya Pradesh, India",
     coordinates: "23.2599° N, 77.4126° E",
-    image: "/Bhopal.png",
+    image: "/City2.webp",
   },
   {
     id: "kentucky",
@@ -64,7 +64,7 @@ const OFFICES: OfficeLocation[] = [
     city: "Kentucky",
     region: "U.S.",
     coordinates: "37.8393° N, 84.2700° W",
-    image: "/Kentucky.png",
+    image: "/City1.webp",
   },
   {
     id: "mumbai",
@@ -74,7 +74,7 @@ const OFFICES: OfficeLocation[] = [
     city: "Mumbai",
     region: "Maharashtra, India",
     coordinates: "19.0760° N, 72.8777° E",
-    image: "/Mumbai.png",
+    image: "/City3.webp",
   },
 ];
 

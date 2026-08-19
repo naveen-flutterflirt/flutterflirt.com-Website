@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesHero from "@/components/Services/ServicesHero";
 import ServicesPillars from "@/components/Services/ServicesPillars";
-import ProcessMethodology from "@/components/Services/ProcessMethodology";
 import ServicesTrustStats from "@/components/Services/ServicesTrustStats";
+import ServicesPhases from "@/components/Services/ServicesPhases";
 import ServicesCTA from "@/components/Services/ServicesCTA";
 
 export const metadata: Metadata = {
@@ -25,11 +25,11 @@ export default function ServicesPage() {
         {/* 2. 8 Core Services structured in 3 Strategic Pillars */}
         <ServicesPillars />
 
-        {/* 3. Client Engagement Approach (Assess, Build, Integrate, Support) */}
-        <ProcessMethodology />
-
-        {/* 4. Enterprise Track Record & Trust Metrics */}
+        {/* 3. Enterprise Track Record & Trust Metrics */}
         <ServicesTrustStats />
+
+        {/* 4. Delivery Methodology Phases (Scroll Animated) */}
+        <ServicesPhases />
 
         {/* 5. Pre-Footer Call to Action */}
         <ServicesCTA />

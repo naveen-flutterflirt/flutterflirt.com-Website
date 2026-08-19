@@ -232,7 +232,7 @@ export default function ServicesPillars() {
             ULTRA-MINIMAL & SPACIOUS STACKED SCROLL CARDS
             No practice numbers, no paragraph blocks, color-matched badges, right-side button only
            ========================================================================= */}
-        <div className="relative mx-auto max-w-[1180px] pb-20 space-y-10 sm:space-y-14">
+        <div className="relative mx-auto max-w-[1180px] pb-20 space-y-12 sm:space-y-16">
           {SERVICES_DATA.map((service, index) => {
             const topOffsetDesktop = 90 + index * 16;
             const topOffsetMobile = 70 + index * 10;
@@ -252,16 +252,28 @@ export default function ServicesPillars() {
                     w-full
                     overflow-hidden
                     rounded-[28px] sm:rounded-[36px] md:rounded-[44px]
-                    bg-white/95
-                    border border-[#d6e4f2]
-                    p-7 sm:p-10 md:p-12
-                    shadow-[0_18px_50px_rgba(20,50,90,0.06)]
+                    border border-white/70
+                    p-8 sm:p-11 md:p-14
+                    shadow-[0_24px_80px_rgba(15,23,42,0.10)]
                     backdrop-blur-xl
                     transition-all duration-300
+                    hover:-translate-y-0.5 hover:shadow-[0_30px_90px_rgba(15,23,42,0.14)]
                   "
+                  style={{
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.78) 38%, ${service.bgColor} 100%)`,
+                  }}
                 >
+                  <div
+                    className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl opacity-80"
+                    style={{ background: `radial-gradient(circle, ${service.bgColor} 0%, transparent 68%)` }}
+                  />
+                  <div
+                    className="pointer-events-none absolute -bottom-8 left-0 h-36 w-36 rounded-full blur-3xl opacity-70"
+                    style={{ background: `radial-gradient(circle, ${service.bgColor} 0%, transparent 72%)` }}
+                  />
+
                   {/* Top Bar: Pillar Label & Icon */}
-                  <div className="flex items-center justify-between border-b border-slate-100/90 pb-5 mb-6">
+                  <div className="relative z-10 flex items-center justify-between border-b border-slate-200/80 pb-6 mb-7">
                     <span className="text-[11.5px] sm:text-[12.5px] font-bold uppercase tracking-[0.22em] text-[#2563eb]">
                       {service.pillarLabel}
                     </span>
@@ -269,7 +281,7 @@ export default function ServicesPillars() {
                     {/* Top Right Icon with matching background */}
                     <div
                       style={{ backgroundColor: service.bgColor }}
-                      className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl shadow-xs transition-transform duration-300 group-hover:scale-105"
+                      className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl shadow-[0_10px_20px_rgba(15,23,42,0.08)] ring-1 ring-white/80 transition-transform duration-300 group-hover:scale-105"
                     >
                       <Image
                         src={service.icon}
@@ -282,7 +294,7 @@ export default function ServicesPillars() {
                   </div>
 
                   {/* Title & Outcome Subtitle */}
-                  <div>
+                  <div className="relative z-10">
                     <h3
                       className="text-[23px] sm:text-[28px] md:text-[32px] font-bold text-[#0a0f18] leading-[1.14] tracking-tight"
                       style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
@@ -296,7 +308,7 @@ export default function ServicesPillars() {
                   </div>
 
                   {/* Bottom Row: Badges (Color matched to top-right icon) + Right Button Only */}
-                  <div className="mt-7 sm:mt-9 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+                  <div className="relative z-10 mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5 pt-1">
                     
                     {/* Capability Badges using EXACT same color palette as top-right icon */}
                     <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
@@ -304,10 +316,11 @@ export default function ServicesPillars() {
                         <span
                           key={tag}
                           style={{
-                            backgroundColor: service.bgColor,
+                            background: `linear-gradient(135deg, rgba(255,255,255,0.72), ${service.bgColor})`,
                             color: service.textColor,
+                            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)",
                           }}
-                          className="rounded-full px-3.5 py-1.5 text-[11px] sm:text-[12px] font-bold shadow-2xs transition-transform duration-200 hover:scale-105"
+                          className="rounded-full border border-white/80 px-3.5 py-1.5 text-[11px] sm:text-[12px] font-bold transition-transform duration-200 hover:scale-105"
                         >
                           {tag}
                         </span>
@@ -318,7 +331,7 @@ export default function ServicesPillars() {
                     <div className="shrink-0">
                       <button
                         onClick={() => setSelectedService(service)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0a0f18] py-2.5 px-5 text-[12px] sm:text-[12.5px] font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#2563eb] hover:shadow-[0_6px_16px_rgba(37,99,235,0.22)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0a0f18] py-2.5 px-5 text-[12px] sm:text-[12.5px] font-bold text-white shadow-[0_12px_28px_rgba(15,23,42,0.22)] transition-all duration-200 hover:bg-[#2563eb] hover:shadow-[0_16px_34px_rgba(37,99,235,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                       >
                         <span>View Architecture Specs</span>
                         <span className="text-xs">→</span>

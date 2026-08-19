@@ -1,21 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ImageRotator from "./ImageRotator";
 import StoryEnterpriseSection from "@/components/OurStory/StoryEnterpriseSection";
 import TrajectorySection from "@/components/OurStory/TrajectorySection";
 import OfficesSection from "@/components/OurStory/OfficesSection";
 import QuoteSection from "@/components/OurStory/QuoteSection";
-
-const IMAGES = [
-  "/Img1.png",
-  "/Img2.png",
-  "/Img3.png",
-  "/Img4.png",
-  "/Img5.png",
-  "/Img6.png",
-];
 
 export default function OurStoryPage() {
   return (
@@ -40,13 +32,13 @@ export default function OurStoryPage() {
                 className="font-normal text-[#0a0f16] tracking-[-0.04em] leading-[0.98]"
                 style={{
                   fontFamily: "var(--font-bigshot-one), Georgia, serif",
-                  fontSize: "clamp(2.4rem, 4.4vw, 5rem)",
+                  fontSize: "clamp(1.8rem, 4.4vw, 5rem)",
                 }}
               >
-                <span className="block whitespace-normal sm:whitespace-nowrap">
+                <span className="block">
                   Every System We&apos;ve Built
                 </span>
-                <span className="block whitespace-normal sm:whitespace-nowrap">
+                <span className="block">
                   Started With One
                 </span>
               </h1>
@@ -56,7 +48,7 @@ export default function OurStoryPage() {
                 className="font-normal leading-[1.05] tracking-normal text-[#1e4067] -mt-1 mb-4 select-none"
                 style={{
                   fontFamily: "var(--font-allura), 'Brush Script MT', cursive",
-                  fontSize: "clamp(3.6rem, 5.8vw, 6.4rem)",
+                  fontSize: "clamp(2.8rem, 5.8vw, 6.4rem)",
                 }}
               >
                 Belief.
@@ -68,16 +60,41 @@ export default function OurStoryPage() {
               </p>
             </div>
 
-            {/* ===== RIGHT CONTENT - EXACT FIGMA IMAGE SCALE & LEVEL ===== */}
-            <div className="relative flex w-full items-end justify-center lg:justify-end h-[360px] sm:h-[440px] md:h-[500px] lg:h-[550px] xl:h-[600px]">
-              <div className="relative h-full w-full max-w-[480px] sm:max-w-[560px] md:max-w-[620px] lg:max-w-[680px]">
-                <ImageRotator
-                  images={IMAGES}
-                  intervalMs={1000}
-                  transitionMs={350}
-                  imageScale={1.85}
-                  className="h-full w-full"
-                />
+            {/* ===== RIGHT CONTENT - CHART WITH ROCKET FLIGHT ===== */}
+            <div className="relative flex w-full items-center justify-center lg:justify-end h-[360px] sm:h-[440px] md:h-[500px] lg:h-[550px] xl:h-[600px]">
+              <div className="relative h-[76%] w-full max-w-[680px] rounded-[28px] bg-white/96 shadow-[0_25px_80px_rgba(17,34,61,0.08)] ring-1 ring-[#e6edf8]">
+                <div className="absolute inset-[4%]">
+                  <Image
+                    src="/Bar.webp"
+                    alt="Bar chart illustration"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+
+                <motion.div
+                  className="absolute bottom-[35%] left-[8%] z-20 h-[24%] w-[18%]"
+                  initial={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  animate={{
+                    x: 250,
+                    y: -175,
+                  }}
+                  transition={{
+                    duration: 2.0,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Image
+                    src="/Rocket.webp"
+                    alt="Rocket graphic"
+                    fill
+                    className="object-contain drop-shadow-[0_20px_26px_rgba(37,99,235,0.18)]"
+                  />
+                </motion.div>
               </div>
             </div>
 

@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+
+const PHONE_NUMBER = "+919876543210";
 
 const navLinks = [
   { name: "Services", href: "/services" },
@@ -12,17 +15,52 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-const SCROLL_THRESHOLD = 60;
-
+// Pill transform starts after this many px of scroll
+const PILL_THRESHOLD = 60;
+// Hide/show behaviour only kicks in once past the hero (≈100vh)
+// We read the real value on mount so it works on any screen size.
+const HIDE_THRESHOLD_FALLBACK = 600;
+// Ignore scroll deltas smaller than this to prevent jitter
+const SCROLL_DELTA = 8;
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  // Will hold the pixel offset where the hero section ends
+  const heroEndRef = useRef(HIDE_THRESHOLD_FALLBACK);
+
+  // Measure actual hero height on mount (hero is min-h-screen)
+  useEffect(() => {
+    heroEndRef.current = window.innerHeight;
+  }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      // 1. Pill transform: kick in after PILL_THRESHOLD px
+      setScrolled(currentY > PILL_THRESHOLD);
+
+      // 2. Hide / show logic — only active past the hero section
+      if (currentY > heroEndRef.current) {
+        if (Math.abs(delta) > SCROLL_DELTA) {
+          // Scrolling UP   → show navbar
+          // Scrolling DOWN → hide navbar
+          setIsVisible(delta < 0);
+          lastScrollY.current = currentY;
+        }
+      } else {
+        // Inside the hero: always visible
+        setIsVisible(true);
+        lastScrollY.current = currentY;
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -34,7 +72,12 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-50 flex justify-center">
+    <motion.div
+      className="fixed inset-x-0 top-0 z-50 flex justify-center"
+      animate={{ y: isVisible ? 0 : -120, opacity: isVisible ? 1 : 0 }}
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+      style={{ pointerEvents: isVisible ? "auto" : "none" }}
+    >
       <div className="relative w-full flex justify-center">
 
         {/* ════════════════════════════════════════
@@ -79,10 +122,10 @@ export default function Navbar() {
             max-w-[1600px]
             items-center
             justify-between
-            border
             will-change-transform
           "
           style={{
+            borderStyle: "solid",
             backdropFilter: scrolled
               ? "blur(22px) saturate(190%)"
               : "blur(0px)",
@@ -98,11 +141,11 @@ export default function Navbar() {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
               <Image
-                src="/logo-white.png"
+                src="/logo-nav.png"
                 alt="FlutterFlirt"
                 width={250}
                 height={170}
-                className="h-auto w-[165px] brightness-0 lg:w-[190px]"
+                className="h-auto w-[165px] lg:w-[190px]"
                 priority
               />
             </motion.div>
@@ -110,41 +153,39 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <div className="flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="
-                  group
-                  relative
-                  text-[13.5px]
-                  font-bold
-                  tracking-[0.04em]
-                  text-[#0f1723]
-                  transition-colors
-                  duration-200
-                  hover:text-black
-                "
-              >
-                {link.name}
-                <span
-                  className="
-                    absolute -bottom-0.5 left-0
-                    h-[2px] w-0 rounded-full
-                    bg-[#0f1723]
-                    transition-all duration-300 ease-out
-                    group-hover:w-full
-                  "
-                />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={[
+                    "group relative text-[13.5px] tracking-[0.04em] transition-colors duration-200",
+                    isActive ? "font-extrabold text-black" : "font-bold text-[#0f1723] hover:text-black",
+                  ].join(" ")}
+                >
+                  {link.name}
+                  <span
+                    className={[
+                      "absolute -bottom-0.5 left-1/2 h-[2px] rounded-full bg-[#0f1723] transition-all duration-300 ease-out",
+                      isActive
+                        ? "w-[18px] -translate-x-1/2"
+                        : "w-0 -translate-x-1/2 group-hover:w-full",
+                    ].join(" ")}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Help CTA — text on desktop */}
-          <Link
-            href="#help"
+          {/* Call Us CTA — text on desktop */}
+          <a
+            href={`tel:${PHONE_NUMBER}`}
             className={`
-              flex items-center justify-center
+              flex items-center justify-center gap-2
               rounded-full border border-blue-600
               font-bold text-blue-600
               transition-all duration-200 shrink-0
@@ -154,8 +195,11 @@ export default function Navbar() {
               ${scrolled ? "h-[35px] px-5 text-[12.5px]" : "h-[38px] px-6 text-[13px]"}
             `}
           >
-            Help
-          </Link>
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z"/>
+            </svg>
+            Call Us
+          </a>
         </motion.nav>
 
         {/* ════════════════════════════════════════
@@ -195,10 +239,10 @@ export default function Navbar() {
             flex md:hidden
             items-center
             justify-between
-            border
             will-change-transform
           "
           style={{
+            borderStyle: "solid",
             backdropFilter: scrolled
               ? "blur(22px) saturate(190%)"
               : "blur(0px)",
@@ -210,11 +254,11 @@ export default function Navbar() {
           {/* Mobile logo */}
           <Link href="/" className="flex shrink-0 items-center">
             <Image
-              src="/logo-white.png"
+              src="/logo-nav.png"
               alt="FlutterFlirt"
               width={200}
               height={136}
-              className="h-auto w-[140px] brightness-0"
+              className="h-auto w-[140px]"
               priority
             />
           </Link>
@@ -296,42 +340,49 @@ export default function Navbar() {
               "
             >
               <nav className="flex flex-col" aria-label="Mobile navigation">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: i * 0.055,
-                      duration: 0.22,
-                      ease: "easeOut",
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="
-                        flex items-center gap-2
-                        rounded-[14px] px-4 py-3
-                        text-[14px] font-bold tracking-wide
-                        text-[#0f1723]
-                        transition-all duration-150
-                        hover:bg-black/5 hover:text-black
-                        active:scale-[0.98]
-                      "
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
+                {navLinks.map((link, i) => {
+                  const isActive =
+                    link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
-                {/* Divider + Help row */}
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: i * 0.055,
+                        duration: 0.22,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setMobileOpen(false)}
+                        aria-current={isActive ? "page" : undefined}
+                        className={[
+                          "relative flex items-center gap-2 rounded-[14px] px-4 py-3 text-[14px] tracking-wide transition-all duration-150 hover:bg-black/5 hover:text-black active:scale-[0.98]",
+                          isActive ? "font-extrabold text-black" : "font-bold text-[#0f1723]",
+                        ].join(" ")}
+                      >
+                        <span>{link.name}</span>
+                        <span
+                          className={[
+                            "ml-auto h-[2px] rounded-full bg-[#0f1723] transition-all duration-200",
+                            isActive ? "w-[18px]" : "w-0",
+                          ].join(" ")}
+                        />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Divider + Call Us row */}
                 <div className="mx-1 mt-2 border-t border-slate-100 pt-2">
-                  <Link
-                    href="#help"
+                  <a
+                    href={`tel:${PHONE_NUMBER}`}
                     onClick={() => setMobileOpen(false)}
                     className="
-                      flex h-11 w-full items-center justify-center
+                      flex h-11 w-full items-center justify-center gap-2
                       rounded-[14px]
                       border border-blue-600
                       text-[14px] font-bold text-blue-600
@@ -340,14 +391,17 @@ export default function Navbar() {
                       active:scale-[0.97]
                     "
                   >
-                    Help
-                  </Link>
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z"/>
+                    </svg>
+                    Call Us
+                  </a>
                 </div>
               </nav>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }

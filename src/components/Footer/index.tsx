@@ -29,26 +29,26 @@ const locations = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0f172a] px-10 pb-5 pt-10 text-white md:px-12 lg:px-10">
+    <footer className="bg-[#0f172a] px-5 pb-5 pt-10 text-white sm:px-8 md:px-10 lg:px-10">
       <div className="mx-auto max-w-[1800px]">
 
         {/* ================= MAIN FOOTER ================= */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px_280px]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1fr_300px_260px]">
 
           {/* ================= BRAND ================= */}
-          <div className="flex min-h-[350px] flex-col">
+          <div className="flex flex-col">
 
             {/* Logo */}
             <Link href="/" className="inline-flex w-fit items-center">
               <div className="flex items-center gap-2">
-               <img src="logo-white.png" width={167} height={111}  alt="FlutterFlirt Logo" />
+               <img src="logo-footer.png" width={167} height={111} alt="FlutterFlirt Logo" />
 
               </div>
             </Link>
 
             {/* Description */}
             <div className="mt-16">
-              <p className="text-[18px] font-light text-[#c3cad7]">
+              <p className="text-[15px] font-light text-[#c3cad7] sm:text-[16px] md:text-[18px]">
                 At FlutterFlirt, we don't simply deliver software.
               </p>
 
@@ -57,10 +57,12 @@ export default function Footer() {
                   mt-1
                   max-w-[800px]
                   font-serif
-                  text-[23px]
+                  text-[17px]
                   font-bold
                   leading-[1.2]
                   text-white
+                  sm:text-[19px]
+                  md:text-[21px]
                 "
               >
                 We built the digital foundation modern businesses rely on to
@@ -69,8 +71,8 @@ export default function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="mt-auto pt-12">
-              <div className="flex gap-10">
+            <div className="mt-8 pt-4">
+              <div className="flex flex-wrap gap-6">
                 <Link
                   href="/privacy"
                   className="
@@ -120,7 +122,7 @@ export default function Footer() {
             <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-5">
               {locations.map((location) => (
                 <div key={location.city}>
-                  <p className="text-[19px] font-normal text-white">
+                  <p className="text-[15px] font-normal text-white sm:text-[17px] md:text-[19px]">
                     {location.city}
                   </p>
 
@@ -154,10 +156,13 @@ export default function Footer() {
                 flex
                 items-center
                 gap-2
-                text-[18px]
+                break-all
+                text-[14px]
                 text-white
                 transition-colors
                 hover:text-[#2773e6]
+                sm:text-[16px]
+                md:text-[18px]
               "
             >
               {/* Mail */}

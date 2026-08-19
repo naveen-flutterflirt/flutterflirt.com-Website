@@ -47,11 +47,13 @@ export default function FAQ() {
                   list-none
                   items-center
                   justify-between
-                  py-6
-                  text-[18px]
+                  py-5
+                  text-[15px]
                   font-bold
                   text-[#1d2b42]
                   outline-none
+                  sm:text-[17px]
+                  md:text-[18px]
                   [&::-webkit-details-marker]:hidden
                 "
               >

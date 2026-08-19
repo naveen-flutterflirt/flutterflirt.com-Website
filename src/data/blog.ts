@@ -7,7 +7,7 @@ export const blogs = [
     category: "Dynamics 365",
     date: "Aug 12, 2026",
     readTime: "6 min read",
-    image: "/blog/blog-1.jpg",
+    image: "/blog/blog-1.webp",
     featured: true,
   },
   {
@@ -18,7 +18,7 @@ export const blogs = [
     category: "Power Platform",
     date: "Aug 08, 2026",
     readTime: "5 min read",
-    image: "/blog/blog-2.jpg",
+    image: "/blog/blog-2.webp",
   },
   {
     slug: "building-modern-business-portals-with-nextjs",
@@ -28,7 +28,7 @@ export const blogs = [
     category: "Development",
     date: "Aug 03, 2026",
     readTime: "7 min read",
-    image: "/blog/blog-3.jpg",
+    image: "/blog/blog-3.webp",
   },
   {
     slug: "azure-integrations-for-modern-business",
@@ -38,7 +38,7 @@ export const blogs = [
     category: "Azure",
     date: "Jul 28, 2026",
     readTime: "8 min read",
-    image: "/blog/blog-4.jpg",
+    image: "/blog/blog-4.webp",
   },
   {
     slug: "ai-in-enterprise-software",
@@ -48,7 +48,7 @@ export const blogs = [
     category: "AI",
     date: "Jul 22, 2026",
     readTime: "6 min read",
-    image: "/blog/blog-5.jpg",
+    image: "/blog/blog-5.webp",
   },
   {
     slug: "react-for-enterprise-applications",
@@ -58,6 +58,6 @@ export const blogs = [
     category: "Development",
     date: "Jul 17, 2026",
     readTime: "5 min read",
-    image: "/blog/blog-6.jpg",
+    image: "/blog/blog-6.webp",
   },
 ];

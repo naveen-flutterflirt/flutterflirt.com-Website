@@ -19,11 +19,13 @@
 
 html {
   background: var(--page-bg);
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   background: var(--page-bg);
   color: var(--ink);
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
@@ -269,7 +271,7 @@ button, a, [role="button"], input[type="submit"], input[type="button"], input[ty
 }
 
 .sparkline {
-  margin-top: 12px;
+  margin-top : 12px;
   width: 100%;
   height: 66px;
 }
@@ -532,3 +534,65 @@ button, a, [role="button"], input[type="submit"], input[type="button"], input[ty
   }
 }
 
+
+
+/* ═══════════════════════════════════════════════
+   PREMIUM SCROLLBAR — theme-matched
+   Chromium / WebKit
+═══════════════════════════════════════════════ */
+
+/* Track */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #2d8cff 0%,
+    #1b6fe6 60%,
+    #0f4fba 100%
+  );
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #4da3ff 0%,
+    #2d8cff 60%,
+    #1b6fe6 100%
+  );
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(
+    180deg,
+    #1b6fe6 0%,
+    #0f4fba 100%
+  );
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+/* Corner between horizontal + vertical scrollbar */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2d8cff transparent;
+}

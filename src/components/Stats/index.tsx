@@ -32,12 +32,12 @@ export default function Stats() {
             className="
               max-w-[1250px]
               font-serif
-              text-[24px]
+              text-[16px]
               font-bold
               leading-[1.35]
               text-[#203556]
-              md:text-[28px]
-              lg:text-[30px]
+              md:text-[22px]
+              lg:text-[26px]
             "
           >
             “We partner with organizations to simplify operations, eliminate
@@ -424,7 +424,7 @@ export default function Stats() {
                 </div>
 
                 <div>
-                <h3 className="text-[34px] font-bold leading-none text-[#111d32]">
+                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
                     100+
                 </h3>
 
@@ -455,7 +455,7 @@ export default function Stats() {
                 </div>
 
                 <div>
-                <h3 className="text-[34px] font-bold leading-none text-[#ed3d3d]">
+                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#ed3d3d]">
                     250+
                 </h3>
 
@@ -486,7 +486,7 @@ export default function Stats() {
                 </div>
 
                 <div>
-                <h3 className="text-[34px] font-bold leading-none text-[#111d32]">
+                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
                     24/7
                 </h3>
 
@@ -517,7 +517,7 @@ export default function Stats() {
                 </div>
 
                 <div>
-                <h3 className="text-[34px] font-bold leading-none text-[#111d32]">
+                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
                     100%
                 </h3>
 
