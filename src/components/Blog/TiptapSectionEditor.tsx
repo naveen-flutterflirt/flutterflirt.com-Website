@@ -5,6 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
+import Placeholder from "@tiptap/extension-placeholder";
 import { JSONContent } from "@/types/blog";
 import { useEffect, useState } from "react";
 import {
@@ -53,6 +54,9 @@ export default function TiptapSectionEditor({
         heading: {
           levels: [1, 2, 3, 4],
         },
+      }),
+      Placeholder.configure({
+        placeholder,
       }),
       Underline,
       Link.configure({

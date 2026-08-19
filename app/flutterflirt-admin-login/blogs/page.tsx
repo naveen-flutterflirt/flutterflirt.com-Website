@@ -184,7 +184,7 @@ export default function BlogsPage() {
         heading: "Introduction",
         content: {
           type: "doc",
-          content: [{ type: "paragraph", content: [{ type: "text", text: "Start writing section content..." }] }],
+          content: [{ type: "paragraph", content: [] }],
         },
       },
     ]);
@@ -817,6 +817,7 @@ export default function BlogsPage() {
                           <TiptapSectionEditor
                             initialContent={section.content}
                             onChange={(json) => handleSectionContentChange(index, json)}
+                            placeholder="Start writing section content..."
                           />
                         </div>
                       </div>
