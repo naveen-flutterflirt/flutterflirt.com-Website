@@ -26,6 +26,7 @@ import {
   Undo,
   Redo,
   Type,
+  Loader2,
 } from "lucide-react";
 
 interface TiptapSectionEditorProps {
@@ -105,11 +106,42 @@ export default function TiptapSectionEditor({
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   };
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const addImage = () => {
-    const url = window.prompt("Enter Image URL:", "https://images.unsplash.com/photo-...");
-    if (url && url.trim()) {
-      editor.chain().focus().setImage({ src: url.trim() }).run();
-    }
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async (e: any) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      setIsUploading(true);
+      try {
+        const token = sessionStorage.getItem("flutterflirt_admin_token");
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const res = await fetch(`${API_URL}/api/admin/upload`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to upload image");
+
+        editor.chain().focus().setImage({ src: data.imageUrl }).run();
+      } catch (err: any) {
+        alert(err.message);
+      } finally {
+        setIsUploading(false);
+      }
+    };
+    input.click();
   };
 
   const getCurrentTextSize = () => {
@@ -236,8 +268,12 @@ export default function TiptapSectionEditor({
             <LinkIcon className="h-3.5 w-3.5" />
           </ToolbarButton>
 
-          <ToolbarButton onClick={addImage} active={false} title="Embed Image URL">
-            <ImageIcon className="h-3.5 w-3.5" />
+          <ToolbarButton onClick={addImage} active={false} title={isUploading ? "Uploading image..." : "Upload & Embed Image"}>
+            {isUploading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <ImageIcon className="h-3.5 w-3.5" />
+            )}
           </ToolbarButton>
         </div>
 

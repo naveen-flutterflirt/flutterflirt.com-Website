@@ -16,7 +16,9 @@ import {
   CheckCircle2,
   FileText,
   Loader2,
-  X
+  X,
+  Upload,
+  Image as ImageIcon
 } from "lucide-react";
 
 import { SidebarProvider } from "@/components/ui/sidebar"
@@ -89,6 +91,36 @@ export default function BlogsPage() {
   const [saving, setSaving] = useState(false);
   const [savingAction, setSavingAction] = useState<"draft" | "published" | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    setIsUploadingCover(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to upload image");
+
+      setCoverImage(data.imageUrl);
+      showToast("Cover image uploaded successfully!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsUploadingCover(false);
+    }
+  };
 
   useEffect(() => {
     const savedToken = sessionStorage.getItem("flutterflirt_admin_token");
@@ -622,15 +654,32 @@ export default function BlogsPage() {
 
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold uppercase tracking-wider text-[#355375]">
-                      Cover Image URL
+                      Cover Image
                     </label>
-                    <input
-                      type="text"
-                      value={coverImage}
-                      onChange={(e) => setCoverImage(e.target.value)}
-                      placeholder="https://images.unsplash.com/photo-..."
-                      className="mt-2 w-full rounded-xl border border-[#cbdff8] px-4 py-2.5 text-sm text-[#112239] focus:border-[#2563eb] focus:outline-none"
-                    />
+                    <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <input
+                        type="text"
+                        value={coverImage}
+                        onChange={(e) => setCoverImage(e.target.value)}
+                        placeholder="https://images.unsplash.com/photo-... or upload image"
+                        className="w-full rounded-xl border border-[#cbdff8] px-4 py-2.5 text-sm text-[#112239] focus:border-[#2563eb] focus:outline-none"
+                      />
+                      <label className="flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-[#1d4ed8]">
+                        {isUploadingCover ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Upload className="h-3.5 w-3.5" />
+                        )}
+                        <span>{isUploadingCover ? "Uploading..." : "Upload Image"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleCoverUpload}
+                          disabled={isUploadingCover}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
                     {coverImage && (
                       <div className="mt-3 h-36 w-full max-w-sm overflow-hidden rounded-xl border border-[#cbe0fb]">
                         <img src={coverImage} alt="Preview" className="h-full w-full object-cover" />
