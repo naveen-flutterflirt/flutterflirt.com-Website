@@ -34,7 +34,7 @@ export function AppSidebar() {
     const router = useRouter();
 
     const handleLogout = () => {
-        localStorage.removeItem("flutterflirt_admin_token");
+        sessionStorage.removeItem("flutterflirt_admin_token");
         router.push("/flutterflirt-admin-login");
     };
 

@@ -26,6 +26,7 @@ import {
   Undo,
   Redo,
   Type,
+  Loader2,
 } from "lucide-react";
 
 interface TiptapSectionEditorProps {
@@ -39,6 +40,8 @@ export default function TiptapSectionEditor({
   onChange,
   placeholder = "Write section content here...",
 }: TiptapSectionEditorProps) {
+  const [isUploading, setIsUploading] = useState(false);
+
   // Normalize initial content
   const contentToLoad = typeof initialContent === "string"
     ? { type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text: initialContent }] }] }
@@ -96,6 +99,7 @@ export default function TiptapSectionEditor({
 
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
+
     const url = window.prompt("Enter URL:", previousUrl || "https://");
     if (url === null) return;
     if (url === "" || url === "https://") {
@@ -105,11 +109,42 @@ export default function TiptapSectionEditor({
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   };
 
+
+
   const addImage = () => {
-    const url = window.prompt("Enter Image URL:", "https://images.unsplash.com/photo-...");
-    if (url && url.trim()) {
-      editor.chain().focus().setImage({ src: url.trim() }).run();
-    }
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async (e: any) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      setIsUploading(true);
+      try {
+        const token = sessionStorage.getItem("flutterflirt_admin_token");
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const res = await fetch(`${API_URL}/api/admin/upload`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to upload image");
+
+        editor.chain().focus().setImage({ src: data.imageUrl }).run();
+      } catch (err: any) {
+        alert(err.message);
+      } finally {
+        setIsUploading(false);
+      }
+    };
+    input.click();
   };
 
   const getCurrentTextSize = () => {
@@ -123,7 +158,7 @@ export default function TiptapSectionEditor({
     <div className="overflow-hidden rounded-2xl border border-[#cbdff8] bg-white shadow-sm transition focus-within:border-[#2563eb] focus-within:ring-2 focus-within:ring-[#2563eb]/20">
       {/* ── Rich Formatting Toolbar ── */}
       <div className="flex flex-wrap items-center gap-1.5 border-b border-[#e2edf9] bg-[#f6faff] p-2 text-xs">
-        
+
         {/* Font Size / Style Selector */}
         <div className="flex items-center gap-1 border-r border-[#d4e4f8] pr-2">
           <select
@@ -236,8 +271,12 @@ export default function TiptapSectionEditor({
             <LinkIcon className="h-3.5 w-3.5" />
           </ToolbarButton>
 
-          <ToolbarButton onClick={addImage} active={false} title="Embed Image URL">
-            <ImageIcon className="h-3.5 w-3.5" />
+          <ToolbarButton onClick={addImage} active={false} title={isUploading ? "Uploading image..." : "Upload & Embed Image"}>
+            {isUploading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <ImageIcon className="h-3.5 w-3.5" />
+            )}
           </ToolbarButton>
         </div>
 
@@ -285,11 +324,10 @@ function ToolbarButton({
       type="button"
       onClick={onClick}
       title={title}
-      className={`flex h-7 w-7 items-center justify-center rounded-lg transition ${
-        active
+      className={`flex h-7 w-7 items-center justify-center rounded-lg transition ${active
           ? "bg-[#2563eb] text-white shadow-xs"
           : "text-[#47607e] hover:bg-[#e4effd] hover:text-[#163860]"
-      }`}
+        }`}
     >
       {children}
     </button>
