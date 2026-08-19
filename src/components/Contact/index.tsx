@@ -21,20 +21,67 @@ function InputField({
   id: string; label: string; type?: string; placeholder: string; required?: boolean;
 }) {
   const [focused, setFocused] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(false);
+    const value = e.target.value.trim();
+
+    if (required && !value) {
+      setError(`${label} is required`);
+      return;
+    }
+
+    if (value) {
+      if (type === "email") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          setError("Please enter a valid email address");
+          return;
+        }
+      }
+
+      if (id === "phone" || type === "tel") {
+        const phoneRegex = /^\+?[0-9\s\-()]{10,20}$/;
+        if (!phoneRegex.test(value)) {
+          setError("Please enter a valid phone number (at least 10 digits)");
+          return;
+        }
+      }
+    }
+
+    setError(null);
+  };
+
+  const handleFocus = () => {
+    setFocused(true);
+    setError(null);
+  };
+
   return (
     <div>
-      <label htmlFor={id} className={`block mb-1.5 text-[13px] font-semibold tracking-wide transition-colors ${focused ? "text-[#2563eb]" : "text-[#526987]"}`}>
+      <label htmlFor={id} className={`block mb-1.5 text-[13px] font-semibold tracking-wide transition-colors ${
+        focused ? "text-[#2563eb]" : error ? "text-[#F14F57]" : "text-[#526987]"
+      }`}>
         {label}{required && <span className="ml-0.5 text-[#F14F57]">*</span>}
       </label>
       <input
         id={id} name={id} type={type} placeholder={placeholder} required={required}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        className={`w-full rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${focused
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        className={`w-full rounded-[12px] border bg-white px-4 py-3 text-[15px] text-[#17243a] outline-none transition-all duration-200 placeholder:text-[#a3b8e5] ${
+          focused
             ? "border-[#2563eb] shadow-[0_0_0_3px_rgba(37,99,235,0.10)]"
-            : "border-[#a3b8e5] hover:border-[#7184a0]"
-          }`}
+            : error
+              ? "border-[#F14F57] shadow-[0_0_0_3px_rgba(241,79,87,0.10)]"
+              : "border-[#a3b8e5] hover:border-[#7184a0]"
+        }`}
       />
+      {error && (
+        <p className="mt-1 text-xs font-semibold text-[#F14F57] animate-in fade-in slide-in-from-top-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
