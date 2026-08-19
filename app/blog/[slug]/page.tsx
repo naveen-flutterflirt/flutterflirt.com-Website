@@ -4,8 +4,25 @@ import Image from "next/image";
 import { blogs } from "@/data/blog";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TiptapRenderer from "@/components/Blog/TiptapRenderer";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+export const dynamicParams = true; // allow dynamic paths that are not pre-rendered
 
 export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${API_URL}/api/blogs`);
+    if (res.ok) {
+      const data = await res.json();
+      const dbBlogs = data.data || data.blogs || [];
+      if (dbBlogs.length > 0) {
+        return dbBlogs.map((b: any) => ({ slug: b.slug }));
+      }
+    }
+  } catch (err) {
+    console.error("Error pre-generating static params:", err);
+  }
   return blogs.map((b) => ({ slug: b.slug }));
 }
 
@@ -15,14 +32,75 @@ export default async function BlogPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const blog = blogs.find((b) => b.slug === slug);
+  
+  let blog: any = null;
+
+  // Try fetching from database first
+  try {
+    const res = await fetch(`${API_URL}/api/blogs/${slug}`, {
+      next: { revalidate: 60 },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      blog = data.blog || data.data;
+    }
+  } catch (err) {
+    console.error("Error fetching blog from DB:", err);
+  }
+
+  // Fallback to static mock data if not found in DB
+  if (!blog) {
+    blog = blogs.find((b) => b.slug === slug);
+  }
+
   if (!blog) notFound();
 
-  const related = blogs
-    .filter((b) => b.slug !== slug)
-    .filter((b) => b.category === blog.category)
-    .concat(blogs.filter((b) => b.slug !== slug && b.category !== blog.category))
+  // Fetch all blogs from DB to generate related links
+  let allBlogs: any[] = [];
+  try {
+    const res = await fetch(`${API_URL}/api/blogs`);
+    if (res.ok) {
+      const data = await res.json();
+      allBlogs = data.data || data.blogs || [];
+    }
+  } catch (err) {
+    console.error("Error fetching related blogs from DB:", err);
+  }
+
+  if (allBlogs.length === 0) {
+    allBlogs = blogs;
+  }
+
+  const related = allBlogs
+    .filter((b: any) => b.slug !== slug)
+    .filter((b: any) => b.category === blog.category)
+    .concat(allBlogs.filter((b: any) => b.slug !== slug && b.category !== blog.category))
     .slice(0, 3);
+
+  const getReadTime = (item: any) => {
+    if (item.readTime) return item.readTime;
+    let wordCount = 0;
+    item.sections?.forEach((s: any) => {
+      wordCount += s.heading ? s.heading.split(/\s+/).length : 0;
+      if (s.content) {
+        const text = typeof s.content === "string" ? s.content : JSON.stringify(s.content);
+        wordCount += text.split(/\s+/).length;
+      }
+    });
+    const minutes = Math.max(1, Math.ceil(wordCount / 200));
+    return `${minutes} min read`;
+  };
+
+  const getFormattedDate = (item: any) => {
+    if (item.date) return item.date;
+    const dateStr = item.published_at || item.publishedAt || item.created_at;
+    if (!dateStr) return "Aug 19, 2026";
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   return (
     <>
@@ -52,9 +130,9 @@ export default async function BlogPost({
                 <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                 {blog.category}
               </span>
-              <span className="text-[13px] text-[#a3b8e5]">{blog.date}</span>
+              <span className="text-[13px] text-[#a3b8e5]">{getFormattedDate(blog)}</span>
               <span className="h-1 w-1 rounded-full bg-[#a3b8e5]" />
-              <span className="text-[13px] text-[#a3b8e5]">{blog.readTime}</span>
+              <span className="text-[13px] text-[#a3b8e5]">{getReadTime(blog)}</span>
             </div>
 
             {/* Title */}
@@ -84,7 +162,7 @@ export default async function BlogPost({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,#ffffff_0%,#edf6ff_50%,#dceaff_100%)]" />
           <div className="relative mx-auto max-w-[900px] overflow-hidden rounded-[24px] border border-[#a3b8e5] shadow-[0_20px_60px_rgba(59,100,160,0.12)]">
             <Image
-              src={blog.image}
+              src={blog.image || blog.cover_image || "/blog/blog-1.webp"}
               alt={blog.title}
               width={900}
               height={500}
@@ -103,59 +181,77 @@ export default async function BlogPost({
             {/* Article body */}
             <article className="rounded-[24px] border border-[#a3b8e5] bg-white p-8 shadow-[0_6px_30px_rgba(59,100,160,0.07)] md:p-12">
 
-              <div className="space-y-6 text-[16.5px] leading-[1.85] text-[#526987]">
-                <p>{blog.excerpt}</p>
-                <p>
-                  In today&apos;s competitive landscape, organisations that embrace modern platforms gain measurable advantages in speed, visibility, and operational resilience. Partnering with the right technology advisor is no longer optional—it&apos;s a strategic imperative.
-                </p>
-
-                <h2
-                  className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                  style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
-                >
-                  Why it matters now
-                </h2>
-                <p>
-                  The convergence of cloud infrastructure, AI-driven automation, and real-time analytics has created a window of opportunity for enterprises willing to modernise. Those that act decisively position themselves ahead of competitors still relying on fragmented legacy systems.
-                </p>
-                <p>
-                  FlutterFlirt has guided dozens of organisations through this transformation—from initial discovery and architecture design through to go-live and continuous optimisation. Our approach is always system-first, business-outcome-second, because sustainable growth requires both.
-                </p>
-
-                <h2
-                  className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                  style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
-                >
-                  Key considerations
-                </h2>
-
-                <ul className="space-y-3">
-                  {[
-                    "Align platform selection with your 3–5 year business roadmap.",
-                    "Prioritise integration over point solutions to avoid data silos.",
-                    "Invest in change management alongside technical implementation.",
-                    "Establish clear KPIs before go-live to measure real ROI.",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#2563eb]" />
-                      {item}
-                    </li>
+              {blog.sections && blog.sections.length > 0 ? (
+                <div className="space-y-12">
+                  {blog.sections.map((sec: any) => (
+                    <div key={sec.id || sec.slug} id={sec.slug} className="scroll-mt-24 space-y-4">
+                      {sec.heading && (
+                        <h2
+                          className="text-[26px] font-bold tracking-tight text-[#142845] md:text-[30px]"
+                          style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                        >
+                          {sec.heading}
+                        </h2>
+                      )}
+                      <TiptapRenderer content={sec.content} />
+                    </div>
                   ))}
-                </ul>
+                </div>
+              ) : (
+                <div className="space-y-6 text-[16.5px] leading-[1.85] text-[#526987]">
+                  <p>{blog.excerpt}</p>
+                  <p>
+                    In today&apos;s competitive landscape, organisations that embrace modern platforms gain measurable advantages in speed, visibility, and operational resilience. Partnering with the right technology advisor is no longer optional—it&apos;s a strategic imperative.
+                  </p>
 
-                <h2
-                  className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                  style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
-                >
-                  The FlutterFlirt approach
-                </h2>
-                <p>
-                  We don&apos;t just implement software—we architect ecosystems. Every engagement starts with a deep-dive discovery session to understand your current state, goals, and constraints. From there, we design a phased roadmap that delivers quick wins while building toward the larger vision.
-                </p>
-                <p>
-                  Whether you&apos;re starting from scratch or modernising an existing stack, our certified consultants bring the experience and methodology to make the transition smooth, fast, and measurably valuable.
-                </p>
-              </div>
+                  <h2
+                    className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
+                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  >
+                    Why it matters now
+                  </h2>
+                  <p>
+                    The convergence of cloud infrastructure, AI-driven automation, and real-time analytics has created a window of opportunity for enterprises willing to modernise. Those that act decisively position themselves ahead of competitors still relying on fragmented legacy systems.
+                  </p>
+                  <p>
+                    FlutterFlirt has guided dozens of organisations through this transformation—from initial discovery and architecture design through to go-live and continuous optimisation. Our approach is always system-first, business-outcome-second, because sustainable growth requires both.
+                  </p>
+
+                  <h2
+                    className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
+                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  >
+                    Key considerations
+                  </h2>
+
+                  <ul className="space-y-3">
+                    {[
+                      "Align platform selection with your 3–5 year business roadmap.",
+                      "Prioritise integration over point solutions to avoid data silos.",
+                      "Invest in change management alongside technical implementation.",
+                      "Establish clear KPIs before go-live to measure real ROI.",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#2563eb]" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h2
+                    className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
+                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  >
+                    The FlutterFlirt approach
+                  </h2>
+                  <p>
+                    We don&apos;t just implement software—we architect ecosystems. Every engagement starts with a deep-dive discovery session to understand your current state, goals, and constraints. From there, we design a phased roadmap that delivers quick wins while building toward the larger vision.
+                  </p>
+                  <p>
+                    Whether you&apos;re starting from scratch or modernising an existing stack, our certified consultants bring the experience and methodology to make the transition smooth, fast, and measurably valuable.
+                  </p>
+                </div>
+              )}
 
               {/* Author + share */}
               <div className="mt-12 flex flex-col gap-6 border-t border-[#edf3ff] pt-8 sm:flex-row sm:items-center sm:justify-between">
@@ -164,7 +260,7 @@ export default async function BlogPost({
                     <img src="/icon.svg" alt="FF" className="h-6 w-6 brightness-0 invert" />
                   </div>
                   <div>
-                    <p className="text-[14px] font-semibold text-[#17243a]">FlutterFlirt Editorial</p>
+                    <p className="text-[14px] font-semibold text-[#17243a]">{blog.author || "FlutterFlirt Team"}</p>
                     <p className="text-[12.5px] text-[#7184a0]">Consulting & Technology team</p>
                   </div>
                 </div>
@@ -189,14 +285,27 @@ export default async function BlogPost({
                 {/* Table of contents */}
                 <div className="rounded-[20px] border border-[#b8d8ca] bg-[#dcece7] p-6 shadow-[0_6px_24px_rgba(22,134,95,0.08)]">
                   <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#16865f]">In this article</p>
-                  <ul className="mt-4 space-y-3">
-                    {["Overview", "Why it matters now", "Key considerations", "The FlutterFlirt approach"].map((h) => (
-                      <li key={h} className="flex items-center gap-2 text-[13px] text-[#111827] transition-colors hover:text-[#16865f] cursor-pointer">
-                        <span className="h-px w-4 bg-[#8fc5ae]" />
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
+                  {blog.sections && blog.sections.length > 0 ? (
+                    <ul className="mt-4 space-y-3">
+                      {blog.sections.map((sec: any) => (
+                        <li key={sec.id || sec.slug}>
+                          <a href={`#${sec.slug}`} className="flex items-center gap-2 text-[13px] text-[#111827] transition-colors hover:text-[#16865f] cursor-pointer">
+                            <span className="h-px w-4 bg-[#8fc5ae]" />
+                            <span className="line-clamp-1">{sec.heading}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <ul className="mt-4 space-y-3">
+                      {["Overview", "Why it matters now", "Key considerations", "The FlutterFlirt approach"].map((h) => (
+                        <li key={h} className="flex items-center gap-2 text-[13px] text-[#111827] transition-colors hover:text-[#16865f] cursor-pointer">
+                          <span className="h-px w-4 bg-[#8fc5ae]" />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
 
                 {/* CTA */}
@@ -248,7 +357,12 @@ export default async function BlogPost({
                     className="group flex gap-4 rounded-[20px] border border-[#a3b8e5] bg-white p-5 shadow-[0_4px_20px_rgba(59,100,160,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(59,100,160,0.12)]"
                   >
                     <div className="relative h-[80px] w-[110px] flex-shrink-0 overflow-hidden rounded-[12px]">
-                      <Image src={post.image} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <Image
+                        src={post.image || post.cover_image || "/blog/blog-1.webp"}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
                     </div>
                     <div className="flex flex-col justify-center">
                       <span className="inline-flex items-center gap-1 rounded-full bg-[#edf3ff] px-2.5 py-0.5 text-[10.5px] font-semibold text-[#2563eb]">
@@ -257,7 +371,7 @@ export default async function BlogPost({
                       <p className="mt-1.5 text-[13.5px] font-semibold leading-tight text-[#17243a] line-clamp-2">
                         {post.title}
                       </p>
-                      <p className="mt-1 text-[11.5px] text-[#a3b8e5]">{post.readTime}</p>
+                      <p className="mt-1 text-[11.5px] text-[#a3b8e5]">{getReadTime(post)}</p>
                     </div>
                   </Link>
                 ))}
