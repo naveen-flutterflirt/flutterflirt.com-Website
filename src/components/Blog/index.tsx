@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { blogs } from "@/data/blog";
 import type { Blog as BlogPost } from "@/types/blog";
@@ -10,6 +10,17 @@ import { Search, X } from "lucide-react";
 
 export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+      setCurrentPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const getReadTime = (blog: any) => {
     if (blog.readTime) return blog.readTime;
@@ -53,14 +64,18 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
 
   const featured = displayBlogs.find((b) => b.featured) || displayBlogs[0];
 
-  const grid = displayBlogs.filter(
+  const filteredGrid = displayBlogs.filter(
     (b) =>
       b.slug !== featured?.slug &&
-      (searchQuery.trim() === "" ||
-        b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (b.excerpt && b.excerpt.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (b.category && b.category.toLowerCase().includes(searchQuery.toLowerCase())))
+      (debouncedQuery.trim() === "" ||
+        b.title.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+        (b.excerpt && b.excerpt.toLowerCase().includes(debouncedQuery.toLowerCase())) ||
+        (b.category && b.category.toLowerCase().includes(debouncedQuery.toLowerCase())))
   );
+
+  const totalPages = Math.ceil(filteredGrid.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const grid = filteredGrid.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <div className="min-h-screen bg-[#eef6ff]">
@@ -248,7 +263,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
             >
               {grid.length === 0 ? (
                 <p className="col-span-3 py-16 text-center text-[16px] text-[#a3b8e5]">
-                  No articles in this category yet.
+                  No articles found matching your query.
                 </p>
               ) : (
                 grid.map((blog, i) => (
@@ -306,6 +321,39 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
               )}
             </motion.div>
           </AnimatePresence>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-16 flex items-center justify-center gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="rounded-full border border-[#cbdff8] bg-white px-4 py-2 text-xs font-semibold text-[#2563eb] transition hover:bg-[#edf3ff] disabled:pointer-events-none disabled:opacity-40"
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`h-9 w-9 rounded-full border text-xs font-bold transition ${
+                    currentPage === page
+                      ? "border-[#2563eb] bg-[#2563eb] text-white shadow-md shadow-blue-500/20"
+                      : "border-[#cbdff8] bg-white text-[#647b9b] hover:border-[#2563eb] hover:text-[#2563eb]"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="rounded-full border border-[#cbdff8] bg-white px-4 py-2 text-xs font-semibold text-[#2563eb] transition hover:bg-[#edf3ff] disabled:pointer-events-none disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
