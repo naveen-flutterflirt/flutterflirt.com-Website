@@ -6,16 +6,8 @@ const locations = [
     country: "Karnataka, India",
   },
   {
-    city: "New York",
-    country: "U.S",
-  },
-  {
     city: "Bhubaneshwar",
     country: "Odisha, India",
-  },
-  {
-    city: "Kentucky",
-    country: "U.S",
   },
   {
     city: "Mumbai",
@@ -25,6 +17,14 @@ const locations = [
     city: "Bhopal",
     country: "Madhya Pradesh, India",
   },
+  {
+    city: "New York",
+    country: "U.S",
+  },
+  {
+    city: "Kentucky",
+    country: "U.S",
+  },
 ];
 
 export default function Footer() {
@@ -33,23 +33,23 @@ export default function Footer() {
       <div className="mx-auto max-w-[1800px]">
 
         {/* ================= MAIN FOOTER ================= */}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1fr_300px_260px]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_260px_180px]">
 
           {/* ================= BRAND ================= */}
-          <div className="flex flex-col">
+          <div className="flex min-h-[350px] flex-col">
 
             {/* Logo */}
             <Link href="/" className="inline-flex w-fit items-center">
               <div className="flex items-center gap-2">
-               <img src="logo-footer.png" width={167} height={111} alt="FlutterFlirt Logo" />
+                <img src="/logo-footer.png" width={167} height={111} alt="FlutterFlirt Logo" />
 
               </div>
             </Link>
 
             {/* Description */}
-            <div className="mt-16">
+            <div className="mt-4">
               <p className="text-[15px] font-light text-[#c3cad7] sm:text-[16px] md:text-[18px]">
-                At FlutterFlirt, we don't simply deliver software.
+                At FlutterFlirt, we don&apos;t simply deliver software.
               </p>
 
               <p
@@ -71,7 +71,7 @@ export default function Footer() {
             </div>
 
             {/* Legal */}
-            <div className="mt-8 pt-4">
+            <div className="mt-auto pt-8">
               <div className="flex flex-wrap gap-6">
                 <Link
                   href="/privacy"
@@ -119,18 +119,32 @@ export default function Footer() {
               Our Locations
             </h3>
 
-            <div className="mt-6 grid grid-cols-2 gap-x-8 gap-y-5">
-              {locations.map((location) => (
-                <div key={location.city}>
-                  <p className="text-[15px] font-normal text-white sm:text-[17px] md:text-[19px]">
-                    {location.city}
-                  </p>
+            <div className="mt-6 grid grid-cols-2 gap-x-8">
+              <div className="space-y-5">
+                {locations.slice(0, 4).map((location) => (
+                  <div key={location.city}>
+                    <p className="text-[16px] font-normal text-white">
+                      {location.city}
+                    </p>
+                    <p className="mt-1 text-[14px] text-[#71809a]">
+                      {location.country}
+                    </p>
+                  </div>
+                ))}
+              </div>
 
-                  <p className="mt-1 text-[14px] text-[#71809a]">
-                    {location.country}
-                  </p>
-                </div>
-              ))}
+              <div className="space-y-5">
+                {locations.slice(4).map((location) => (
+                  <div key={location.city}>
+                    <p className="text-[16px] font-normal text-white">
+                      {location.city}
+                    </p>
+                    <p className="mt-1 text-[14px] text-[#71809a]">
+                      {location.country}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -156,8 +170,7 @@ export default function Footer() {
                 flex
                 items-center
                 gap-2
-                break-all
-                text-[14px]
+                text-[16px]
                 text-white
                 transition-colors
                 hover:text-[#2773e6]
@@ -194,7 +207,7 @@ export default function Footer() {
                 flex
                 items-center
                 gap-2
-                text-[18px]
+                text-[16px]
                 text-white
                 transition-colors
                 hover:text-[#2773e6]
@@ -293,13 +306,13 @@ export default function Footer() {
 
         {/* ================= BOTTOM LINES ================= */}
         <div className="flex justify-end">
-        <div className="grid grid-cols-1 gap-1">
-        <span className="h-[4px] w-[100px] rounded-full bg-[#0879bb]" />
-          <span className="h-[4px] w-[100px] rounded-full bg-[#ef3d45]" />
-          <span className="h-[4px] w-[100px] rounded-full bg-[#168b5c]" /></div>
-        
-          </div>
-        
+          <div className="grid grid-cols-1 gap-1">
+            <span className="h-[4px] w-[100px] rounded-full bg-[#0879bb]" />
+            <span className="h-[4px] w-[100px] rounded-full bg-[#ef3d45]" />
+            <span className="h-[4px] w-[100px] rounded-full bg-[#168b5c]" /></div>
+
+        </div>
+
 
       </div>
     </footer>

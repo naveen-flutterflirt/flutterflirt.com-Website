@@ -187,12 +187,12 @@ export default async function BlogPost({
               <div className="sticky top-28 space-y-5">
 
                 {/* Table of contents */}
-                <div className="rounded-[20px] border border-[#a3b8e5] bg-white p-6 shadow-[0_6px_24px_rgba(59,100,160,0.07)]">
-                  <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#2563eb]">In this article</p>
+                <div className="rounded-[20px] border border-[#b8d8ca] bg-[#dcece7] p-6 shadow-[0_6px_24px_rgba(22,134,95,0.08)]">
+                  <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#16865f]">In this article</p>
                   <ul className="mt-4 space-y-3">
                     {["Overview", "Why it matters now", "Key considerations", "The FlutterFlirt approach"].map((h) => (
-                      <li key={h} className="flex items-center gap-2 text-[13px] text-[#7184a0] transition-colors hover:text-[#2563eb] cursor-pointer">
-                        <span className="h-px w-4 bg-[#a3b8e5]" />
+                      <li key={h} className="flex items-center gap-2 text-[13px] text-[#111827] transition-colors hover:text-[#16865f] cursor-pointer">
+                        <span className="h-px w-4 bg-[#8fc5ae]" />
                         {h}
                       </li>
                     ))}
@@ -203,8 +203,8 @@ export default async function BlogPost({
                 <div className="relative overflow-hidden rounded-[20px] border border-[#a3b8e5] bg-white p-6 shadow-[0_6px_24px_rgba(59,100,160,0.07)]">
                   <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#dceaff]" />
                   <p className="relative text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#2563eb]">Get started</p>
-                  <p className="relative mt-2 text-[15px] font-semibold leading-snug text-[#17243a]"
-                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  <p className="relative mt-2 text-[15px] font-light leading-snug tracking-[0.01em] text-[#17243a]"
+                    style={{ fontFamily: "var(--font-manrope), sans-serif" }}
                   >
                     Ready to transform your business?
                   </p>

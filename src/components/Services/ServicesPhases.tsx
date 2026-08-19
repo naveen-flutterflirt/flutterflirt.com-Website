@@ -56,26 +56,26 @@ export default function ServicesPhases() {
     offset: ["start start", "end end"],
   });
 
-  // Calculate the horizontal spread base
-  // Scatter cards from 0 to 0.85 for a smoother, slower animation
-  const x1 = useTransform(scrollYProgress, [0, 0.85], ["0%", "-160%"]);
-  const y1 = useTransform(scrollYProgress, [0, 0.85], ["0%", "0%"]);
-  const rotate1 = useTransform(scrollYProgress, [0, 0.85], ["-6deg", "0deg"]);
+  // The section is 300vh tall, which gives the desktop sequence two viewport-length scrolls.
+  // Complete the spread before the sequence ends so every card is visible in the viewport.
+  const x1 = useTransform(scrollYProgress, [0, 0.72], ["0%", "-170%"]);
+  const y1 = useTransform(scrollYProgress, [0, 0.72], ["0%", "0%"]);
+  const rotate1 = useTransform(scrollYProgress, [0, 0.72], ["-6deg", "0deg"]);
   
-  const x2 = useTransform(scrollYProgress, [0, 0.85], ["0%", "-53%"]);
-  const y2 = useTransform(scrollYProgress, [0, 0.85], ["2%", "0%"]);
-  const rotate2 = useTransform(scrollYProgress, [0, 0.85], ["-2deg", "0deg"]);
+  const x2 = useTransform(scrollYProgress, [0, 0.72], ["0%", "-55%"]);
+  const y2 = useTransform(scrollYProgress, [0, 0.72], ["2%", "0%"]);
+  const rotate2 = useTransform(scrollYProgress, [0, 0.72], ["-2deg", "0deg"]);
 
-  const x3 = useTransform(scrollYProgress, [0, 0.85], ["0%", "53%"]);
-  const y3 = useTransform(scrollYProgress, [0, 0.85], ["4%", "0%"]);
-  const rotate3 = useTransform(scrollYProgress, [0, 0.85], ["2deg", "0deg"]);
+  const x3 = useTransform(scrollYProgress, [0, 0.72], ["0%", "55%"]);
+  const y3 = useTransform(scrollYProgress, [0, 0.72], ["4%", "0%"]);
+  const rotate3 = useTransform(scrollYProgress, [0, 0.72], ["2deg", "0deg"]);
 
-  const x4 = useTransform(scrollYProgress, [0, 0.85], ["0%", "160%"]);
-  const y4 = useTransform(scrollYProgress, [0, 0.85], ["6%", "0%"]);
-  const rotate4 = useTransform(scrollYProgress, [0, 0.85], ["6deg", "0deg"]);
+  const x4 = useTransform(scrollYProgress, [0, 0.72], ["0%", "170%"]);
+  const y4 = useTransform(scrollYProgress, [0, 0.72], ["6%", "0%"]);
+  const rotate4 = useTransform(scrollYProgress, [0, 0.72], ["6deg", "0deg"]);
 
-  // Animated straight background line (drawn from 0 to 0.85 to follow the cards)
-  const lineWidth = useTransform(scrollYProgress, [0, 0.85], ["0%", "85%"]);
+  // Animated straight background line follows the cards as they open.
+  const lineWidth = useTransform(scrollYProgress, [0, 0.72], ["0%", "85%"]);
 
   const transforms = [
     { x: x1, y: y1, rotate: rotate1, zIndex: 40 },
@@ -188,7 +188,7 @@ export default function ServicesPhases() {
         </motion.div>
 
         {/* The Card Stack */}
-        <div className="relative w-full max-w-[1200px] mx-auto flex items-center justify-center top-12 lg:top-16 z-10">
+        <div className="relative w-full max-w-[1320px] mx-auto flex items-center justify-center top-12 lg:top-16 z-10">
           
           {/* Animated Straight Background Line */}
           <motion.div 
@@ -208,7 +208,7 @@ export default function ServicesPhases() {
                   rotate: transforms[index].rotate,
                   zIndex: transforms[index].zIndex,
                 }}
-                className={`absolute w-[280px] lg:w-[320px] aspect-[4/3] rounded-3xl p-8 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-2xl overflow-hidden [contain:paint] [clip-path:inset(0_round_24px)] ${
+                className={`absolute w-[250px] lg:w-[280px] aspect-[4/3] rounded-3xl p-6 lg:p-7 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-2xl overflow-hidden [contain:paint] [clip-path:inset(0_round_24px)] ${
                   isDark 
                     ? "bg-[#0c4a8e] border border-blue-400/30 text-white shadow-[0_15px_40px_rgba(12,74,142,0.35)]" 
                     : "bg-white border border-slate-100 text-[#0a0f18]"

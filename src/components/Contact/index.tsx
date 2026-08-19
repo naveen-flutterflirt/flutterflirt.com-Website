@@ -137,8 +137,8 @@ export default function Contact() {
             ].map((s) => (
               <div key={s.label} className="flex flex-col">
                 <span
-                  className="text-[2rem] font-bold leading-none tracking-[-0.04em] text-[#2563eb]"
-                  style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  className="text-[2.25rem] font-extrabold leading-none tracking-[-0.02em] text-[#2563eb]"
+                  style={{ fontFamily: "var(--font-manrope), sans-serif" }}
                 >
                   {s.val}
                 </span>

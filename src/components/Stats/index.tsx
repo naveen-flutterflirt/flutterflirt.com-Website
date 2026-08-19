@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { Headphones, Rocket, ShieldCheck, Users } from "lucide-react";
 import {
   slideFromLeft,
   slideFromRight,
@@ -348,186 +349,41 @@ export default function Stats() {
         <div className="mt-24 border-t border-dashed border-[#a9c9ff]" /></div>
 
         {/* ================= WHY BUSINESSES CHOOSE US ================= */}
-        <div
-        className="
-            mt-0
-            rounded-[22px]
-            bg-[#edf4fc]
-            px-8
-            py-10
-            md:px-10
-            lg:px-8
-        "
-        >
-        <div
-            className="
-            grid
-            items-center
-            gap-10
-            lg:grid-cols-[1.2fr_2fr]
-            lg:gap-8
-            "
-        >
+        <div className="mt-0 rounded-[22px] bg-[#edf4fc] px-5 py-8 sm:px-8 sm:py-10 md:px-10 lg:px-8">
+        <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_2fr] lg:items-center lg:gap-10">
             {/* Heading */}
             <div>
             <h2
-                className="
-                text-[28px]
-                font-semibold
-                leading-tight
-                text-[#1d2b42]
-                md:text-[30px]
-                "
+                className="text-[28px] font-bold leading-[1.12] text-[#1d2b42] md:text-[32px]"
             >
                 Why Businesses Choose FlutterFlirt
             </h2>
 
             <p
-                className="
-                mt-3
-                text-[17px]
-                leading-relaxed
-                text-[#7185a2]
-                "
+                className="mt-3 max-w-[320px] text-[15px] leading-relaxed text-[#7185a2] md:text-[17px]"
             >
                 Technology should accelerate business—not complicate it.
             </p>
             </div>
 
             {/* Stats */}
-            <div
-            className="
-                grid
-                grid-cols-2
-                gap-x-8
-                gap-y-8
-                md:grid-cols-4
-                lg:gap-x-6
-            "
-            >
-            {/* 100+ */}
-            <div className="flex items-center gap-3 rounded-[12px] p-3">
-                <div
-                className="
-                    flex
-                    h-12
-                    w-12
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-[12px]
-                    bg-[#203f69]
-                    text-white
-                "
-                >
-                <span className="text-xl">♧</span>
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-4 lg:gap-3">
+              {[
+              { value: "100+", label: <>Happy Clients<br />Across Industries</>, Icon: Users, iconBg: "bg-[#203f69]", valueColor: "text-[#111d32]" },
+              { value: "250+", label: <>Projects Delivered<br />Successfully</>, Icon: Rocket, iconBg: "bg-[#d83c2d]", valueColor: "text-[#ed3d3d]" },
+              { value: "24/7", label: <>Support & Monitoring<br />We are always here</>, Icon: Headphones, iconBg: "bg-[#16804f]", valueColor: "text-[#111d32]" },
+              { value: "100%", label: <>Commitment<br />To client success</>, Icon: ShieldCheck, iconBg: "bg-[#374151]", valueColor: "text-[#111d32]" },
+              ].map(({ value, label, Icon, iconBg, valueColor }) => (
+              <div key={value} className="flex min-h-[112px] flex-col rounded-[14px] border border-white/70 bg-white/75 p-3 shadow-[0_8px_24px_rgba(40,80,130,0.04)] transition-transform duration-200 hover:-translate-y-1 lg:h-[132px] lg:p-4">
+                <div className="flex items-center gap-2.5">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] ${iconBg} text-white`}>
+                  <Icon className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden="true" />
                 </div>
-
-                <div>
-                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
-                    100+
-                </h3>
-
-                <p className="mt-2 text-xs leading-[1.45] text-[#7185a2]">
-                    Happy Clients
-                    <br />
-                    Across Industries
-                </p>
+                <h3 className={`text-[26px] font-bold leading-none ${valueColor} sm:text-[30px]`}>{value}</h3>
                 </div>
-            </div>
-
-            {/* 250+ */}
-            <div className="flex items-center gap-3">
-                <div
-                className="
-                    flex
-                    h-12
-                    w-12
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-[12px]
-                    bg-[#d83c2d]
-                    text-white
-                "
-                >
-                <span className="text-xl">🚀</span>
-                </div>
-
-                <div>
-                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#ed3d3d]">
-                    250+
-                </h3>
-
-                <p className="mt-2 text-xs leading-[1.45] text-[#7185a2]">
-                    Projects Delivered
-                    <br />
-                    Successfully
-                </p>
-                </div>
-            </div>
-
-            {/* 24/7 */}
-            <div className="flex items-center gap-3">
-                <div
-                className="
-                    flex
-                    h-12
-                    w-12
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-[12px]
-                    bg-[#16804f]
-                    text-white
-                "
-                >
-                <span className="text-xl">◎</span>
-                </div>
-
-                <div>
-                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
-                    24/7
-                </h3>
-
-                <p className="mt-2 text-xs leading-[1.45] text-[#7185a2]">
-                    Support & Monitoring
-                    <br />
-                    We are always here
-                </p>
-                </div>
-            </div>
-
-            {/* 100% */}
-            <div className="flex items-center gap-3">
-                <div
-                className="
-                    flex
-                    h-12
-                    w-12
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-[12px]
-                    bg-[#374151]
-                    text-white
-                "
-                >
-                <span className="text-xl">♙</span>
-                </div>
-
-                <div>
-                <h3 className="text-[24px] sm:text-[30px] font-bold leading-none text-[#111d32]">
-                    100%
-                </h3>
-
-                <p className="mt-2 text-xs leading-[1.45] text-[#7185a2]">
-                    Commitment
-                    <br />
-                    To client success
-                </p>
-                </div>
-            </div>
+                <p className="mt-3 min-h-[34px] text-[11px] leading-[1.35] text-[#7185a2] sm:text-[13px]">{label}</p>
+              </div>
+              ))}
             </div>
         </div>
         </div>

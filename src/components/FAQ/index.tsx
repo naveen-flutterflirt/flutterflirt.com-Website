@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const faqs = [
   {
     question: "What is the typical implementation timeline?",
@@ -27,6 +31,8 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
     <section className="bg-[#edf5ff] px-8 py-8 md:px-10 lg:px-16">
       <div className="mx-auto max-w-[1600px]">
@@ -38,6 +44,12 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <details
               key={faq.question}
+              open={openIndex === index}
+              onToggle={(event) => {
+                if (event.currentTarget.open) {
+                  setOpenIndex(index);
+                }
+              }}
               className="group border-b border-dashed border-[#c3d8f7]"
             >
               <summary

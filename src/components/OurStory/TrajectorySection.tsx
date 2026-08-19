@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 
 interface MilestoneStep {
   id: number;
@@ -60,6 +60,8 @@ const STEPS: MilestoneStep[] = [
 ];
 
 export default function TrajectorySection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0.2 });
   const [activeStep, setActiveStep] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -69,19 +71,19 @@ export default function TrajectorySection() {
 
   // 1-second automatic slider interval
   useEffect(() => {
-    if (isHovered) return;
+    if (!isInView || isHovered) return;
     const timer = setInterval(() => {
       nextStep();
     }, 1000);
     return () => clearInterval(timer);
-  }, [nextStep, isHovered]);
+  }, [nextStep, isHovered, isInView]);
 
   const handleStepClick = (index: number) => {
     setActiveStep(index);
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#ecf4fe] via-[#f0f6fe] to-[#ffffff] pt-8 pb-20 sm:pt-12 sm:pb-32">
+    <section ref={sectionRef} className="relative w-full overflow-hidden bg-gradient-to-b from-[#ecf4fe] via-[#f0f6fe] to-[#ffffff] pt-8 pb-20 sm:pt-12 sm:pb-32">
       <div className="relative mx-auto max-w-[1440px] px-3 sm:px-6 md:px-10 lg:px-16">
         
         {/* Section Header with Thin Font */}
@@ -109,7 +111,7 @@ export default function TrajectorySection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeStep}
-                initial={{ opacity: 0, scale: 1.02 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.99 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}

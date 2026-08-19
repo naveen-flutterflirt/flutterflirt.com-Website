@@ -1,4 +1,64 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+
+const reviews = [
+  {
+    quote:
+      "FlutterFlirt helped Kaveri Egg Works bring our farm-to-pack operations into one connected D365 Business Central system. We gained complete traceability, clearer reporting, and a team that stayed with us through every stage of delivery.",
+    author: "Operations Team",
+    company: "Kaveri Egg Works • Manufacturing",
+    initials: "KE",
+    avatarClass: "bg-[#203f69]",
+  },
+  {
+    quote:
+      "C-Quick Serve gave us a faster, more reliable dispatch workflow. FlutterFlirt helped us connect order processing and delivery operations so our team could serve customers with confidence.",
+    author: "Operations Team",
+    company: "C-Quick Serve • Retail & QSR",
+    initials: "CQ",
+    avatarClass: "bg-[#d83c2d]",
+  },
+  {
+    quote:
+      "The team helped IIM Udaipur consolidate six systems into one connected student lifecycle. The result is a clearer experience for students and a more efficient operation for staff.",
+    author: "Technology Team",
+    company: "IIM Udaipur • Higher Education",
+    initials: "IU",
+    avatarClass: "bg-[#16804f]",
+  },
+  {
+    quote:
+      "FlutterFlirt modernized our warehouse operations with connected mobile workflows and dependable data. Our teams now move faster, with fewer delays and much better visibility.",
+    author: "Distribution Team",
+    company: "Distribution & 3PL",
+    initials: "D3",
+    avatarClass: "bg-[#374151]",
+  },
+  {
+    quote:
+      "The hospital chain project gave our teams a more unified view of billing and operations. FlutterFlirt delivered a dependable system that supports better decisions across every facility.",
+    author: "Healthcare Operations Team",
+    company: "Hospital Chain • Healthcare",
+    initials: "HC",
+    avatarClass: "bg-[#6d28d9]",
+  },
+];
+
 export default function Testimonials() {
+  const [activeReview, setActiveReview] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveReview((current) => (current + 1) % reviews.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const review = reviews[activeReview];
+
   return (
     <section className="bg-[#edf5ff] px-6 pb-20 pt-8 md:px-10 lg:px-16">
       <div className="mx-auto max-w-[1600px]">
@@ -20,6 +80,14 @@ export default function Testimonials() {
             lg:px-10
           "
         >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeReview}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
           {/* Testimonial content */}
           <div className="flex gap-5">
             {/* Quote mark */}
@@ -49,9 +117,7 @@ export default function Testimonials() {
                 lg:text-[22px]
               "
             >
-              FlutterFlirt simplified our operations and gave us a single
-              source of truth across ERP, CRM, and reporting. The team
-              delivered on time and stayed with us through every stage.
+              {review.quote}
             </p>
           </div>
 
@@ -60,20 +126,9 @@ export default function Testimonials() {
 
             {/* Avatar */}
             <div
-              className="
-                h-[68px]
-                w-[68px]
-                shrink-0
-                overflow-hidden
-                rounded-full
-                bg-[#d9dee5]
-              "
+              className={`flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-full text-[17px] font-bold tracking-wide text-white ${review.avatarClass}`}
             >
-              <img
-                src="avatar.webp"
-                alt="Ava Chen"
-                className="h-full w-full object-cover"
-              />
+              <span aria-label={`${review.company} avatar`}>{review.initials}</span>
             </div>
 
             {/* Author information */}
@@ -86,7 +141,7 @@ export default function Testimonials() {
                   text-[#1f2d43]
                 "
               >
-                Ava Chen
+                {review.author}
               </h3>
 
               <p
@@ -97,10 +152,12 @@ export default function Testimonials() {
                   text-[#7185a2]
                 "
               >
-                Director of Operations • Northwind
+                {review.company}
               </p>
             </div>
           </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

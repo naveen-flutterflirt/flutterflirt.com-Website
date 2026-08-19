@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Bigshot_One, Allura, Manrope } from "next/font/google";
+import { Bigshot_One, Allura, Manrope, Geist } from "next/font/google";
 import "./globals.css";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import ScrollToTop from "@/components/ScrollToTop";
+import { cn } from "@/lib/utils";
+
 
 const bigshotOne = Bigshot_One({
   variable: "--font-bigshot-one",
@@ -22,6 +24,11 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "FlutterFlirt",
   description: "Business growth landing page",
@@ -31,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${bigshotOne.variable} ${allura.variable} ${manrope.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", bigshotOne.variable, allura.variable, manrope.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col">
         <ScrollToTop />

@@ -5,10 +5,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { blogs } from "@/data/blog";
+import type { Blog as BlogPost } from "@/types/blog";
 
 const CATEGORIES = ["All", "Dynamics 365", "Power Platform", "Azure", "AI", "Development"];
 
-export default function Blog() {
+export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
   const [active, setActive] = useState("All");
 
   const featured = blogs.find((b) => b.featured)!;
