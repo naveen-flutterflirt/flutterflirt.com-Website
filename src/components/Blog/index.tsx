@@ -6,11 +6,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { blogs } from "@/data/blog";
 import type { Blog as BlogPost } from "@/types/blog";
-
-const CATEGORIES = ["All", "Dynamics 365", "Power Platform", "Azure", "AI", "Development"];
+import { Search, X } from "lucide-react";
 
 export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] }) {
-  const [active, setActive] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getReadTime = (blog: any) => {
     if (blog.readTime) return blog.readTime;
@@ -55,7 +54,12 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
   const featured = displayBlogs.find((b) => b.featured) || displayBlogs[0];
 
   const grid = displayBlogs.filter(
-    (b) => b.slug !== featured?.slug && (active === "All" || b.category === active)
+    (b) =>
+      b.slug !== featured?.slug &&
+      (searchQuery.trim() === "" ||
+        b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (b.excerpt && b.excerpt.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (b.category && b.category.toLowerCase().includes(searchQuery.toLowerCase())))
   );
 
   return (
@@ -208,27 +212,34 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
               </h2>
             </div>
 
-            <div className="flex flex-wrap gap-2 max-w-full overflow-hidden">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActive(cat)}
-                  className={`rounded-full border px-4 py-1.5 text-[13px] font-medium transition-all duration-200 ${
-                    active === cat
-                      ? "border-[#2563eb] bg-[#2563eb] text-white shadow-[0_2px_12px_rgba(37,99,235,0.28)]"
-                      : "border-[#a3b8e5] bg-white text-[#647b9b] hover:border-[#2563eb] hover:text-[#2563eb]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+            <div className="relative w-full max-w-md">
+              <input
+                type="text"
+                placeholder="Search insights by title, tag, or category..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-full border border-[#cbdff8] bg-white py-2.5 pl-5 pr-12 text-sm font-medium text-[#112239] shadow-sm transition-all focus:border-[#2563eb] focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20"
+              />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[#647b9b]">
+                {searchQuery ? (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="hover:text-[#112239]"
+                    type="button"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+              </div>
             </div>
           </div>
 
           {/* Cards */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={active}
+              key="insights-grid"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
