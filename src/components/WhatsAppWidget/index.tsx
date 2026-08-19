@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 
 // ── Config ──────────────────────────────────────────────────────────────────
@@ -151,10 +152,15 @@ function TypingDots() {
 
 // ── Main widget ─────────────────────────────────────────────────────────────
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
   const [open, setOpen]           = useState(false);
   const [step, setStep]           = useState(0);       // 0-2 = questions, 3 = done
   const [typing, setTyping]       = useState(false);
   const [answers, setAnswers]     = useState<Answer[]>([]);
+
+  if (pathname?.startsWith("/flutterflirt-admin-login")) {
+    return null;
+  }
   const [selectedOpt, setSelected]= useState<string | null>(null);
   const [labelVisible, setLabelVisible] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Blog } from "@/types/blog";
 import TiptapSectionEditor from "@/components/Blog/TiptapSectionEditor";
 import {
@@ -18,10 +18,13 @@ import {
   Loader2,
   X,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Menu,
+  LogOut,
+  MessageSquare
 } from "lucide-react";
 
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/Sidebar"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -44,6 +47,9 @@ interface FormSectionState {
 
 export default function BlogsPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   // Auth State
   const [token, setToken] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
@@ -385,6 +391,63 @@ export default function BlogsPage() {
         )}
 
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 w-full">
+        {/* Mobile Header Navbar */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#cbdff8] bg-white/95 px-6 py-4 backdrop-blur-md md:hidden">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb] text-white font-bold">
+              FF
+            </div>
+            <span className="font-serif font-bold text-[#142845]">Admin Panel</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-xl border border-[#cbe0fb] bg-white p-2 text-[#1e3b60] hover:bg-[#edf5ff] focus:outline-none"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </header>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="absolute left-0 right-0 top-[65px] z-50 border-b border-[#cbdff8] bg-white p-4 shadow-xl md:hidden animate-in slide-in-from-top-4 duration-200">
+            <nav className="flex flex-col gap-2">
+              <Link
+                href="/flutterflirt-admin-login"
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  pathname === "/flutterflirt-admin-login"
+                    ? "bg-[#edf3ff] text-[#2563eb]"
+                    : "text-[#526987] hover:bg-[#f0f5fc]"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <FileText className="h-4 w-4" />
+                <span>Blog Management</span>
+              </Link>
+              <Link
+                href="/flutterflirt-admin-login/queries"
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  pathname === "/flutterflirt-admin-login/queries"
+                    ? "bg-[#edf3ff] text-[#2563eb]"
+                    : "text-[#526987] hover:bg-[#f0f5fc]"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>Query Management</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-[#fef2f2]"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </button>
+            </nav>
+          </div>
+        )}
           {/* Header */}
           <div className="flex flex-col justify-between gap-4 border-b border-[#c9dff7] pb-6 md:flex-row md:items-center">
             <div>

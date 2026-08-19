@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/Sidebar"
-import { Loader2, MessageSquare, CheckCircle2, X, Send } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Loader2, MessageSquare, CheckCircle2, X, Send, Menu, LogOut, FileText } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -15,10 +16,30 @@ interface ContactQuery {
   companyName?: string;
   message: string;
   status: string;
+  createdAt?: string;
+  created_at?: string;
 }
+
+const formatQueryDate = (dateStr?: string) => {
+  if (!dateStr) return "-";
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
 export default function QueriesPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("flutterflirt_admin_token");
+    router.push("/flutterflirt-admin-login");
+  };
   const [token, setToken] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [queries, setQueries] = useState<ContactQuery[]>([]);
@@ -29,6 +50,7 @@ export default function QueriesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "replied" | "closed">("all");
 
   // Detail / Reply modal state
   const [selectedQuery, setSelectedQuery] = useState<ContactQuery | null>(null);
@@ -164,6 +186,63 @@ export default function QueriesPage() {
         )}
 
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 w-full">
+        {/* Mobile Header Navbar */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#cbdff8] bg-white/95 px-6 py-4 backdrop-blur-md md:hidden">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb] text-white font-bold">
+              FF
+            </div>
+            <span className="font-serif font-bold text-[#142845]">Admin Panel</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-xl border border-[#cbe0fb] bg-white p-2 text-[#1e3b60] hover:bg-[#edf5ff] focus:outline-none"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </header>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="absolute left-0 right-0 top-[65px] z-50 border-b border-[#cbdff8] bg-white p-4 shadow-xl md:hidden animate-in slide-in-from-top-4 duration-200">
+            <nav className="flex flex-col gap-2">
+              <Link
+                href="/flutterflirt-admin-login"
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  pathname === "/flutterflirt-admin-login"
+                    ? "bg-[#edf3ff] text-[#2563eb]"
+                    : "text-[#526987] hover:bg-[#f0f5fc]"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <FileText className="h-4 w-4" />
+                <span>Blog Management</span>
+              </Link>
+              <Link
+                href="/flutterflirt-admin-login/queries"
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  pathname === "/flutterflirt-admin-login/queries"
+                    ? "bg-[#edf3ff] text-[#2563eb]"
+                    : "text-[#526987] hover:bg-[#f0f5fc]"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>Query Management</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-[#fef2f2]"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </button>
+            </nav>
+          </div>
+        )}
           {/* Header */}
           <div className="flex flex-col justify-between gap-4 border-b border-[#c9dff7] pb-6 md:flex-row md:items-center">
             <div>
@@ -182,10 +261,39 @@ export default function QueriesPage() {
 
           <div className="mt-10">
             <div className="overflow-hidden rounded-[24px] border border-[#cbe0fb] bg-white shadow-[0_12px_40px_rgba(20,50,90,0.05)] w-full">
-              <div className="flex flex-col gap-4 border-b border-[#e5effb] bg-[#f8fbff] px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3b60]">
-                  All Queries ({queries.length})
-                </h2>
+              <div className="flex flex-col gap-4 border-b border-[#e5effb] bg-[#f8fbff] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3">
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3b60]">
+                    Contact Queries
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {(["all", "pending", "replied", "closed"] as const).map((status) => {
+                      const count = status === "all"
+                        ? queries.length
+                        : queries.filter((q) => q.status === status).length;
+                      const label = status.charAt(0).toUpperCase() + status.slice(1);
+                      const isSelected = statusFilter === status;
+
+                      return (
+                        <button
+                          key={status}
+                          type="button"
+                          onClick={() => {
+                            setStatusFilter(status);
+                            setPage(1);
+                          }}
+                          className={`rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all duration-200 ${
+                            isSelected
+                              ? "border-[#2563eb] bg-[#2563eb] text-white shadow-[0_2px_10px_rgba(37,99,235,0.2)]"
+                              : "border-[#cbdff8] bg-white text-[#526987] hover:border-[#2563eb] hover:text-[#2563eb]"
+                          }`}
+                        >
+                          {label} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
                 <div className="relative w-full max-w-sm">
                   <input
                     type="text"
@@ -212,12 +320,13 @@ export default function QueriesPage() {
                 </div>
               ) : (() => {
                 const filtered = queries.filter((q) => {
+                  const matchesStatus = statusFilter === "all" || q.status === statusFilter;
                   const queryStr = debouncedSearchQuery.toLowerCase();
-                  return (
+                  const matchesSearch =
                     q.name.toLowerCase().includes(queryStr) ||
                     q.email.toLowerCase().includes(queryStr) ||
-                    (q.companyName && q.companyName.toLowerCase().includes(queryStr))
-                  );
+                    (q.companyName && q.companyName.toLowerCase().includes(queryStr));
+                  return matchesStatus && matchesSearch;
                 });
                 const totalPages = Math.ceil(filtered.length / 10) || 1;
                 const paginated = filtered.slice((page - 1) * 10, page * 10);
@@ -240,6 +349,7 @@ export default function QueriesPage() {
                             <th className="px-6 py-4 font-bold">Name</th>
                             <th className="px-6 py-4 font-bold">Email</th>
                             <th className="px-6 py-4 font-bold">Company</th>
+                            <th className="px-6 py-4 font-bold">Date Received</th>
                             <th className="px-6 py-4 font-bold">Status</th>
                             <th className="px-6 py-4 font-bold">Actions</th>
                           </tr>
@@ -250,6 +360,9 @@ export default function QueriesPage() {
                               <td className="whitespace-nowrap px-6 py-4 font-medium text-[#112239]">{q.name}</td>
                               <td className="whitespace-nowrap px-6 py-4">{q.email}</td>
                               <td className="whitespace-nowrap px-6 py-4">{q.companyName || '-'}</td>
+                              <td className="whitespace-nowrap px-6 py-4 text-xs font-medium text-[#526987]">
+                                {formatQueryDate(q.createdAt || q.created_at)}
+                              </td>
                               <td className="whitespace-nowrap px-6 py-4">
                                 <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
                                   q.status === 'pending' ? 'bg-[#fef3c7] text-[#b45309]' :
@@ -346,7 +459,13 @@ export default function QueriesPage() {
                     <span className="block text-xs font-bold uppercase tracking-wider text-[#6984a6]">Company</span>
                     <span className="font-semibold text-[#1e3a60]">{selectedQuery.companyName || "-"}</span>
                   </div>
-                  <div className="col-span-2">
+                  <div>
+                    <span className="block text-xs font-bold uppercase tracking-wider text-[#6984a6]">Date Received</span>
+                    <span className="font-semibold text-[#1e3a60]">
+                      {formatQueryDate(selectedQuery.createdAt || selectedQuery.created_at)}
+                    </span>
+                  </div>
+                  <div>
                     <span className="block text-xs font-bold uppercase tracking-wider text-[#6984a6]">Status</span>
                     <span className={`inline-block rounded-full px-2.5 py-0.5 mt-1 text-[10px] font-bold uppercase tracking-wide ${
                       selectedQuery.status === 'pending' ? 'bg-[#fef3c7] text-[#b45309]' :
