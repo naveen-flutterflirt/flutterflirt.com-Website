@@ -65,6 +65,49 @@ export default function Contact() {
   const [services, setServices] = useState<string[]>([]);
   const [budget, setBudget] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const company = formData.get("company") as string;
+    const message = formData.get("message") as string;
+
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          companyName: company,
+          message: `${message}\n\n[Budget: ${budget || "Not Specified"}]\n[Interested Services: ${services.join(", ") || "None"}]`,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to submit query");
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Failed to send message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   function toggleService(id: string) {
     setServices((p) => p.includes(id) ? p.filter((s) => s !== id) : [...p, id]);
@@ -300,7 +343,7 @@ export default function Contact() {
                   </h2>
                   <p className="mt-1.5 text-[14.5px] text-[#7184a0]">Fill in the details and we&apos;ll be in touch shortly.</p>
 
-                  <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="mt-8 space-y-6">
+                  <form onSubmit={handleSubmit} className="mt-8 space-y-6">
 
                     <div className="grid gap-6 sm:grid-cols-2">
                       <InputField id="name"  label="Your name"     placeholder="Jane Smith"          required />
@@ -360,15 +403,21 @@ export default function Contact() {
                       placeholder="Tell us about your goals, current systems, and what success looks like for you..."
                     />
 
-                    <div className="flex items-center gap-4 pt-1">
-                      <button
-                        type="submit"
-                        className="group inline-flex items-center gap-3 rounded-full bg-[#2563eb] px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_4px_18px_rgba(37,99,235,0.32)] transition-all duration-300 hover:bg-[#1d4ed8] hover:shadow-[0_6px_24px_rgba(37,99,235,0.42)] active:scale-[0.98]"
-                      >
-                        Send message
-                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                      </button>
-                      <p className="text-[12.5px] text-[#a3b8e5]">We reply within 24h</p>
+                    <div className="flex flex-col gap-3 pt-1">
+                      <div className="flex items-center gap-4">
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="group inline-flex items-center gap-3 rounded-full bg-[#2563eb] px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_4px_18px_rgba(37,99,235,0.32)] transition-all duration-300 hover:bg-[#1d4ed8] hover:shadow-[0_6px_24px_rgba(37,99,235,0.42)] active:scale-[0.98] disabled:opacity-50"
+                        >
+                          {submitting ? "Sending..." : "Send message"}
+                          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        </button>
+                        <p className="text-[12.5px] text-[#a3b8e5]">We reply within 24h</p>
+                      </div>
+                      {error && (
+                        <p className="text-sm font-semibold text-red-500">{error}</p>
+                      )}
                     </div>
                   </form>
                 </motion.div>
