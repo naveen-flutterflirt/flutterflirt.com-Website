@@ -9,12 +9,40 @@ import type { Blog as BlogPost } from "@/types/blog";
 
 const CATEGORIES = ["All", "Dynamics 365", "Power Platform", "Azure", "AI", "Development"];
 
-export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
+export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] }) {
   const [active, setActive] = useState("All");
 
-  const featured = blogs.find((b) => b.featured)!;
-  const grid = blogs.filter(
-    (b) => !b.featured && (active === "All" || b.category === active)
+  const getReadTime = (blog: any) => {
+    if (blog.readTime) return blog.readTime;
+    let wordCount = 0;
+    blog.sections?.forEach((s: any) => {
+      wordCount += s.heading ? s.heading.split(/\s+/).length : 0;
+      if (s.content) {
+        const text = typeof s.content === "string" ? s.content : JSON.stringify(s.content);
+        wordCount += text.split(/\s+/).length;
+      }
+    });
+    const minutes = Math.max(1, Math.ceil(wordCount / 200));
+    return `${minutes} min read`;
+  };
+
+  const getFormattedDate = (blog: any) => {
+    if (blog.date) return blog.date;
+    const dateStr = blog.published_at || blog.publishedAt || blog.created_at;
+    if (!dateStr) return "Aug 19, 2026";
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const displayBlogs = initialBlogs.length > 0 ? initialBlogs : blogs;
+
+  const featured = displayBlogs.find((b) => b.featured) || displayBlogs[0];
+
+  const grid = displayBlogs.filter(
+    (b) => b.slug !== featured?.slug && (active === "All" || b.category === active)
   );
 
   return (
@@ -90,13 +118,15 @@ export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
             >
               {/* Image */}
               <div className="relative h-[280px] overflow-hidden lg:h-[480px]">
-                <Image
-                  src={featured.image}
-                  alt={featured.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  priority
-                />
+                {featured && (
+                  <Image
+                    src={featured.image || (featured as any).cover_image || "/blog/blog-1.webp"}
+                    alt={featured.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    priority
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 <span className="absolute left-5 top-5 rounded-full bg-[#2563eb] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-md">
                   Featured
@@ -125,9 +155,9 @@ export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
                 </p>
 
                 <div className="mt-5 flex items-center gap-2.5 text-[13px] text-[#a3b8e5]">
-                  <span>{featured.date}</span>
+                  <span>{getFormattedDate(featured)}</span>
                   <span className="h-1 w-1 rounded-full bg-[#a3b8e5]" />
-                  <span>{featured.readTime}</span>
+                  <span>{getReadTime(featured)}</span>
                 </div>
 
                 <div className="mt-8 inline-flex items-center gap-2.5">
@@ -208,7 +238,7 @@ export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
                     <Link href={`/blog/${blog.slug}`} className="flex flex-1 flex-col">
                       <div className="relative h-[210px] overflow-hidden">
                         <Image
-                          src={blog.image}
+                          src={blog.image || (blog as any).cover_image || "/blog/blog-1.webp"}
                           alt={blog.title}
                           fill
                           className="object-cover transition-transform duration-600 group-hover:scale-[1.05]"
@@ -222,7 +252,7 @@ export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
                             <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                             {blog.category}
                           </span>
-                          <span className="text-[12px] text-[#a3b8e5]">{blog.readTime}</span>
+                          <span className="text-[12px] text-[#a3b8e5]">{getReadTime(blog)}</span>
                         </div>
 
                         <h3
@@ -240,7 +270,7 @@ export default function Blog(_props: { initialBlogs?: BlogPost[] }) {
                         </p>
 
                         <div className="mt-5 flex items-center justify-between border-t border-[#edf3ff] pt-4">
-                          <span className="text-[12px] text-[#a3b8e5]">{blog.date}</span>
+                          <span className="text-[12px] text-[#a3b8e5]">{getFormattedDate(blog)}</span>
                           <span className="flex items-center gap-1 text-[13px] font-semibold text-[#2563eb] transition-all duration-200 group-hover:gap-2">
                             Read more →
                           </span>
