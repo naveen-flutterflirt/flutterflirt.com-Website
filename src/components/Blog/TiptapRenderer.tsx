@@ -4,6 +4,19 @@ import React, { useState } from "react";
 import { JSONContent } from "@/types/blog";
 import { Check, Copy } from "lucide-react";
 
+const formatS3Url = (url: string | null | undefined): string => {
+  if (!url) return "";
+  const regex = /^https:\/\/([a-zA-Z0-9.\-_]+)\.s3\.([a-z0-9\-]+)\.amazonaws\.com\/(.+)$/;
+  const match = url.match(regex);
+  if (match) {
+    const bucket = match[1];
+    const region = match[2];
+    const path = match[3];
+    return `https://s3.${region}.amazonaws.com/${bucket}/${path}`;
+  }
+  return url;
+};
+
 interface TiptapRendererProps {
   content: JSONContent | string | null | undefined;
   className?: string;
@@ -119,7 +132,7 @@ function RenderNode({ node }: { node: JSONContent }) {
       return (
         <figure className="my-8 overflow-hidden rounded-2xl border border-[#d6e5fb] bg-white p-2 shadow-sm">
           <img
-            src={node.attrs?.src || ""}
+            src={formatS3Url(node.attrs?.src)}
             alt={node.attrs?.alt || "Blog visual"}
             className="h-auto w-full rounded-xl object-cover"
           />

@@ -8,6 +8,19 @@ import TiptapRenderer from "@/components/Blog/TiptapRenderer";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+const formatS3Url = (url: string | null | undefined): string => {
+  if (!url) return "/blog/blog-1.webp";
+  const regex = /^https:\/\/([a-zA-Z0-9.\-_]+)\.s3\.([a-z0-9\-]+)\.amazonaws\.com\/(.+)$/;
+  const match = url.match(regex);
+  if (match) {
+    const bucket = match[1];
+    const region = match[2];
+    const path = match[3];
+    return `https://s3.${region}.amazonaws.com/${bucket}/${path}`;
+  }
+  return url;
+};
+
 export const dynamicParams = true; // allow dynamic paths that are not pre-rendered
 
 export async function generateStaticParams() {
@@ -162,7 +175,7 @@ export default async function BlogPost({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,#ffffff_0%,#edf6ff_50%,#dceaff_100%)]" />
           <div className="relative mx-auto max-w-[900px] overflow-hidden rounded-[24px] border border-[#a3b8e5] shadow-[0_20px_60px_rgba(59,100,160,0.12)]">
             <Image
-              src={blog.image || blog.cover_image || "/blog/blog-1.webp"}
+              src={formatS3Url(blog.image || blog.cover_image)}
               alt={blog.title}
               width={900}
               height={500}
@@ -358,7 +371,7 @@ export default async function BlogPost({
                   >
                     <div className="relative h-[80px] w-[110px] flex-shrink-0 overflow-hidden rounded-[12px]">
                       <Image
-                        src={post.image || post.cover_image || "/blog/blog-1.webp"}
+                        src={formatS3Url(post.image || post.cover_image)}
                         alt={post.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

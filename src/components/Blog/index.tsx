@@ -37,6 +37,19 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
     });
   };
 
+  const formatS3Url = (url: string | null | undefined): string => {
+    if (!url) return "/blog/blog-1.webp";
+    const regex = /^https:\/\/([a-zA-Z0-9.\-_]+)\.s3\.([a-z0-9\-]+)\.amazonaws\.com\/(.+)$/;
+    const match = url.match(regex);
+    if (match) {
+      const bucket = match[1];
+      const region = match[2];
+      const path = match[3];
+      return `https://s3.${region}.amazonaws.com/${bucket}/${path}`;
+    }
+    return url;
+  };
+
   const displayBlogs = initialBlogs.length > 0 ? initialBlogs : blogs;
 
   const featured = displayBlogs.find((b) => b.featured) || displayBlogs[0];
@@ -120,7 +133,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
               <div className="relative h-[280px] overflow-hidden lg:h-[480px]">
                 {featured && (
                   <Image
-                    src={featured.image || (featured as any).cover_image || "/blog/blog-1.webp"}
+                    src={formatS3Url(featured.image || (featured as any).cover_image)}
                     alt={featured.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
@@ -238,7 +251,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
                     <Link href={`/blog/${blog.slug}`} className="flex flex-1 flex-col">
                       <div className="relative h-[210px] overflow-hidden">
                         <Image
-                          src={blog.image || (blog as any).cover_image || "/blog/blog-1.webp"}
+                          src={formatS3Url(blog.image || (blog as any).cover_image)}
                           alt={blog.title}
                           fill
                           className="object-cover transition-transform duration-600 group-hover:scale-[1.05]"
