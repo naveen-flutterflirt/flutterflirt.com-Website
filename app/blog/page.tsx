@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogList from "@/components/Blog";
 import { Blog } from "@/types/blog";
+
+export const metadata: Metadata = {
+  title: "Insights on ERP, CRM, Automation, and Technology",
+  description:
+    "Explore practical insights from FlutterFlirt on Dynamics 365, Power Platform, Azure, software delivery, and enterprise technology.",
+  alternates: { canonical: "/blog" },
+};
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 

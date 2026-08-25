@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Enterprise Services & Technology Practices | FlutterFlirt",
   description:
     "Explore FlutterFlirt's comprehensive technology and consulting practices: Dynamics 365 ERP & CRM, Power Platform Automation, Azure Cloud Integrations, Custom React/Next.js Applications, and Resource Augmentation.",
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesPage() {

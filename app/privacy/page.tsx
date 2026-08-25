@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy | FlutterFlirt Enterprise Data Governance",
   description:
     "Learn how FlutterFlirt collects, uses, protects, and governs personal and enterprise data across our Dynamics 365, Azure, and digital transformation consulting practices.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
