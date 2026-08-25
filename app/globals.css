@@ -55,6 +55,7 @@
 html {
   background: var(--page-bg);
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -567,6 +568,49 @@ button, a, [role="button"], input[type="submit"], input[type="button"], input[ty
 
   .security-stack {
     align-items: stretch;
+  }
+}
+
+/* Keep mobile section rhythm compact without changing desktop layouts. */
+@media (max-width: 767px) {
+  section[class~="py-32"] {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  section[class~="py-28"] {
+    padding-top: 3.25rem !important;
+    padding-bottom: 3.25rem !important;
+  }
+
+  section[class~="py-24"] {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  section[class~="py-20"],
+  section[class~="pb-20"] {
+    padding-top: 2.75rem !important;
+    padding-bottom: 2.75rem !important;
+  }
+
+  section[class~="pb-24"],
+  section[class~="pb-28"] {
+    padding-bottom: 3.25rem !important;
+  }
+
+  section[class~="pt-36"] {
+    padding-top: 7rem !important;
+  }
+
+  .hero,
+  [class~="min-h-screen"] {
+    min-height: auto;
+  }
+
+  [class*="min-h-[500px]"],
+  [class*="min-h-[420px]"] {
+    min-height: 0;
   }
 }
 

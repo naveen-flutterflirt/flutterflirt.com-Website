@@ -239,7 +239,7 @@ export default function Contact() {
       {/* ══════════════════════════════════════
           MAIN — info + form
       ══════════════════════════════════════ */}
-      <section className="px-6 pb-20 md:px-12 lg:px-20">
+      <section id="contact" className="px-6 pb-20 md:px-12 lg:px-20">
         <div className="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[360px_1fr]">
 
           {/* ── LEFT INFO ── */}
@@ -283,9 +283,9 @@ export default function Contact() {
                       ),
                     },
                     {
-                      href: "tel:8926104326",
+                      href: "tel:+918926104326",
                       sublabel: "Call us",
-                      value: "+91 892 610 4326",
+                      value: "+91 8926 104 326",
                       icon: (
                         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -387,7 +387,7 @@ export default function Contact() {
                   </h2>
                   <p className="mt-1.5 text-[14.5px] text-[#7184a0]">Fill in the details and we&apos;ll be in touch shortly.</p>
 
-                  <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                  <form id="contact-form" onSubmit={handleSubmit} className="mt-8 space-y-6">
 
                     <div className="grid gap-6 sm:grid-cols-2">
                       <InputField id="name" label="Your name" placeholder="Jane Smith" required />
@@ -486,13 +486,13 @@ export default function Contact() {
             </p>
             <div className="relative mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
-                href="tel:8926104326"
+                href="tel:+918926104326"
                 className="inline-flex items-center gap-2.5 rounded-full bg-[#2563eb] px-8 py-3.5 text-[14px] font-semibold text-white shadow-[0_4px_18px_rgba(37,99,235,0.32)] transition-all hover:bg-[#1d4ed8] hover:shadow-[0_6px_24px_rgba(37,99,235,0.42)]"
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
-                +91 892 610 4326
+                +91 8926 104 326
               </a>
               <Link
                 href="/our-story"

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-const PHONE_NUMBER = "+919876543210";
+const PHONE_NUMBER = "+918926104326";
 
 const navLinks = [
   { name: "Services", href: "/services" },
@@ -29,6 +29,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
+  const scrollFrame = useRef<number | null>(null);
   // Will hold the pixel offset where the hero section ends
   const heroEndRef = useRef(HIDE_THRESHOLD_FALLBACK);
 
@@ -38,7 +39,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => {
+    const updateNavbar = () => {
       const currentY = window.scrollY;
       const delta = currentY - lastScrollY.current;
 
@@ -60,8 +61,23 @@ export default function Navbar() {
       }
     };
 
+    const onScroll = () => {
+      if (scrollFrame.current !== null) return;
+      scrollFrame.current = window.requestAnimationFrame(() => {
+        scrollFrame.current = null;
+        updateNavbar();
+      });
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    updateNavbar();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollFrame.current !== null) {
+        window.cancelAnimationFrame(scrollFrame.current);
+      }
+    };
   }, []);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 
 // ── Config ──────────────────────────────────────────────────────────────────
-const WHATSAPP_NUMBER = "919876543210"; // replace with your number (no + or spaces)
+const WHATSAPP_NUMBER = "918926104326"; // replace with your number (no + or spaces)
 const AGENT_NAME      = "FlutterFlirt Support";
 const AGENT_SUBTITLE  = "Typically replies in minutes";
 

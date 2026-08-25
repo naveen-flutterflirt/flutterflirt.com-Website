@@ -29,14 +29,14 @@ const locations = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0f172a] px-5 pb-5 pt-10 text-white sm:px-8 md:px-10 lg:px-10">
+    <footer className="bg-[#0f172a] px-5 pb-24 pt-8 text-white sm:px-8 sm:pb-5 sm:pt-10 md:px-10 lg:px-10">
       <div className="mx-auto max-w-[1800px]">
 
         {/* ================= MAIN FOOTER ================= */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_260px_180px]">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 sm:grid-cols-[minmax(0,1fr)_180px] lg:grid-cols-[minmax(0,2fr)_170px_260px_190px]">
 
           {/* ================= BRAND ================= */}
-          <div className="flex min-h-[350px] flex-col">
+          <div className="order-1 flex min-h-0 flex-col">
 
             {/* Logo */}
             <Link href="/" className="inline-flex w-fit items-center">
@@ -70,8 +70,21 @@ export default function Footer() {
               </p>
             </div>
 
+            <div className="mt-8 max-w-[430px] border-t border-white/10 pt-5 sm:mt-10">
+              <p className="text-[14px] font-medium text-[#c3cad7]">
+                Ready to build what&apos;s next?
+              </p>
+              <Link
+                href="/contact#contact-form"
+                className="mt-2 inline-flex items-center gap-2 text-[14px] font-semibold text-white transition-colors hover:text-[#2773e6]"
+              >
+                Start a conversation
+                <span aria-hidden="true">-&gt;</span>
+              </Link>
+            </div>
+
             {/* Legal */}
-            <div className="mt-auto pt-8">
+            <div className="mt-8 sm:mt-10">
               <div className="flex flex-wrap gap-6">
                 <Link
                   href="/privacy"
@@ -106,10 +119,10 @@ export default function Footer() {
           </div>
 
           {/* ================= LOCATIONS ================= */}
-          <div>
+          <div className="order-3 min-w-0 lg:order-3">
             <h3
               className="
-                text-[19px]
+                text-[18px]
                 font-normal
                 uppercase
                 tracking-[1px]
@@ -119,11 +132,11 @@ export default function Footer() {
               Our Locations
             </h3>
 
-            <div className="mt-6 grid grid-cols-2 gap-x-8">
-              <div className="space-y-5">
+            <div className="mt-4 grid grid-cols-2 gap-x-4 sm:mt-6 sm:gap-x-6">
+              <div className="min-w-0 space-y-4 sm:space-y-5">
                 {locations.slice(0, 4).map((location) => (
                   <div key={location.city}>
-                    <p className="text-[16px] font-normal text-white">
+                    <p className="text-[16px] font-normal text-white sm:whitespace-nowrap">
                       {location.city}
                     </p>
                     <p className="mt-1 text-[14px] text-[#71809a]">
@@ -133,10 +146,10 @@ export default function Footer() {
                 ))}
               </div>
 
-              <div className="space-y-5">
+              <div className="min-w-0 space-y-4 sm:space-y-5">
                 {locations.slice(4).map((location) => (
                   <div key={location.city}>
-                    <p className="text-[16px] font-normal text-white">
+                    <p className="text-[16px] font-normal text-white sm:whitespace-nowrap">
                       {location.city}
                     </p>
                     <p className="mt-1 text-[14px] text-[#71809a]">
@@ -148,8 +161,41 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* ================= QUICK LINKS ================= */}
+          <div className="order-2 lg:order-2">
+            <h3
+              className="
+                text-[19px]
+                font-normal
+                uppercase
+                tracking-[1px]
+                text-[#2773e6]
+              "
+            >
+              Quick Links
+            </h3>
+
+            <nav className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:mt-6 sm:flex sm:flex-col sm:gap-4" aria-label="Quick links">
+              {[
+                { label: "Home", href: "/" },
+                { label: "Services", href: "/services" },
+                { label: "Our Story", href: "/our-story" },
+                { label: "Blog", href: "/blog" },
+                { label: "Contact", href: "/contact" },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-[15px] text-[#c3cad7] transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
           {/* ================= CONTACT ================= */}
-          <div>
+          <div className="order-4">
             <h3
               className="
                 text-[19px]
@@ -201,7 +247,7 @@ export default function Footer() {
 
             {/* Phone */}
             <a
-              href="tel:8926104326"
+              href="tel:+918926104326"
               className="
                 mt-2
                 flex
@@ -237,7 +283,7 @@ export default function Footer() {
                 />
               </svg>
 
-              8926104326
+              +91 8926 104 326
             </a>
 
             {/* Socials */}
