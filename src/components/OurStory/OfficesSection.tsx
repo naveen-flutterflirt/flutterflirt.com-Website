@@ -48,7 +48,7 @@ const OFFICES: OfficeLocation[] = [
   },
   {
     id: "bhopal",
-    number: "06",
+    number: "04",
     numberColor: "blue",
     label: "GLOBAL OFFICE",
     city: "Bhopal",
@@ -58,7 +58,7 @@ const OFFICES: OfficeLocation[] = [
   },
   {
     id: "kentucky",
-    number: "04",
+    number: "05",
     numberColor: "coral",
     label: "GLOBAL OFFICE",
     city: "Kentucky",
@@ -68,7 +68,7 @@ const OFFICES: OfficeLocation[] = [
   },
   {
     id: "mumbai",
-    number: "05",
+    number: "06",
     numberColor: "blue",
     label: "GLOBAL OFFICE",
     city: "Mumbai",

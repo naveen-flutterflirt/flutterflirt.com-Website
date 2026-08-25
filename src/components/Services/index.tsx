@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const services = [
   {
-    icon: "icon-1.svg",
+    icon: "icon-2.svg",
     color: "#D4E7E1",
     text_color : "#1A7A4A",
     title: "Dynamics 365 Finance & Operations",

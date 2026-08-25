@@ -69,12 +69,12 @@ export default function TrajectorySection() {
     setActiveStep((prev) => (prev + 1) % STEPS.length);
   }, []);
 
-  // 1-second automatic slider interval
+  // Allow each two-second slide transition to complete before advancing.
   useEffect(() => {
     if (!isInView || isHovered) return;
     const timer = setInterval(() => {
       nextStep();
-    }, 1000);
+    }, 5000);
     return () => clearInterval(timer);
   }, [nextStep, isHovered, isInView]);
 
@@ -108,13 +108,13 @@ export default function TrajectorySection() {
         >
           {/* 1. Main Showcase Image Area */}
           <div className="relative w-full h-[220px] sm:h-[340px] md:h-[440px] lg:h-[500px] overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl shadow-[0_20px_60px_rgba(15,35,75,0.12)] border border-white/80 bg-slate-900">
-            <AnimatePresence mode="wait">
+            <AnimatePresence initial={false}>
               <motion.div
                 key={activeStep}
-                initial={false}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.99 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 h-full w-full"
               >
                 <Image

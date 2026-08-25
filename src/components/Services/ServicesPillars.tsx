@@ -26,7 +26,7 @@ const SERVICES_DATA: ServiceItem[] = [
     id: "d365-fo",
     pillar: "enterprise",
     pillarLabel: "Enterprise Systems",
-    icon: "/Icon-1.svg",
+    icon: "/Icon-2.svg",
     bgColor: "#D4E7E1",
     textColor: "#1A7A4A",
     title: "Dynamics 365 Finance & Operations",

@@ -6,8 +6,16 @@ const locations = [
     country: "Karnataka, India",
   },
   {
-    city: "Bhubaneshwar",
+    city: "New York",
+    country: "U.S",
+  },
+  {
+    city: "Bhubaneswar",
     country: "Odisha, India",
+  },
+  {
+    city: "Kentucky",
+    country: "U.S",
   },
   {
     city: "Mumbai",
@@ -16,14 +24,6 @@ const locations = [
   {
     city: "Bhopal",
     country: "Madhya Pradesh, India",
-  },
-  {
-    city: "New York",
-    country: "U.S",
-  },
-  {
-    city: "Kentucky",
-    country: "U.S",
   },
 ];
 
@@ -132,32 +132,17 @@ export default function Footer() {
               Our Locations
             </h3>
 
-            <div className="mt-4 grid grid-cols-2 gap-x-4 sm:mt-6 sm:gap-x-6">
-              <div className="min-w-0 space-y-4 sm:space-y-5">
-                {locations.slice(0, 4).map((location) => (
-                  <div key={location.city}>
-                    <p className="text-[16px] font-normal text-white sm:whitespace-nowrap">
-                      {location.city}
-                    </p>
-                    <p className="mt-1 text-[14px] text-[#71809a]">
-                      {location.country}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="min-w-0 space-y-4 sm:space-y-5">
-                {locations.slice(4).map((location) => (
-                  <div key={location.city}>
-                    <p className="text-[16px] font-normal text-white sm:whitespace-nowrap">
-                      {location.city}
-                    </p>
-                    <p className="mt-1 text-[14px] text-[#71809a]">
-                      {location.country}
-                    </p>
-                  </div>
-                ))}
-              </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4 sm:mt-6 sm:gap-x-6 sm:gap-y-5">
+              {locations.map((location) => (
+                <div key={location.city} className="min-w-0">
+                  <p className="text-[16px] font-normal text-white sm:whitespace-nowrap">
+                    {location.city}
+                  </p>
+                  <p className="mt-1 text-[14px] text-[#71809a]">
+                    {location.country}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
