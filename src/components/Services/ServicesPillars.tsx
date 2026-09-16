@@ -212,7 +212,7 @@ export default function ServicesPillars() {
           </p>
           <h2
             className="mt-2 text-[32px] sm:text-[42px] md:text-[50px] font-normal leading-[1.06] tracking-[-0.03em] text-[#0a0f18]"
-            style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+            style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
           >
             Eight Core Practices.{" "}
             <span

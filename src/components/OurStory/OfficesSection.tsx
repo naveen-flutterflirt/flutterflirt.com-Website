@@ -219,7 +219,7 @@ export default function OfficesSection() {
                 >
                   Six
                 </span>
-                <span style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}>
+                <span style={{ fontFamily: "var(--font-geist), Georgia, serif" }}>
                   Offices.
                 </span>
               </h2>

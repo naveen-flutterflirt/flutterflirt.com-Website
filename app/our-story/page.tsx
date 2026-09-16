@@ -13,7 +13,6 @@ export default function OurStoryPage() {
   return (
     <>
       <Navbar />
-
       <main
         className="relative min-h-[calc(100vh-86px)] w-full overflow-hidden pt-[86px] flex items-center"
         style={{

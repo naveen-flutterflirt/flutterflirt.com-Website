@@ -88,7 +88,7 @@ export default function PrivacyContent() {
           <h1
             className="text-[#0a0f18] tracking-[-0.035em] leading-[1.04]"
             style={{
-              fontFamily: "var(--font-bigshot-one), Georgia, serif",
+              fontFamily: "var(--font-geist), Georgia, serif",
               fontSize: "clamp(2.4rem, 4.4vw, 4.6rem)",
             }}
           >
@@ -176,7 +176,7 @@ export default function PrivacyContent() {
             <section id="overview" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 1. Overview & Commitment to Privacy
               </h2>
@@ -204,7 +204,7 @@ export default function PrivacyContent() {
             <section id="collection" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 2. Information We Collect
               </h2>
@@ -259,7 +259,7 @@ export default function PrivacyContent() {
             <section id="usage" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 3. How We Use Your Information
               </h2>
@@ -299,7 +299,7 @@ export default function PrivacyContent() {
             <section id="legal-basis" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 4. Legal Basis for Processing (GDPR / CCPA)
               </h2>
@@ -328,7 +328,7 @@ export default function PrivacyContent() {
             <section id="sharing" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 5. Information Sharing & Third-Party Disclosures
               </h2>
@@ -348,7 +348,7 @@ export default function PrivacyContent() {
             <section id="security" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 6. Security Controls & Data Retention
               </h2>
@@ -383,7 +383,7 @@ export default function PrivacyContent() {
             <section id="rights" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 7. Your Privacy Rights & Choices
               </h2>
@@ -411,7 +411,7 @@ export default function PrivacyContent() {
             <section id="cookies" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 8. Cookies & Telemetry Technologies
               </h2>
@@ -426,7 +426,7 @@ export default function PrivacyContent() {
             <section id="third-party" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 9. Third-Party Services & External Links
               </h2>
@@ -441,7 +441,7 @@ export default function PrivacyContent() {
             <section id="children" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 10. Children&apos;s Privacy
               </h2>
@@ -456,7 +456,7 @@ export default function PrivacyContent() {
             <section id="changes" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 11. Changes to This Policy
               </h2>
@@ -471,7 +471,7 @@ export default function PrivacyContent() {
             <section id="contact" className="scroll-mt-28">
               <h2
                 className="text-[24px] sm:text-[30px] font-bold text-[#0a0f18] tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
               >
                 12. Contact Information & Data Protection Officer
               </h2>

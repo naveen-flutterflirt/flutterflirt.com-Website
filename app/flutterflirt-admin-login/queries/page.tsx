@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/Sidebar"
 import { Loader2, MessageSquare, CheckCircle2, X, Send, Menu, LogOut, FileText } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import { PopupToast } from "@/components/ui/dialog-popup";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -45,6 +46,7 @@ export default function QueriesPage() {
   const [queries, setQueries] = useState<ContactQuery[]>([]);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<"success" | "error" | "info">("success");
 
   // Search & Pagination state
   const [searchQuery, setSearchQuery] = useState("");
@@ -75,9 +77,9 @@ export default function QueriesPage() {
     setIsInitializing(false);
   }, [router]);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg: string, type: "success" | "error" | "info" = "success") => {
+    setToastType(type);
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
   };
 
   const loadQueries = async () => {
@@ -124,17 +126,22 @@ export default function QueriesPage() {
           setSelectedQuery(prev => prev ? { ...prev, status } : null);
         }
       } else {
-        alert("Failed to update status");
+        showToast("Failed to update status", "error");
       }
     } catch (err) {
       console.error(err);
-      alert("Error updating status");
+      showToast("Error updating status", "error");
     }
   };
 
   const handleSendReply = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedQuery || !replyText.trim() || isSending) return;
+    if (!selectedQuery || isSending) return;
+
+    if (!replyText.trim() || replyText.trim().length < 10) {
+      showToast("Reply message must be at least 10 characters.", "error");
+      return;
+    }
 
     try {
       setIsSending(true);
@@ -153,37 +160,63 @@ export default function QueriesPage() {
         setSelectedQuery(null);
         loadQueries();
       } else {
-        alert(data.message || "Failed to send reply");
+        showToast(data.message || "Failed to send reply", "error");
       }
     } catch (err) {
       console.error(err);
-      alert("Error sending reply email");
+      showToast("Error sending reply email", "error");
     } finally {
       setIsSending(false);
     }
   };
 
-  if (isInitializing) {
+  if (isInitializing || (loading && queries.length === 0)) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#edf5ff]">
-        <Loader2 className="h-8 w-8 animate-spin text-[#2563eb]" />
-      </div>
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex min-h-screen w-full bg-[#edf5ff] text-[#142845] font-['Manrope',sans-serif]">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col min-w-0">
+            <header className="sticky top-0 z-30 flex items-center justify-between bg-white/75 backdrop-blur-md px-6 py-4">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger />
+                <div className="flex items-center gap-2.5 animate-pulse">
+                  <div className="w-10 h-10 bg-gray-200 rounded-2xl"></div>
+                  <div>
+                    <div className="h-5 w-48 bg-gray-200 rounded mb-1.5"></div>
+                    <div className="h-3 w-64 bg-gray-200 rounded hidden sm:block"></div>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+              <div className="bg-white rounded-3xl p-6 shadow-xs min-h-[500px] animate-pulse space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4 mb-6 border-b border-[#cbdff8] pb-4">
+                  <div className="h-10 w-full sm:w-64 bg-gray-100 rounded-xl"></div>
+                  <div className="h-10 w-full sm:w-32 bg-gray-100 rounded-xl sm:ml-auto"></div>
+                </div>
+                <div className="space-y-4">
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={i} className="h-24 bg-[#f8fbff] rounded-2xl"></div>
+                  ))}
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </SidebarProvider>
     );
   }
-
-  if (!token) return null; // Handled by useEffect redirect
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <main className="flex-1 min-h-screen bg-[#edf5ff] pb-20 pt-20 md:pt-15 w-full">
-        {/* Toast Alert */}
-        {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-[#0f172a] px-5 py-3 text-sm font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
+        {/* Custom Toast */}
+        <PopupToast
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setToastMessage(null)}
+        />
 
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 w-full">
         {/* Mobile Header Navbar */}

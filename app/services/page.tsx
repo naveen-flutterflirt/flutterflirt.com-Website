@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <Navbar />
+      <Navbar/>
 
       <main className="min-h-screen w-full bg-[#dfeaf3]">
         {/* 1. Hero Section with Interconnected Topology Visual */}

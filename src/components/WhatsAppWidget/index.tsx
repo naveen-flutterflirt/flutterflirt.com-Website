@@ -158,9 +158,6 @@ export default function WhatsAppWidget() {
   const [typing, setTyping]       = useState(false);
   const [answers, setAnswers]     = useState<Answer[]>([]);
 
-  if (pathname?.startsWith("/flutterflirt-admin-login")) {
-    return null;
-  }
   const [selectedOpt, setSelected]= useState<string | null>(null);
   const [labelVisible, setLabelVisible] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -175,6 +172,10 @@ export default function WhatsAppWidget() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [step, typing, answers]);
+
+  if (pathname?.startsWith("/flutterflirt-admin-login")) {
+    return null;
+  }
 
   function handleOption(option: string) {
     setSelected(option);

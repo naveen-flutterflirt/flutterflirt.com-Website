@@ -13,11 +13,11 @@ export default function QuoteSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
           animate={{ y: [-4, 4, -4] }}
-          // @ts-expect-error motion float
           transition={{
-            y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+            duration: 0.6,
+            ease: "easeOut",
+            y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
           }}
           className="relative mx-auto max-w-[860px] rounded-[24px] sm:rounded-[32px] md:rounded-[38px] border border-white/70 bg-white/40 px-6 py-8 sm:px-10 sm:py-10 md:px-14 md:py-11 text-center shadow-[0_16px_40px_rgba(100,140,200,0.1)] backdrop-blur-2xl"
         >
@@ -36,7 +36,7 @@ export default function QuoteSection() {
           {/* Quote Main Text (3 Balanced Lines, Crisp Sizing) */}
           <blockquote
             className="mx-auto max-w-[760px] text-[17px] sm:text-[20px] md:text-[23px] lg:text-[25px] font-normal leading-[1.42] sm:leading-[1.46] tracking-[-0.015em] text-[#0a0f18] select-none"
-            style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+            style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
           >
             <span className="block whitespace-normal md:whitespace-nowrap">
               &ldquo;We didn&apos;t set out to open five offices. We set out to

@@ -103,7 +103,6 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 leading-[0.92] tracking-[-0.04em] text-[#050505]"
             style={{
-              fontFamily: "var(--font-bigshot-one), Georgia, serif",
               fontSize: "clamp(2rem, 6vw, 6.5rem)",
             }}
           >
@@ -111,7 +110,6 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
             <br />
             <span
               style={{
-                fontFamily: "var(--font-allura), cursive",
                 color: "#244572",
                 fontSize: "1.08em",
                 letterSpacing: "normal",
@@ -175,7 +173,6 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
                 <h2
                   className="mt-5 leading-[1.05] tracking-[-0.03em] text-[#17243a]"
                   style={{
-                    fontFamily: "var(--font-bigshot-one), Georgia, serif",
                     fontSize: "clamp(1.55rem, 2.4vw, 2.6rem)",
                   }}
                 >
@@ -219,7 +216,6 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
               <h2
                 className="mt-1 tracking-[-0.03em] text-[#17243a]"
                 style={{
-                  fontFamily: "var(--font-bigshot-one), Georgia, serif",
                   fontSize: "clamp(1.6rem, 2vw, 2.2rem)",
                 }}
               >
@@ -297,7 +293,6 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
                         <h3
                           className="mt-4 flex-1 leading-[1.15] tracking-[-0.02em] text-[#17243a]"
                           style={{
-                            fontFamily: "var(--font-bigshot-one), Georgia, serif",
                             fontSize: "clamp(1.1rem, 1.4vw, 1.35rem)",
                           }}
                         >
@@ -379,12 +374,11 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
             <h2
               className="relative mt-3 tracking-[-0.03em] text-[#17243a]"
               style={{
-                fontFamily: "var(--font-bigshot-one), Georgia, serif",
                 fontSize: "clamp(1.8rem, 3vw, 3.2rem)",
               }}
             >
               Ready to transform your{" "}
-              <span style={{ fontFamily: "var(--font-allura), cursive", color: "#F14F57", fontSize: "1.15em" }}>
+              <span style={{ color: "#F14F57", fontSize: "1.15em" }}>
                 business?
               </span>
             </h2>

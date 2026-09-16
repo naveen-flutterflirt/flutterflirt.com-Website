@@ -72,7 +72,7 @@ export default function ServicesHero() {
             <h1
               className="text-[#0a0f18] tracking-[-0.035em] leading-[1.02]"
               style={{
-                fontFamily: "var(--font-bigshot-one), Georgia, serif",
+                fontFamily: "var(--font-geist), Georgia, serif",
                 fontSize: "clamp(2.4rem, 4.5vw, 4.8rem)",
               }}
             >

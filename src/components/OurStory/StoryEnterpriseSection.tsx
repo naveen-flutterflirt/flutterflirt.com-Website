@@ -82,7 +82,7 @@ export default function StoryEnterpriseSection() {
             {/* Headline */}
             <h2
               className="text-center text-[23px] sm:text-[27px] md:text-[30px] font-normal leading-[1.2] tracking-[-0.03em] text-[#0a0f18]"
-              style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+              style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
             >
               It started as{" "}
               <span

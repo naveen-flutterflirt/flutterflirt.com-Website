@@ -76,7 +76,7 @@ export default function ProcessMethodology() {
           </p>
           <h2
             className="mt-2 text-[32px] sm:text-[42px] md:text-[48px] font-normal leading-[1.08] tracking-[-0.03em] text-[#0a0f18]"
-            style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+            style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
           >
             How We Deliver{" "}
             <span

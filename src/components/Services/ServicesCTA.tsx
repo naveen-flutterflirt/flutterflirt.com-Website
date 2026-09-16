@@ -32,7 +32,7 @@ export default function ServicesCTA() {
           <h2
             className="mx-auto max-w-[800px] font-light text-[#0a0f18] tracking-[-0.02em] leading-[1.1]"
             style={{
-              fontFamily: "var(--font-bigshot-one), Georgia, serif",
+              fontFamily: "var(--font-geist), Georgia, serif",
               fontSize: "clamp(1.8rem, 3.5vw, 3.2rem)",
             }}
           >

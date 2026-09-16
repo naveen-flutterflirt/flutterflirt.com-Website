@@ -29,7 +29,7 @@ export default function LoginPage() {
     const savedToken = sessionStorage.getItem("flutterflirt_admin_token");
     if (savedToken) {
       setToken(savedToken);
-      router.push("/flutterflirt-admin-login/blogs");
+      router.push("/flutterflirt-admin-login/dashboard");
     }
     setIsInitializing(false);
   }, [router]);
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
       sessionStorage.setItem("flutterflirt_admin_token", data.token);
       setToken(data.token);
-      router.push("/flutterflirt-admin-login/blogs");
+      router.push("/flutterflirt-admin-login/dashboard");
     } catch (err: any) {
       setLoginError(err.message);
     } finally {

@@ -157,7 +157,7 @@ export default function ServicesTrustStats() {
           </p>
           <h2
             className="mt-2 text-[30px] sm:text-[38px] md:text-[44px] font-normal leading-[1.12] tracking-[-0.02em] text-[#0a0f18]"
-            style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+            style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
           >
             Engineered For Impact. Proven by{" "}
             <span

@@ -26,6 +26,7 @@ import {
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/Sidebar"
+import { PopupModal, PopupToast } from "@/components/ui/dialog-popup";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -97,7 +98,13 @@ export default function BlogsPage() {
   const [saving, setSaving] = useState(false);
   const [savingAction, setSavingAction] = useState<"draft" | "published" | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<"success" | "error" | "info">("success");
   const [isUploadingCover, setIsUploadingCover] = useState(false);
+
+  // Confirm delete modal
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [isDeletingBlog, setIsDeletingBlog] = useState(false);
 
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -122,7 +129,7 @@ export default function BlogsPage() {
       setCoverImage(data.imageUrl);
       showToast("Cover image uploaded successfully!");
     } catch (err: any) {
-      alert(err.message);
+      showToast(err.message, "error");
     } finally {
       setIsUploadingCover(false);
     }
@@ -138,9 +145,9 @@ export default function BlogsPage() {
     setIsInitializing(false);
   }, [router]);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg: string, type: "success" | "error" | "info" = "success") => {
+    setToastType(type);
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
   };
 
   const loadBlogs = async () => {
@@ -225,9 +232,15 @@ export default function BlogsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this blog post?")) return;
+    setDeleteTargetId(id);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDeleteBlog = async () => {
+    if (!deleteTargetId) return;
+    setIsDeletingBlog(true);
     try {
-      const res = await fetch(`${API_URL}/api/admin/blogs/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/blogs/${deleteTargetId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -236,11 +249,15 @@ export default function BlogsPage() {
         loadBlogs();
       } else {
         if (res.status === 401) handleLogout();
-        else alert("Failed to delete blog");
+        else showToast("Failed to delete blog", "error");
       }
     } catch (err) {
       console.error(err);
-      alert("Error deleting blog");
+      showToast("Error deleting blog", "error");
+    } finally {
+      setIsDeletingBlog(false);
+      setDeleteModalOpen(false);
+      setDeleteTargetId(null);
     }
   };
 
@@ -259,7 +276,7 @@ export default function BlogsPage() {
 
   const handleRemoveSection = (index: number) => {
     if (sections.length <= 1) {
-      alert("A blog must have at least one section.");
+      showToast("A blog must have at least one section.", "info");
       return;
     }
     setSections((prev) => prev.filter((_, i) => i !== index));
@@ -306,8 +323,29 @@ export default function BlogsPage() {
   const handleSubmit = async (submitStatus: "draft" | "published") => {
     if (saving) return;
 
-    if (!title.trim()) {
-      alert("Please enter a blog title");
+    if (!title.trim() || title.trim().length < 5 || title.trim().length > 150) {
+      showToast("Blog title must be between 5 and 150 characters.", "error");
+      return;
+    }
+
+    if (category.trim() && (category.trim().length < 3 || category.trim().length > 50)) {
+      showToast("Category must be between 3 and 50 characters if provided.", "error");
+      return;
+    }
+
+    if (author.trim() && (author.trim().length < 3 || author.trim().length > 50)) {
+      showToast("Author must be between 3 and 50 characters if provided.", "error");
+      return;
+    }
+
+    if (coverImage.trim() && !/^https?:\/\/.+\..+/.test(coverImage.trim())) {
+      showToast("Please provide a valid URL for the cover image.", "error");
+      return;
+    }
+
+    const emptySectionHeadings = sections.filter(sec => !sec.heading.trim());
+    if (emptySectionHeadings.length > 0) {
+      showToast("All sections must have a heading.", "error");
       return;
     }
 
@@ -361,18 +399,47 @@ export default function BlogsPage() {
       setActiveTab("list");
       loadBlogs();
     } catch (err: any) {
-      alert(err.message || "Error saving blog");
+      showToast(err.message || "Error saving blog", "error");
     } finally {
       setSaving(false);
       setSavingAction(null);
     }
   };
 
-  if (isInitializing) {
+  if (isInitializing || (loading && blogs.length === 0 && activeTab === "list")) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#edf5ff]">
-        <Loader2 className="h-8 w-8 animate-spin text-[#2563eb]" />
-      </div>
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex min-h-screen w-full bg-[#edf5ff] text-[#142845] font-['Manrope',sans-serif]">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col min-w-0">
+            <header className="sticky top-0 z-30 flex items-center justify-between bg-white/75 backdrop-blur-md px-6 py-4">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger />
+                <div className="flex items-center gap-2.5 animate-pulse">
+                  <div className="w-10 h-10 bg-gray-200 rounded-2xl"></div>
+                  <div>
+                    <div className="h-5 w-48 bg-gray-200 rounded mb-1.5"></div>
+                    <div className="h-3 w-64 bg-gray-200 rounded hidden sm:block"></div>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+              <div className="bg-white rounded-3xl p-6 shadow-xs min-h-[500px] animate-pulse space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4 mb-6 border-b border-[#cbdff8] pb-4">
+                  <div className="h-10 w-full sm:w-64 bg-gray-100 rounded-xl"></div>
+                  <div className="h-10 w-full sm:w-32 bg-gray-100 rounded-xl sm:ml-auto"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[1, 2, 3, 4, 5, 6].map(i => (
+                    <div key={i} className="h-80 bg-[#f8fbff] rounded-3xl"></div>
+                  ))}
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </SidebarProvider>
     );
   }
 
@@ -382,13 +449,24 @@ export default function BlogsPage() {
     <SidebarProvider>
       <AppSidebar />
       <main className="flex-1 min-h-screen bg-[#edf5ff] pb-20 pt-20 md:pt-15 w-full">
-        {/* Toast Alert */}
-        {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl bg-[#0f172a] px-5 py-3 text-sm font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
+        {/* Custom Toast */}
+        <PopupToast
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setToastMessage(null)}
+        />
+
+        {/* Confirm Delete Modal */}
+        <PopupModal
+          isOpen={deleteModalOpen}
+          onClose={() => { setDeleteModalOpen(false); setDeleteTargetId(null); }}
+          onConfirm={confirmDeleteBlog}
+          title="Delete Blog Post"
+          description="Are you sure you want to permanently delete this blog post? This action cannot be undone."
+          type="danger"
+          confirmText="Delete Blog"
+          loading={isDeletingBlog}
+        />
 
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 w-full">
         {/* Mobile Header Navbar */}

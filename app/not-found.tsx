@@ -30,7 +30,7 @@ export default function NotFound() {
             <h1
               className="mt-6 max-w-[650px] text-[#101d32]"
               style={{
-                fontFamily: "var(--font-bigshot-one), Georgia, serif",
+                fontFamily: "var(--font-geist), Georgia, serif",
                 fontSize: "clamp(3.25rem, 6.5vw, 6.5rem)",
                 lineHeight: 0.9,
               }}
@@ -91,7 +91,7 @@ export default function NotFound() {
                 <div className="absolute h-28 w-28 rounded-full border border-[#dcece7]" />
                 <span
                   className="relative text-[5.5rem] leading-none text-[#17243a]"
-                  style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                  style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
                 >
                   404
                 </span>

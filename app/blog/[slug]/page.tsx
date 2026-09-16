@@ -152,7 +152,7 @@ export default async function BlogPost({
             <h1
               className="mt-6 leading-[1.02] tracking-[-0.04em] text-[#17243a]"
               style={{
-                fontFamily: "var(--font-bigshot-one), Georgia, serif",
+                fontFamily: "var(--font-geist), Georgia, serif",
                 fontSize: "clamp(2rem, 4.5vw, 4rem)",
               }}
             >
@@ -201,7 +201,7 @@ export default async function BlogPost({
                       {sec.heading && (
                         <h2
                           className="text-[26px] font-bold tracking-tight text-[#142845] md:text-[30px]"
-                          style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                          style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
                         >
                           {sec.heading}
                         </h2>
@@ -219,7 +219,7 @@ export default async function BlogPost({
 
                   <h2
                     className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                    style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
                   >
                     Why it matters now
                   </h2>
@@ -232,7 +232,7 @@ export default async function BlogPost({
 
                   <h2
                     className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                    style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
                   >
                     Key considerations
                   </h2>
@@ -253,7 +253,7 @@ export default async function BlogPost({
 
                   <h2
                     className="mt-8 text-[24px] tracking-[-0.02em] text-[#17243a]"
-                    style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}
+                    style={{ fontFamily: "var(--font-geist), Georgia, serif" }}
                   >
                     The FlutterFlirt approach
                   </h2>
@@ -355,7 +355,7 @@ export default async function BlogPost({
               <h2
                 className="mt-1 tracking-[-0.03em] text-[#17243a]"
                 style={{
-                  fontFamily: "var(--font-bigshot-one), Georgia, serif",
+                  fontFamily: "var(--font-geist), Georgia, serif",
                   fontSize: "clamp(1.6rem, 2vw, 2.2rem)",
                 }}
               >

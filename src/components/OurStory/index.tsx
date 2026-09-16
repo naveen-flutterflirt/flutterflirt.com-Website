@@ -278,7 +278,7 @@ export default function OurStory() {
               {/* Bordered headline block — matches reference */}
               <div className="inline-block rounded-[4px] border-[3px] border-[#e040fb] px-4 py-4 mb-8">
                 <h1
-                  className="font-[family-name:var(--font-bigshot-one)] text-[46px] leading-[0.95] tracking-[-0.03em] text-[#0f1723] md:text-[56px] lg:text-[62px]"
+                  className="font-[family-name:var(--font-geist)] text-[46px] leading-[0.95] tracking-[-0.03em] text-[#0f1723] md:text-[56px] lg:text-[62px]"
                 >
                   Every System We&apos;ve<br />Built Started With One
                 </h1>
@@ -311,7 +311,7 @@ export default function OurStory() {
                   className="rounded-[20px] border border-[#dce7f4] bg-white/80 p-7 shadow-[0_8px_30px_rgba(40,80,130,0.06)] backdrop-blur-sm"
                 >
                   <p
-                    className="font-[family-name:var(--font-bigshot-one)] text-[44px] leading-none tracking-[-0.04em]"
+                    className="font-[family-name:var(--font-geist)] text-[44px] leading-none tracking-[-0.04em]"
                     style={{ color: stat.color }}
                   >
                     {stat.value}
@@ -630,7 +630,7 @@ export default function OurStory() {
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-[#2563eb]">
               Ready to start?
             </p>
-            <h2 className="max-w-[680px] font-[family-name:var(--font-bigshot-one)] text-[38px] leading-[1.05] tracking-[-0.03em] text-white md:text-[52px]">
+            <h2 className="max-w-[680px] font-[family-name:var(--font-geist)] text-[38px] leading-[1.05] tracking-[-0.03em] text-white md:text-[52px]">
               Let&apos;s build something that matters.
             </h2>
             <p className="mt-5 max-w-[480px] text-[16px] leading-[1.65] text-[#7185a2]">

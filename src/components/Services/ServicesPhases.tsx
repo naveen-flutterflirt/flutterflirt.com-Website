@@ -97,7 +97,7 @@ export default function ServicesPhases() {
           <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#2563EB] mb-2">
             DELIVERY METHODOLOGY
           </p>
-          <h2 className="text-[32px] font-normal leading-[1.1] text-[#0a0f18]" style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}>
+          <h2 className="text-[32px] font-normal leading-[1.1] text-[#0a0f18]" style={{ fontFamily: "var(--font-geist), Georgia, serif" }}>
             The 4 Phases of Value Realization
           </h2>
         </div>
@@ -179,7 +179,7 @@ export default function ServicesPhases() {
           <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-[#2563EB] mb-3">
             DELIVERY METHODOLOGY
           </p>
-          <h2 className="text-[38px] lg:text-[46px] font-normal leading-[1.1] text-[#0a0f18]" style={{ fontFamily: "var(--font-bigshot-one), Georgia, serif" }}>
+          <h2 className="text-[38px] lg:text-[46px] font-normal leading-[1.1] text-[#0a0f18]" style={{ fontFamily: "var(--font-geist), Georgia, serif" }}>
             The 4 Phases of Value Realization
           </h2>
           <p className="mt-4 text-[16px] text-slate-500 max-w-[500px] mx-auto">
