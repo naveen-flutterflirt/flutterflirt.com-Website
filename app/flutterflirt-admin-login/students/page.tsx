@@ -66,15 +66,7 @@ export default function AdminStudentsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "unlocked" | "pending">("all");
 
-  // Add Student Modal State
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formName, setFormName] = useState("");
-  const [formEmail, setFormEmail] = useState("");
-  const [formPassword, setFormPassword] = useState("");
-  const [formIsKitUnlocked, setFormIsKitUnlocked] = useState(false);
-  const [formKitCode, setFormKitCode] = useState("");
-  const [formLoading, setFormLoading] = useState(false);
-  const [formError, setFormError] = useState("");
+
 
   // Toast feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -200,49 +192,7 @@ export default function AdminStudentsPage() {
     }
   };
 
-  // Create Student
-  const handleCreateStudent = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!token) return;
 
-    setFormError("");
-    setFormLoading(true);
-
-    try {
-      const res = await fetch(`${API_URL}/api/admin/iot/students`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: formName.trim(),
-          email: formEmail.trim(),
-          password: formPassword,
-          is_kit_unlocked: formIsKitUnlocked,
-          kit_code: formKitCode.trim(),
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to create student.");
-      }
-
-      showToast("Student account created successfully.");
-      setIsModalOpen(false);
-      setFormName("");
-      setFormEmail("");
-      setFormPassword("");
-      setFormIsKitUnlocked(false);
-      setFormKitCode("");
-      fetchStudents(token, search, statusFilter);
-    } catch (err: any) {
-      setFormError(err.message || "Error creating student.");
-    } finally {
-      setFormLoading(false);
-    }
-  };
 
   if (isInitializing || (loading && students.length === 0)) {
     return (
@@ -310,14 +260,7 @@ export default function AdminStudentsPage() {
                 <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
               </button>
 
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="text-xs font-bold py-2 px-4 rounded-2xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white shadow-xs flex items-center gap-1.5 transition"
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Student</span>
-              </button>
+
             </div>
           </header>
 
@@ -580,117 +523,6 @@ export default function AdminStudentsPage() {
           </main>
         </div>
       </div>
-
-      {/* Add Student Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#142845]/40 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="relative w-full max-w-md rounded-3xl bg-white p-6 sm:p-7 shadow-2xl">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute right-4 top-4 rounded-xl p-1 text-[#8ba2bd] hover:text-[#142845]"
-            >
-              ✕
-            </button>
-
-            <div className="text-center mb-5">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf5ff] text-[#2563eb] mb-3 shadow-xs">
-                <Users className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-bold text-[#142845]">Add Student Account</h3>
-              <p className="text-xs text-[#617b9b] mt-0.5">Manually provision a student profile for IoT Labs</p>
-            </div>
-
-            {formError && (
-              <div className="mb-4 rounded-2xl bg-[#fef2f2] p-3 text-xs text-[#dc2626] font-medium flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleCreateStudent} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-[#142845] mb-1.5">Student Full Name *</label>
-                <input
-                  type="text"
-                  required
-                  minLength={3}
-                  maxLength={50}
-                  pattern="^[a-zA-Z\s]+$"
-                  title="Only letters and spaces are allowed"
-                  placeholder="Aarav Sharma"
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="w-full rounded-2xl bg-[#f8fbff] focus:bg-white px-4 py-2.5 text-xs text-[#142845] focus:outline-none shadow-2xs"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#142845] mb-1.5">Student Email Address *</label>
-                <input
-                  type="email"
-                  required
-                  maxLength={100}
-                  placeholder="student@college.edu"
-                  value={formEmail}
-                  onChange={(e) => setFormEmail(e.target.value)}
-                  className="w-full rounded-2xl bg-[#f8fbff] focus:bg-white px-4 py-2.5 text-xs text-[#142845] focus:outline-none shadow-2xs"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#142845] mb-1.5">Temporary Password *</label>
-                <input
-                  type="password"
-                  required
-                  minLength={8}
-                  maxLength={32}
-                  placeholder="••••••••"
-                  value={formPassword}
-                  onChange={(e) => setFormPassword(e.target.value)}
-                  className="w-full rounded-2xl bg-[#f8fbff] focus:bg-white px-4 py-2.5 text-xs text-[#142845] focus:outline-none shadow-2xs"
-                />
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-[#f8fbff] flex items-center justify-between">
-                <div>
-                  <label className="text-xs font-semibold text-[#142845] block">Grant Kit Access Immediately</label>
-                  <span className="text-[11px] text-[#617b9b]">Unlocks all 1080p lab video streams for this student</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={formIsKitUnlocked}
-                  onChange={(e) => setFormIsKitUnlocked(e.target.checked)}
-                  className="h-4 w-4 rounded accent-[#2563eb]"
-                />
-              </div>
-
-              {formIsKitUnlocked && (
-                <div>
-                  <label className="block text-xs font-semibold text-[#142845] mb-1.5">Assigned Kit Serial Code (Optional)</label>
-                  <input
-                    type="text"
-                    maxLength={30}
-                    pattern="^[A-Za-z0-9-]+$"
-                    title="Only alphanumeric characters and hyphens allowed"
-                    placeholder="e.g. NIVA-IOT-2025"
-                    value={formKitCode}
-                    onChange={(e) => setFormKitCode(e.target.value.toUpperCase())}
-                    className="w-full rounded-2xl bg-[#f8fbff] focus:bg-white px-4 py-2.5 text-xs font-mono font-bold uppercase text-[#142845] focus:outline-none shadow-2xs"
-                  />
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={formLoading}
-                className="w-full py-3 rounded-2xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs shadow-xs transition mt-2"
-              >
-                {formLoading ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Create Student Profile"}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </SidebarProvider>
   );
 }
