@@ -331,13 +331,6 @@ export default function MasterclassDetailPage({
     setShowAuthModal(true);
   };
 
-  const fillDemoAccount = () => {
-    setAuthEmail("student.demo@flutterflirt.com");
-    setAuthPassword("password123");
-    if (authMode === "register") {
-      setAuthName("Student Demo");
-    }
-  };
 
   const currentCourse = masterclass;
   const isKitUnlocked = studentUser?.is_kit_unlocked || false;
@@ -1030,13 +1023,6 @@ export default function MasterclassDetailPage({
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="block text-xs font-medium text-slate-700">Password</label>
-                  <button
-                    type="button"
-                    onClick={fillDemoAccount}
-                    className="text-[10px] font-semibold text-blue-600 hover:underline"
-                  >
-                    1-Click Demo Fill
-                  </button>
                 </div>
                 <div className="relative">
                   <input
