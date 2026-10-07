@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "flutterflirt.com.s3.ap-southeast-1.amazonaws.com",
+        hostname: "flutterflirt.s3.ap-southeast-1.amazonaws.com",
       },
       {
         protocol: "https",
