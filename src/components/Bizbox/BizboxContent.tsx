@@ -386,117 +386,64 @@ export default function BizboxContent() {
         </div>
       </section>
 
-      {/* ── 2. THE PROBLEM (Page 2) ── */}
-      <section className="py-20 lg:py-28 px-6 sm:px-10 lg:px-16 bg-white border-b border-slate-200">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+      {/* ── 2. THE PROBLEM (Page 2 - Right Background Video Blend) ── */}
+      <section className="relative py-20 lg:py-28 px-6 sm:px-10 lg:px-16 overflow-hidden border-b border-slate-200 bg-white">
+        {/* Right-side Background Looping Video with seamless edge fade */}
+        <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[58%] pointer-events-none select-none overflow-hidden z-0">
+          <video
+            src="/bizbox/video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-center scale-105 opacity-90"
+          >
+            Your browser does not support the video tag.
+          </video>
 
-            {/* Left Content Column */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
-              {/* Tag / Category */}
-              <div className="flex items-center gap-2 mb-4">
-                <span className="h-4 w-1 bg-[#e11463] rounded-full inline-block" />
-                <span className="text-[12px] sm:text-[13px] font-extrabold uppercase tracking-[0.22em] text-[#e11463]">
-                  THE PROBLEM
-                </span>
-              </div>
+          {/* Seamless White Gradient Fades (Left edge into content, and subtle top/bottom fades) */}
+          <div className="absolute inset-y-0 left-0 w-24 sm:w-48 lg:w-72 bg-gradient-to-r from-white via-white/80 to-transparent z-10" />
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white to-transparent z-10" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent z-10" />
+          {/* Subtle mobile readability veil */}
+          <div className="block lg:hidden absolute inset-0 bg-white/75 backdrop-blur-[1px] z-10" />
+        </div>
 
-              {/* Title */}
-              <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 tracking-[-0.03em] leading-[1.08]">
-                Too many tools. <br />
-                <span className="text-slate-600 font-extrabold">Not enough control.</span>
-              </h2>
+        {/* Content Container (Left Side) */}
+        <div className="relative z-10 max-w-[1440px] mx-auto">
+          <div className="max-w-xl lg:max-w-2xl">
+            {/* Tag / Category */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="h-4 w-1 bg-[#e11463] rounded-full inline-block" />
+              <span className="text-[12px] sm:text-[13px] font-extrabold uppercase tracking-[0.22em] text-[#e11463]">
+                THE PROBLEM
+              </span>
+            </div>
 
-              {/* Description Paragraph */}
-              <p className="mt-6 text-[15px] sm:text-[16.5px] text-slate-600 leading-relaxed font-normal">
-                Sales happen at one counter, stock sits in another sheet, customers live in a CRM nobody updates, and invoices get made by hand. Every system needs its own login and its own reports, and none of them talk to each other.
+            {/* Title */}
+            <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 tracking-[-0.03em] leading-[1.08]">
+              Too many tools. <br />
+              <span className="text-slate-600 font-extrabold">Not enough control.</span>
+            </h2>
+
+            {/* Description Paragraph */}
+            <p className="mt-6 text-[15px] sm:text-[16.5px] text-slate-600 leading-relaxed font-normal">
+              Sales happen at one counter, stock sits in another sheet, customers live in a CRM nobody updates, and invoices get made by hand. Every system needs its own login and its own reports, and none of them talk to each other.
+            </p>
+
+            {/* Divider */}
+            <div className="my-8 border-t border-slate-200/90" />
+
+            {/* Bottom Value Prop with Single Sign-on */}
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+              <p className="text-[15px] sm:text-[16px] font-bold text-slate-900 leading-snug max-w-[360px]">
+                BizBox replaces that patchwork with one authoritative system your whole team can use.
               </p>
-
-              {/* Divider */}
-              <div className="my-8 border-t border-slate-200/90" />
-
-              {/* Bottom Value Prop with Single Sign-on */}
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
-                <p className="text-[15px] sm:text-[16px] font-bold text-slate-900 leading-snug max-w-[360px]">
-                  BizBox replaces that patchwork with one authoritative system your whole team can use.
-                </p>
-                <div className="inline-flex shrink-0 items-center gap-1.5 text-xs sm:text-[13px] font-semibold text-blue-600 whitespace-nowrap">
-                  <span>Unified Single Sign-On</span>
-                  <Check className="h-4 w-4 stroke-[2.5]" />
-                </div>
+              <div className="inline-flex shrink-0 items-center gap-1.5 text-xs sm:text-[13px] font-semibold text-blue-600 whitespace-nowrap">
+                <span>Unified Single Sign-On</span>
+                <Check className="h-4 w-4 stroke-[2.5]" />
               </div>
             </div>
-
-            {/* Right Video Showcase Column */}
-            <div className="lg:col-span-7 relative w-full">
-              <div className="relative mx-auto max-w-[720px] p-1 sm:p-2">
-
-                {/* Modern Browser/Dashboard Window Frame */}
-                <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.12)] overflow-hidden group">
-                  {/* Window Title Bar */}
-                  <div className="px-4 py-3 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between select-none">
-                    <div className="flex items-center gap-2">
-                      <span className="h-3 w-3 rounded-full bg-rose-400 inline-block" />
-                      <span className="h-3 w-3 rounded-full bg-amber-400 inline-block" />
-                      <span className="h-3 w-3 rounded-full bg-emerald-400 inline-block" />
-                    </div>
-
-                    {/* URL bar with interactive Refresh / Replay Button (Icon only) */}
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-slate-200/80 text-[11px] font-mono text-slate-600 shadow-2xs">
-                      <span>flutterflirt.com/bizbox</span>
-                      <button
-                        type="button"
-                        onClick={handleReplayVideo}
-                        title="Replay video"
-                        aria-label="Replay video"
-                        className="ml-0.5 text-slate-400 hover:text-blue-600 hover:rotate-180 transition-all p-1 rounded-md hover:bg-slate-100 cursor-pointer"
-                      >
-                        <RotateCcw className="h-3 w-3" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 text-slate-400">
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
-                    </div>
-                  </div>
-
-                  {/* Video Player Container (Tap on video to replay) */}
-                  <div
-                    onClick={handleReplayVideo}
-                    title={isVideoEnded ? "Tap to replay" : undefined}
-                    className="relative bg-slate-950 aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center overflow-hidden cursor-pointer group/vid"
-                  >
-                    <video
-                      ref={videoRef}
-                      src="/bizbox/video.mp4"
-                      autoPlay
-                      muted
-                      playsInline
-                      onEnded={() => setIsVideoEnded(true)}
-                      onPlay={() => setIsVideoEnded(false)}
-                      className="w-full h-full object-contain bg-black"
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-
-                    {/* "Tap to replay" Note Overlay - ONLY shown when video has finished playing */}
-                    {isVideoEnded && (
-                      <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/45 backdrop-blur-[2px] transition-all animate-in fade-in duration-300">
-                        <div className="inline-flex items-center gap-2.5 rounded-full bg-[#0a1122]/90 hover:bg-[#0a1122] border border-white/20 px-5 py-2.5 text-sm font-semibold text-white shadow-2xl hover:scale-105 active:scale-95 transition-all">
-                          <RotateCcw className="h-4 w-4 text-[#e11463] animate-spin-reverse" />
-                          <span>Tap to replay</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Subtle decorative glow under video */}
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-[#e11463]/15 blur-2xl rounded-full pointer-events-none -z-10" />
-              </div>
-            </div>
-
           </div>
         </div>
       </section>

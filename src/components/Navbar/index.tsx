@@ -23,14 +23,11 @@ const PILL_THRESHOLD = 60;
 const HIDE_THRESHOLD_FALLBACK = 600;
 // Ignore scroll deltas smaller than this to prevent jitter
 const SCROLL_DELTA = 8;
-// Track initial application load across client navigations
-let hasInitiallyLoaded = false;
 
 export default function Navbar() {
   const pathname = usePathname();
   const isDarkPage = false;
   const [scrolled, setScrolled] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -38,15 +35,11 @@ export default function Navbar() {
   // Will hold the pixel offset where the hero section ends
   const heroEndRef = useRef(HIDE_THRESHOLD_FALLBACK);
 
-  // Measure actual hero height on mount and mark as loaded once
+  // Measure actual hero height on mount
   useEffect(() => {
     heroEndRef.current = window.innerHeight;
     if (window.scrollY > PILL_THRESHOLD) {
       setScrolled(true);
-    }
-    if (!hasInitiallyLoaded) {
-      hasInitiallyLoaded = true;
-      setIsLoaded(true);
     }
   }, []);
 
@@ -102,13 +95,13 @@ export default function Navbar() {
   return (
     <motion.div
       className="fixed inset-x-0 top-0 z-50 flex justify-center"
-      initial={hasInitiallyLoaded ? false : { opacity: 0, y: -20 }}
+      initial={false}
       animate={{
         y: isVisible ? 0 : -120,
-        opacity: isLoaded && isVisible ? 1 : 0,
+        opacity: isVisible ? 1 : 0,
       }}
       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      style={{ pointerEvents: isLoaded && isVisible ? "auto" : "none" }}
+      style={{ pointerEvents: isVisible ? "auto" : "none" }}
     >
       <div className="relative w-full flex justify-center">
 
@@ -117,6 +110,7 @@ export default function Navbar() {
         ════════════════════════════════════════ */}
         <motion.nav
           aria-label="Main navigation"
+          initial={false}
           animate={
             scrolled
               ? {
@@ -151,6 +145,7 @@ export default function Navbar() {
           className="
             hidden md:flex
             max-w-[1600px]
+            w-full
             items-center
             justify-between
             will-change-transform
@@ -168,6 +163,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center">
             <motion.div
+              initial={false}
               animate={{ scale: scrolled ? 0.86 : 1 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -255,6 +251,7 @@ export default function Navbar() {
             MOBILE NAV  (below md)
         ════════════════════════════════════════ */}
         <motion.div
+          initial={false}
           animate={
             scrolled
               ? {
@@ -285,6 +282,7 @@ export default function Navbar() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="
             flex md:hidden
+            w-full
             items-center
             justify-between
             will-change-transform
