@@ -11,7 +11,7 @@ const PHONE_NUMBER = "+918926104326";
 const navLinks = [
   { name: "Services", href: "/services" },
   { name: "Our Story", href: "/our-story" },
-  { name: "IoT Labs", href: "/iot-labs" },
+  // { name: "IoT Labs", href: "/iot-labs" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ];
@@ -23,10 +23,14 @@ const PILL_THRESHOLD = 60;
 const HIDE_THRESHOLD_FALLBACK = 600;
 // Ignore scroll deltas smaller than this to prevent jitter
 const SCROLL_DELTA = 8;
+// Track initial application load across client navigations
+let hasInitiallyLoaded = false;
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isDarkPage = false;
   const [scrolled, setScrolled] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -34,9 +38,16 @@ export default function Navbar() {
   // Will hold the pixel offset where the hero section ends
   const heroEndRef = useRef(HIDE_THRESHOLD_FALLBACK);
 
-  // Measure actual hero height on mount (hero is min-h-screen)
+  // Measure actual hero height on mount and mark as loaded once
   useEffect(() => {
     heroEndRef.current = window.innerHeight;
+    if (window.scrollY > PILL_THRESHOLD) {
+      setScrolled(true);
+    }
+    if (!hasInitiallyLoaded) {
+      hasInitiallyLoaded = true;
+      setIsLoaded(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -91,9 +102,13 @@ export default function Navbar() {
   return (
     <motion.div
       className="fixed inset-x-0 top-0 z-50 flex justify-center"
-      animate={{ y: isVisible ? 0 : -120, opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-      style={{ pointerEvents: isVisible ? "auto" : "none" }}
+      initial={hasInitiallyLoaded ? false : { opacity: 0, y: -20 }}
+      animate={{
+        y: isVisible ? 0 : -120,
+        opacity: isLoaded && isVisible ? 1 : 0,
+      }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      style={{ pointerEvents: isLoaded && isVisible ? "auto" : "none" }}
     >
       <div className="relative w-full flex justify-center">
 
@@ -105,32 +120,31 @@ export default function Navbar() {
           animate={
             scrolled
               ? {
-                  /* ── Floating pill — large screens ── */
-                  width: "80%",
-                  marginTop: 12,
-                  height: 60,
-                  borderRadius: 999,
-                  paddingLeft: 32,
-                  paddingRight: 32,
-                  backgroundColor: "rgba(255,255,255,0.92)",
-                  boxShadow:
-                    "0 12px 42px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.05), inset 0 1px 0 rgba(255,255,255,1)",
-                  borderColor: "rgba(255,255,255,0.85)",
-                  borderWidth: 1,
-                }
+                /* ── Floating pill — large screens ── */
+                width: "80%",
+                marginTop: 12,
+                height: 60,
+                borderRadius: 999,
+                paddingLeft: 32,
+                paddingRight: 32,
+                backgroundColor: "rgba(255,255,255,0.92)",
+                boxShadow: "none",
+                borderColor: "rgba(226,232,240,0.8)",
+                borderWidth: 1,
+              }
               : {
-                  /* ── Full-width top bar ── */
-                  width: "100%",
-                  marginTop: 0,
-                  height: 88,
-                  borderRadius: 0,
-                  paddingLeft: 48,
-                  paddingRight: 48,
-                  backgroundColor: "rgba(255,255,255,0.0)",
-                  boxShadow: "none",
-                  borderColor: "rgba(255,255,255,0.0)",
-                  borderWidth: 0,
-                }
+                /* ── Full-width top bar ── */
+                width: "100%",
+                marginTop: 0,
+                height: 88,
+                borderRadius: 0,
+                paddingLeft: 48,
+                paddingRight: 48,
+                backgroundColor: "rgba(255,255,255,0.0)",
+                boxShadow: "none",
+                borderColor: "rgba(255,255,255,0.0)",
+                borderWidth: 0,
+              }
           }
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           /* Hidden entirely on mobile — replaced by the mobile bar below */
@@ -158,7 +172,7 @@ export default function Navbar() {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
               <Image
-                src="/logo-nav.png"
+                src={!scrolled && isDarkPage ? "/logo-footer.png" : "/logo-nav.png"}
                 alt="FlutterFlirt"
                 width={250}
                 height={170}
@@ -174,6 +188,20 @@ export default function Navbar() {
               const isActive =
                 link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
+              const linkColor = scrolled
+                ? isActive
+                  ? "font-extrabold text-black"
+                  : "font-bold text-[#0f1723] hover:text-black"
+                : isDarkPage
+                ? isActive
+                  ? "font-extrabold text-white"
+                  : "font-bold text-slate-200 hover:text-white"
+                : isActive
+                ? "font-extrabold text-black"
+                : "font-bold text-[#0f1723] hover:text-black";
+
+              const underlineColor = scrolled || !isDarkPage ? "bg-[#0f1723]" : "bg-white";
+
               return (
                 <Link
                   key={link.name}
@@ -181,13 +209,14 @@ export default function Navbar() {
                   aria-current={isActive ? "page" : undefined}
                   className={[
                     "group relative text-[13.5px] tracking-[0.04em] transition-colors duration-200",
-                    isActive ? "font-extrabold text-black" : "font-bold text-[#0f1723] hover:text-black",
+                    linkColor,
                   ].join(" ")}
                 >
                   {link.name}
                   <span
                     className={[
-                      "absolute -bottom-0.5 left-1/2 h-[2px] rounded-full bg-[#0f1723] transition-all duration-300 ease-out",
+                      "absolute -bottom-0.5 left-1/2 h-[2px] rounded-full transition-all duration-300 ease-out",
+                      underlineColor,
                       isActive
                         ? "w-[18px] -translate-x-1/2"
                         : "w-0 -translate-x-1/2 group-hover:w-full",
@@ -203,17 +232,20 @@ export default function Navbar() {
             href={`tel:${PHONE_NUMBER}`}
             className={`
               flex items-center justify-center gap-2
-              rounded-full border border-blue-600
-              font-bold text-blue-600
+              rounded-full border
+              font-bold
               transition-all duration-200 shrink-0
-              hover:bg-blue-600 hover:text-white
-              hover:shadow-[0_4px_18px_rgba(37,99,235,0.32)]
               hover:scale-[1.03] active:scale-[0.97]
+              ${
+                !scrolled && isDarkPage
+                  ? "border-white/40 text-white hover:bg-white hover:text-slate-900"
+                  : "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white hover:shadow-[0_4px_18px_rgba(37,99,235,0.32)]"
+              }
               ${scrolled ? "h-[35px] px-5 text-[12.5px]" : "h-[38px] px-6 text-[13px]"}
             `}
           >
             <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-              <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z"/>
+              <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z" />
             </svg>
             Call Us
           </a>
@@ -226,30 +258,29 @@ export default function Navbar() {
           animate={
             scrolled
               ? {
-                  width: "92%",
-                  marginTop: 12,
-                  height: 52,
-                  borderRadius: 999,
-                  paddingLeft: 18,
-                  paddingRight: 16,
-                  backgroundColor: "rgba(255,255,255,0.92)",
-                  boxShadow:
-                    "0 8px 32px rgba(15,23,42,0.14), 0 2px 8px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,1)",
-                  borderColor: "rgba(255,255,255,0.8)",
-                  borderWidth: 1,
-                }
+                width: "92%",
+                marginTop: 12,
+                height: 52,
+                borderRadius: 999,
+                paddingLeft: 18,
+                paddingRight: 16,
+                backgroundColor: "rgba(255,255,255,0.92)",
+                boxShadow: "none",
+                borderColor: "rgba(226,232,240,0.8)",
+                borderWidth: 1,
+              }
               : {
-                  width: "100%",
-                  marginTop: 0,
-                  height: 68,
-                  borderRadius: 0,
-                  paddingLeft: 20,
-                  paddingRight: 16,
-                  backgroundColor: "rgba(255,255,255,0.0)",
-                  boxShadow: "none",
-                  borderColor: "rgba(255,255,255,0.0)",
-                  borderWidth: 0,
-                }
+                width: "100%",
+                marginTop: 0,
+                height: 68,
+                borderRadius: 0,
+                paddingLeft: 20,
+                paddingRight: 16,
+                backgroundColor: "rgba(255,255,255,0.0)",
+                boxShadow: "none",
+                borderColor: "rgba(255,255,255,0.0)",
+                borderWidth: 0,
+              }
           }
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="
@@ -271,7 +302,7 @@ export default function Navbar() {
           {/* Mobile logo */}
           <Link href="/" className="flex shrink-0 items-center">
             <Image
-              src="/logo-nav.png"
+              src={!scrolled && isDarkPage ? "/logo-footer.png" : "/logo-nav.png"}
               alt="FlutterFlirt"
               width={200}
               height={136}
@@ -298,7 +329,9 @@ export default function Navbar() {
                   mobileOpen ? { rotate: 45, y: 7.5 } : { rotate: 0, y: 0 }
                 }
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="block h-[1.75px] w-[18px] rounded-full bg-[#0f1723] origin-center"
+                className={`block h-[1.75px] w-[18px] rounded-full origin-center ${
+                  !scrolled && isDarkPage && !mobileOpen ? "bg-white" : "bg-[#0f1723]"
+                }`}
               />
               <motion.span
                 animate={
@@ -307,14 +340,18 @@ export default function Navbar() {
                     : { opacity: 1, scaleX: 1 }
                 }
                 transition={{ duration: 0.18 }}
-                className="block h-[1.75px] w-[18px] rounded-full bg-[#0f1723] origin-center"
+                className={`block h-[1.75px] w-[18px] rounded-full origin-center ${
+                  !scrolled && isDarkPage && !mobileOpen ? "bg-white" : "bg-[#0f1723]"
+                }`}
               />
               <motion.span
                 animate={
                   mobileOpen ? { rotate: -45, y: -7.5 } : { rotate: 0, y: 0 }
                 }
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="block h-[1.75px] w-[18px] rounded-full bg-[#0f1723] origin-center"
+                className={`block h-[1.75px] w-[18px] rounded-full origin-center ${
+                  !scrolled && isDarkPage && !mobileOpen ? "bg-white" : "bg-[#0f1723]"
+                }`}
               />
             </button>
           </div>
@@ -409,7 +446,7 @@ export default function Navbar() {
                     "
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                      <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z"/>
+                      <path d="M19.95 21c-1.05 0-2.08-.4-3.08-1.12-2.01-1.58-4.89-4.43-6.41-6.23-1.54-1.83-2.81-4.64-3.44-6.61-.3-.95-.36-1.88-.11-2.75.07-.26.19-.55.38-.86l1.05-1.37C8.36 2.09 8.88.94 10 1c1.11.06 2.19.57 2.73 1.54l2.73 4.71c.57.98.37 2.25-.5 3.12l-1.42 1.42c.64 1.65 2.09 3.43 3.64 4.96 1.55 1.54 3.3 2.99 4.96 3.64l1.42-1.42c.87-.87 2.14-1.07 3.12-.5l4.71 2.73c.97.54 1.48 1.62 1.54 2.73.06 1.11-.9 1.64-1.54 2.73l-1.37 1.05c-.31.19-.6.31-.86.38-.87.25-1.8.19-2.75-.11-1.97-.63-4.78-1.9-6.61-3.44z" />
                     </svg>
                     Call Us
                   </a>

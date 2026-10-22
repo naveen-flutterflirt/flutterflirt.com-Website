@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 
 const SERVICES = [
+  { id: "bizbox", label: "BizBox ERP", icon: "📦" },
   { id: "d365", label: "Dynamics 365", icon: "⚙️" },
   { id: "erp", label: "ERP / CRM", icon: "🔗" },
   { id: "ai", label: "AI & Automation", icon: "🤖" },

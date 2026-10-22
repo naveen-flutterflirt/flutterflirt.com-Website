@@ -164,6 +164,7 @@ export default function Footer() {
               {[
                 { label: "Home", href: "/" },
                 { label: "Services", href: "/services" },
+                { label: "BizBox", href: "/bizbox" },
                 { label: "Our Story", href: "/our-story" },
                 { label: "Blog", href: "/blog" },
                 { label: "Contact", href: "/contact" },

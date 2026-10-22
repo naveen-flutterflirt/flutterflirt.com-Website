@@ -23,9 +23,13 @@ export default function Hero() {
     <section
       className="
         relative
-        min-h-screen
+        h-screen
+        max-h-screen
+        w-full
         overflow-hidden
         bg-[#eef6ff]
+        flex
+        items-center
       "
     >
       {/* Background */}
@@ -44,18 +48,17 @@ export default function Hero() {
           z-10
           mx-auto
           flex
-          min-h-screen
+          h-full
           w-[92%]
           max-w-[1400px]
           items-center
-          pt-24
+          pt-16 sm:pt-20 pb-4
         "
       >
-        <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1fr]">
+        <div className="grid w-full grid-cols-1 items-center gap-6 lg:gap-10 lg:grid-cols-[1fr_1fr]">
 
           {/* ================= LEFT ================= */}
-          <div className="max-w-[680px] height-[484px] flex-col 
-          py-10" >
+          <div className="max-w-[680px] flex flex-col py-2">
 
             {/* Label */}
             <p

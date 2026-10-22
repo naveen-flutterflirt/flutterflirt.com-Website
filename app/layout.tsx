@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bigshot_One, Allura, Manrope, Geist } from "next/font/google";
 import "./globals.css";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import BizboxPopup from "@/components/BizboxPopup";
 import ScrollToTop from "@/components/ScrollToTop";
 import { cn } from "@/lib/utils";
 
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={cn("h-full", "antialiased", bigshotOne.variable, allura.variable, manrope.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col">
@@ -134,6 +136,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <ScrollToTop />
         {children}
+        <BizboxPopup />
         <WhatsAppWidget />
       </body>
     </html>

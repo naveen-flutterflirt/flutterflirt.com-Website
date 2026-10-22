@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     scrollRestoration: false,
   },
   images: {
+    qualities: [75, 100],
     remotePatterns: [
       {
         protocol: "https",
