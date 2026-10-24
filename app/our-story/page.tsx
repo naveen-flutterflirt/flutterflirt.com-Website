@@ -55,13 +55,13 @@ export default function OurStoryPage() {
 
               {/* Description */}
               <p className="max-w-[580px] text-[16px] sm:text-[18px] md:text-[19px] leading-[1.7] tracking-[-0.01em] text-[#475569]">
-                We belive the right technology transforms how businesses operate,scale, and compete in an ever-changing world .
+                We believe the right technology transforms how businesses operate, scale, and compete in an ever-changing world.
               </p>
             </div>
 
             {/* ===== RIGHT CONTENT - CHART WITH ROCKET FLIGHT ===== */}
-            <div className="relative flex w-full items-center justify-center lg:justify-end h-[360px] sm:h-[440px] md:h-[500px] lg:h-[550px] xl:h-[600px]">
-              <div className="relative h-[76%] w-full max-w-[680px] rounded-[28px] bg-white/96 shadow-[0_25px_80px_rgba(17,34,61,0.08)] ring-1 ring-[#e6edf8]">
+            <div className="relative flex w-full items-center justify-center lg:justify-end h-[340px] sm:h-[440px] md:h-[500px] lg:h-[550px] xl:h-[600px]">
+              <div className="relative h-[78%] w-full max-w-[680px] rounded-[28px] bg-white/96 shadow-[0_25px_80px_rgba(17,34,61,0.08)] ring-1 ring-[#e6edf8] overflow-hidden">
                 <div className="absolute inset-[4%]">
                   <Image
                     src="/Bar.webp"
@@ -73,26 +73,42 @@ export default function OurStoryPage() {
                 </div>
 
                 <motion.div
-                  className="absolute bottom-[35%] left-[8%] z-20 h-[24%] w-[18%]"
+                  className="absolute z-20 h-[20%] w-[16%] pointer-events-none"
                   initial={{
-                    x: 0,
-                    y: 0,
+                    left: "12%",
+                    bottom: "22%",
+                    opacity: 0,
+                    scale: 0.85,
                   }}
                   animate={{
-                    x: 250,
-                    y: -175,
+                    left: "70%",
+                    bottom: "62%",
+                    opacity: 1,
+                    scale: 1,
                   }}
                   transition={{
                     duration: 2.0,
                     ease: "easeInOut",
                   }}
                 >
-                  <Image
-                    src="/Rocket.webp"
-                    alt="Rocket graphic"
-                    fill
-                    className="object-contain drop-shadow-[0_20px_26px_rgba(37,99,235,0.18)]"
-                  />
+                  <motion.div
+                    className="relative h-full w-full"
+                    animate={{
+                      y: [-3, 3, -3],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Image
+                      src="/Rocket.webp"
+                      alt="Rocket graphic"
+                      fill
+                      className="object-contain drop-shadow-[0_12px_20px_rgba(37,99,235,0.22)]"
+                    />
+                  </motion.div>
                 </motion.div>
               </div>
             </div>

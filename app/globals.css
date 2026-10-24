@@ -797,64 +797,30 @@ button, a, [role="button"], input[type="submit"], input[type="button"], input[ty
 
 
 /* ═══════════════════════════════════════════════
-   PREMIUM SCROLLBAR — theme-matched
-   Chromium / WebKit
+   HIDE SCROLLBAR — Clean viewport aesthetic
+   (Page and containers remain fully scrollable)
 ═══════════════════════════════════════════════ */
 
-/* Track */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Chromium / WebKit (Chrome, Safari, Edge, Opera) */
+*::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Thumb */
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    #2d8cff 0%,
-    #1b6fe6 60%,
-    #0f4fba 100%
-  );
-  border-radius: 999px;
-  border: 1.5px solid transparent;
-  background-clip: padding-box;
-  transition: background 0.2s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    #4da3ff 0%,
-    #2d8cff 60%,
-    #1b6fe6 100%
-  );
-  border-radius: 999px;
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(
-    180deg,
-    #1b6fe6 0%,
-    #0f4fba 100%
-  );
-  border-radius: 999px;
-  background-clip: padding-box;
-}
-
-/* Corner between horizontal + vertical scrollbar */
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Firefox */
+/* Firefox, modern standards, IE/legacy Edge */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #2d8cff transparent;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html,
+body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 /* Tiptap Placeholder Style */

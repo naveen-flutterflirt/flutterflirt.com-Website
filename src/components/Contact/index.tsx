@@ -164,7 +164,7 @@ export default function Contact() {
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#eef6ff] px-6 pb-20 pt-36 md:px-12 md:pt-44 lg:px-20">
+      <section className="relative overflow-hidden bg-[#eef6ff] px-4 sm:px-6 pb-16 sm:pb-20 pt-28 sm:pt-36 md:px-12 md:pt-44 lg:px-20">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,#ffffff_0%,#edf6ff_50%,#dceaff_100%)]" />
 
         <div className="relative mx-auto max-w-[1400px]">
@@ -240,7 +240,7 @@ export default function Contact() {
       {/* ══════════════════════════════════════
           MAIN — info + form
       ══════════════════════════════════════ */}
-      <section id="contact" className="px-6 pb-20 md:px-12 lg:px-20">
+      <section id="contact" className="px-4 sm:px-6 pb-20 md:px-12 lg:px-20">
         <div className="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[360px_1fr]">
 
           {/* ── LEFT INFO ── */}
@@ -252,7 +252,7 @@ export default function Contact() {
             className="flex flex-col gap-6"
           >
             {/* Green teal card — matches offices section palette */}
-            <div className="relative min-h-[380px] overflow-hidden rounded-[28px] bg-[#dcece7] p-8 md:p-10">
+            <div className="relative min-h-[380px] overflow-hidden rounded-[24px] sm:rounded-[28px] bg-[#dcece7] p-6 sm:p-8 md:p-10">
               <div className="pointer-events-none absolute -right-16 -top-16 h-[200px] w-[200px] rounded-full bg-[#c5ded7] blur-[2px]" />
 
               <div className="relative z-10 flex h-full flex-col">
@@ -343,7 +343,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-[28px] border border-[#a3b8e5] bg-white p-8 shadow-[0_20px_60px_rgba(59,100,160,0.08)] md:p-10 lg:p-12"
+            className="rounded-[24px] sm:rounded-[28px] border border-[#a3b8e5] bg-white p-5 sm:p-8 md:p-10 lg:p-12 shadow-[0_20px_60px_rgba(59,100,160,0.08)]"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
@@ -431,16 +431,19 @@ export default function Contact() {
                     />
 
                     <div className="flex flex-col gap-3 pt-1">
-                      <div className="flex items-center gap-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                         <button
                           type="submit"
                           disabled={submitting}
-                          className="group inline-flex items-center gap-3 rounded-full bg-[#2563eb] px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_4px_18px_rgba(37,99,235,0.32)] transition-all duration-300 hover:bg-[#1d4ed8] hover:shadow-[0_6px_24px_rgba(37,99,235,0.42)] active:scale-[0.98] disabled:opacity-50"
+                          className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-full bg-[#2563eb] px-8 py-3.5 text-[15px] font-semibold text-white whitespace-nowrap shadow-[0_4px_18px_rgba(37,99,235,0.32)] transition-all duration-300 hover:bg-[#1d4ed8] hover:shadow-[0_6px_24px_rgba(37,99,235,0.42)] active:scale-[0.98] disabled:opacity-50"
                         >
-                          {submitting ? "Sending..." : "Send message"}
+                          <span>{submitting ? "Sending..." : "Send message"}</span>
                           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                         </button>
-                        <p className="text-[12.5px] text-[#a3b8e5]">We reply within 24h</p>
+                        <p className="text-[12.5px] text-[#7184a0] sm:text-[#a3b8e5] text-center sm:text-left flex items-center justify-center sm:justify-start gap-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                          We reply within 24h
+                        </p>
                       </div>
                       {error && (
                         <p className="text-sm font-semibold text-red-500">{error}</p>

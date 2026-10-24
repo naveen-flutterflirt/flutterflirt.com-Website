@@ -68,26 +68,32 @@ export default function Stats() {
           viewport={{ once: true, amount: 0.25 }}
         
             className="
-              mt-14
+              mt-10 sm:mt-12 lg:mt-14
               flex
               flex-col
-              gap-8
+              gap-6 sm:gap-7
               rounded-[20px]
               bg-white
-              px-8
-              py-8
+              px-6
+              py-7
+              sm:px-8
+              sm:py-8
               shadow-[0_10px_40px_rgba(40,80,130,0.03)]
               lg:flex-row
               lg:items-center
+              lg:gap-8
               lg:px-9
+              lg:py-8
             "
           >         
           {/* Icon */}
           <div
             className="
               flex
-              h-[60px]
-              w-[60px]
+              h-[52px]
+              w-[52px]
+              sm:h-[60px]
+              sm:w-[60px]
               shrink-0
               items-center
               justify-center
@@ -102,6 +108,7 @@ export default function Stats() {
               viewBox="0 0 32 32"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 sm:h-8 sm:w-8"
             >
               <path
                 d="M16 3L18.5 11.5L27 14L18.5 16.5L16 25L13.5 16.5L5 14L13.5 11.5L16 3Z"
@@ -128,7 +135,8 @@ export default function Stats() {
           <div className="flex-1">
             <h2
               className="
-                text-[22px]
+                text-[20px]
+                sm:text-[22px]
                 font-semibold
                 text-[#ef3d3d]
               "
@@ -138,12 +146,13 @@ export default function Stats() {
 
             <p
               className="
-                mt-3
+                mt-2.5 sm:mt-3
                 max-w-[900px]
                 text-[15px]
-                leading-[1.45]
+                leading-relaxed
                 text-[#526987]
                 md:text-[16px]
+                lg:leading-[1.45]
               "
             >
               From strategy and consulting to implementation, customization,
