@@ -83,7 +83,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#eef6ff] px-6 pb-20 pt-36 md:px-12 md:pt-44 lg:px-20">
+      <section className="relative overflow-hidden bg-[#eef6ff] px-4 sm:px-6 pb-16 sm:pb-20 pt-28 sm:pt-36 md:px-12 md:pt-44 lg:px-20">
         {/* Radial bg — same as hero page */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,#ffffff_0%,#edf6ff_50%,#dceaff_100%)]" />
 
@@ -134,7 +134,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
       {/* ══════════════════════════════════════
           FEATURED ARTICLE
       ══════════════════════════════════════ */}
-      <section className="px-6 pb-16 md:px-12 lg:px-20">
+      <section className="px-4 sm:px-6 pb-16 md:px-12 lg:px-20">
         <div className="mx-auto max-w-[1400px]">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -164,7 +164,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
               </div>
 
               {/* Content */}
-              <div className="flex flex-col justify-center p-8 md:p-12 lg:p-14">
+              <div className="flex flex-col justify-center p-5 sm:p-8 md:p-12 lg:p-14">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#edf3ff] px-3.5 py-1.5 text-[11.5px] font-semibold tracking-wide text-[#2563eb]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                   {featured.category}
@@ -206,7 +206,7 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
       {/* ══════════════════════════════════════
           LATEST — FILTER + GRID
       ══════════════════════════════════════ */}
-      <section className="px-6 pb-28 md:px-12 lg:px-20">
+      <section className="px-4 sm:px-6 pb-28 md:px-12 lg:px-20">
         <div className="mx-auto max-w-[1400px]">
 
           {/* Section header + filter */}

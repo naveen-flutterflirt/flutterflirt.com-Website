@@ -23,13 +23,15 @@ export default function Hero() {
     <section
       className="
         relative
-        h-screen
-        max-h-screen
+        min-h-[85vh]
+        md:h-screen
+        md:max-h-screen
         w-full
         overflow-hidden
         bg-[#eef6ff]
         flex
-        items-center
+        items-start
+        md:items-center
       "
     >
       {/* Background */}
@@ -51,20 +53,21 @@ export default function Hero() {
           h-full
           w-[92%]
           max-w-[1400px]
-          items-center
-          pt-16 sm:pt-20 pb-4
+          items-start
+          md:items-center
+          pt-[78px] sm:pt-[84px] md:pt-20 pb-8 md:pb-4
         "
       >
-        <div className="grid w-full grid-cols-1 items-center gap-6 lg:gap-10 lg:grid-cols-[1fr_1fr]">
+        <div className="grid w-full grid-cols-1 items-start md:items-center gap-6 lg:gap-10 lg:grid-cols-[1fr_1fr]">
 
           {/* ================= LEFT ================= */}
-          <div className="max-w-[680px] flex flex-col py-2">
+          <div className="max-w-[680px] flex flex-col py-1 md:py-2">
 
             {/* Label */}
             <p
               className="
-                mb-7
-                text-sm
+                mb-3.5 md:mb-7
+                text-xs md:text-sm
                 font-medium
                 uppercase
                 tracking-[0.25em]
@@ -78,16 +81,18 @@ export default function Hero() {
             <h1
               className="
                 font-serif
-                text-[38px]
-                sm:text-[46px]
+                text-[34px]
+                sm:text-[44px]
                 md:text-[50px]
                 font-bold
-                leading-[0.95]
-                tracking-[-2px]
+                leading-[1.05]
+                md:leading-[0.95]
+                tracking-[-1px]
+                md:tracking-[-2px]
                 text-[#050505]
               "
             >
-              <span className="inline-block py-3">More Than Software.</span>
+              <span className="inline-block py-1 md:py-3">More Than Software.</span>
               
               <br />
                 <span className="inline-block">We Build Business</span>
@@ -97,7 +102,7 @@ export default function Hero() {
               <span
                 className="
                   font-[family-name:var(--font-allura)]
-                  text-[52px]
+                  text-[48px]
                   sm:text-[60px]
                   md:text-[68px]
                   font-normal
@@ -112,9 +117,9 @@ export default function Hero() {
             {/* Description */}
             <div
               className="
-                mt-7
+                mt-4 md:mt-7
                 max-w-[650px]
-                space-y-6
+                space-y-4 md:space-y-6
                 text-[15px]
                 leading-[1.65]
                 text-[#647b9b]

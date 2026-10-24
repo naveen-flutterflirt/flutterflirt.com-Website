@@ -258,7 +258,7 @@ export default function OurStory() {
       {/* ════════════════════════════════════════════════════
           HERO
       ════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#eef6ff] px-6 pt-36 pb-24 md:px-12 lg:px-20">
+      <section className="relative overflow-hidden bg-[#eef6ff] px-4 sm:px-6 pt-28 sm:pt-36 pb-16 sm:pb-24 md:px-12 lg:px-20">
         {/* Radial bg */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(255,255,255,0.9)_0%,#edf6ff_55%,#dceaff_100%)]" />
 
@@ -276,13 +276,13 @@ export default function OurStory() {
               </p>
 
               {/* Bordered headline block — matches reference */}
-              <div className="inline-block rounded-[4px] border-[3px] border-[#e040fb] px-4 py-4 mb-8">
+              <div className="inline-block rounded-[4px] border-[3px] border-[#e040fb] px-3.5 py-3.5 sm:px-4 sm:py-4 mb-8">
                 <h1
-                  className="font-[family-name:var(--font-geist)] text-[46px] leading-[0.95] tracking-[-0.03em] text-[#0f1723] md:text-[56px] lg:text-[62px]"
+                  className="font-[family-name:var(--font-geist)] text-[30px] sm:text-[46px] leading-[1.05] sm:leading-[0.95] tracking-[-0.03em] text-[#0f1723] md:text-[56px] lg:text-[62px]"
                 >
                   Every System We&apos;ve<br />Built Started With One
                 </h1>
-                <p className="font-[family-name:var(--font-allura)] text-[56px] leading-[1.1] text-[#0f1723] md:text-[66px]">
+                <p className="font-[family-name:var(--font-allura)] text-[42px] sm:text-[56px] leading-[1.1] text-[#0f1723] md:text-[66px]">
                   Belief.
                 </p>
               </div>

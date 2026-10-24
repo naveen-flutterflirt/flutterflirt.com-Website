@@ -251,9 +251,9 @@ export default function ServicesPillars() {
                     relative
                     w-full
                     overflow-hidden
-                    rounded-[28px] sm:rounded-[36px] md:rounded-[44px]
+                    rounded-[22px] sm:rounded-[36px] md:rounded-[44px]
                     border border-white/70
-                    p-8 sm:p-11 md:p-14
+                    p-5 sm:p-11 md:p-14
                     shadow-[0_24px_80px_rgba(15,23,42,0.10)]
                     backdrop-blur-xl
                     transition-all duration-300
@@ -328,10 +328,10 @@ export default function ServicesPillars() {
                     </div>
 
                     {/* Right Side: Small Button Only */}
-                    <div className="shrink-0">
+                    <div className="w-full sm:w-auto shrink-0">
                       <button
                         onClick={() => setSelectedService(service)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0a0f18] py-2.5 px-5 text-[12px] sm:text-[12.5px] font-bold text-white shadow-[0_12px_28px_rgba(15,23,42,0.22)] transition-all duration-200 hover:bg-[#2563eb] hover:shadow-[0_16px_34px_rgba(37,99,235,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0a0f18] py-2.5 px-5 text-[12px] sm:text-[12.5px] font-bold text-white shadow-[0_12px_28px_rgba(15,23,42,0.22)] transition-all duration-200 hover:bg-[#2563eb] hover:shadow-[0_16px_34px_rgba(37,99,235,0.28)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                       >
                         <span>View Architecture Specs</span>
                         <span className="text-xs">→</span>

@@ -90,28 +90,28 @@ export default function ServicesPhases() {
       {/* ======================= */}
       {/* MOBILE VIEW (Stacked)   */}
       {/* ======================= */}
-      <div className="md:hidden w-full flex flex-col items-center px-6 py-20">
+      <div className="md:hidden w-full flex flex-col items-center px-4 sm:px-6 py-12 sm:py-20">
         
         {/* Mobile Heading */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 sm:mb-10 max-w-[480px]">
           <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#2563EB] mb-2">
             DELIVERY METHODOLOGY
           </p>
-          <h2 className="text-[32px] font-normal leading-[1.1] text-[#0a0f18]" style={{ fontFamily: "var(--font-geist), Georgia, serif" }}>
+          <h2 className="text-[25px] sm:text-[32px] font-normal leading-[1.12] text-[#0a0f18]" style={{ fontFamily: "var(--font-geist), Georgia, serif" }}>
             The 4 Phases of Value Realization
           </h2>
         </div>
 
-        {/* Mobile Cards */}
-        <div className="flex flex-col gap-6 w-full max-w-[320px]">
+        {/* Mobile Cards: Compact 2-column Grid */}
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4.5 w-full max-w-[620px]">
           {PHASES.map((card) => {
             const isDark = card.theme === "dark";
             return (
               <div
                 key={`mobile-${card.id}`}
-                className={`relative w-full aspect-[4/3] rounded-3xl p-7 flex flex-col justify-between shadow-[0_15px_40px_rgba(0,0,0,0.06)] overflow-hidden [contain:paint] [clip-path:inset(0_round_24px)] ${
+                className={`relative w-full aspect-auto min-h-[148px] sm:min-h-[175px] rounded-[18px] sm:rounded-3xl p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_8px_24px_rgba(0,0,0,0.05)] overflow-hidden [contain:paint] [clip-path:inset(0_round_18px)] sm:[clip-path:inset(0_round_24px)] ${
                   isDark 
-                    ? "bg-[#0c4a8e] border border-blue-400/30 text-white" 
+                    ? "bg-[#0c4a8e] border border-blue-400/30 text-white shadow-[0_10px_25px_rgba(12,74,142,0.25)]" 
                     : "bg-white border border-slate-100 text-[#0a0f18]"
                 }`}
               >
@@ -131,24 +131,24 @@ export default function ServicesPhases() {
                 )}
 
                 <div className="relative z-10 flex items-center justify-between">
-                  <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                  <div className={`px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${
                     isDark ? "bg-[#93c5fd] text-[#1e3a8a]" : "bg-slate-100 text-slate-500"
                   }`}>
                     {card.phase}
                   </div>
-                  <div className={`text-[20px] font-bold ${
+                  <div className={`text-[17px] sm:text-[20px] font-bold ${
                     isDark ? "text-blue-100/90" : "text-slate-300"
                   }`}>
                     {card.num}
                   </div>
                 </div>
-                <div className="relative z-10">
-                  <h3 className={`text-[19px] font-bold leading-[1.2] mb-3 tracking-tight ${
+                <div className="relative z-10 mt-3 sm:mt-4">
+                  <h3 className={`text-[13px] sm:text-[15px] font-bold leading-[1.22] mb-1 sm:mb-1.5 tracking-tight ${
                     isDark ? "text-white" : "text-[#0a0f18]"
                   }`}>
                     {card.title}
                   </h3>
-                  <p className={`text-[13px] font-medium ${
+                  <p className={`text-[10.5px] sm:text-[12px] font-medium ${
                     isDark ? "text-blue-100" : "text-slate-500"
                   }`}>
                     {card.duration}

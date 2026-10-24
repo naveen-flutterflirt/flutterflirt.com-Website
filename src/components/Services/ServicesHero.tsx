@@ -97,7 +97,7 @@ export default function ServicesHero() {
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-[#0a0f18] px-7 py-3.5 text-[14.5px] sm:text-[15.5px] font-semibold text-white shadow-[0_10px_30px_rgba(10,15,24,0.25)] transition-all duration-300 hover:bg-[#2563eb] hover:shadow-[0_12px_35px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#0a0f18] px-7 py-3.5 text-[14.5px] sm:text-[15.5px] font-semibold text-white shadow-[0_10px_30px_rgba(10,15,24,0.25)] transition-all duration-300 hover:bg-[#2563eb] hover:shadow-[0_12px_35px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 active:translate-y-0 text-center"
               >
                 <span>Let&apos;s Build Something Meaningful</span>
                 <svg
@@ -116,7 +116,7 @@ export default function ServicesHero() {
 
               <a
                 href="#services-grid"
-                className="inline-flex items-center gap-2 rounded-full border border-[#cbd5e1] bg-white/80 px-6 py-3.5 text-[14.5px] sm:text-[15.5px] font-semibold text-[#0a0f18] shadow-xs backdrop-blur-sm transition-all duration-300 hover:bg-white hover:border-[#2563eb] hover:text-[#2563eb]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-[#cbd5e1] bg-white/80 px-6 py-3.5 text-[14.5px] sm:text-[15.5px] font-semibold text-[#0a0f18] shadow-xs backdrop-blur-sm transition-all duration-300 hover:bg-white hover:border-[#2563eb] hover:text-[#2563eb] text-center"
               >
                 <span>Explore 8 Core Practices</span>
                 <span className="text-xs">↓</span>
@@ -186,7 +186,7 @@ export default function ServicesHero() {
                 {/* Node 1: Dynamics 365 Core */}
                 <div className="flex items-center justify-between rounded-2xl border border-white bg-white/80 p-3.5 shadow-sm transition-all hover:bg-white hover:scale-[1.02]">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4E7E1] text-[#1A7A4A] font-bold text-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#D4E7E1] text-[#1A7A4A] font-bold text-sm">
                       D365
                     </div>
                     <div>
@@ -198,13 +198,13 @@ export default function ServicesHero() {
                       </p>
                     </div>
                   </div>
-                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500 animate-pulse ml-2" />
                 </div>
 
                 {/* Node 2: Power Platform & Automations */}
                 <div className="flex items-center justify-between rounded-2xl border border-white bg-white/80 p-3.5 shadow-sm transition-all hover:bg-white hover:scale-[1.02]">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F5BDE2] text-[#F80788] font-bold text-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F5BDE2] text-[#F80788] font-bold text-sm">
                       PP
                     </div>
                     <div>
@@ -216,13 +216,13 @@ export default function ServicesHero() {
                       </p>
                     </div>
                   </div>
-                  <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-blue-500 ml-2" />
                 </div>
 
                 {/* Node 3: Azure & Next.js Custom Layer */}
                 <div className="flex items-center justify-between rounded-2xl border border-white bg-white/80 p-3.5 shadow-sm transition-all hover:bg-white hover:scale-[1.02]">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FBECD7] text-[#FF9810] font-bold text-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FBECD7] text-[#FF9810] font-bold text-sm">
                       API
                     </div>
                     <div>
@@ -234,7 +234,7 @@ export default function ServicesHero() {
                       </p>
                     </div>
                   </div>
-                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-amber-500 ml-2" />
                 </div>
 
               </div>
