@@ -10,6 +10,7 @@ const PHONE_NUMBER = "+918926104326";
 
 const navLinks = [
   { name: "Services", href: "/services" },
+  { name: "Our Product", href: "/our-product" },
   { name: "Our Story", href: "/our-story" },
   // { name: "IoT Labs", href: "/iot-labs" },
   { name: "Blog", href: "/blog" },
