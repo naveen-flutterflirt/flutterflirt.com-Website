@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, Video, Users, GraduationCap, LayoutDashboard, FileText, MessageSquare } from "lucide-react";
+import { LogOut, LayoutDashboard, FileText, MessageSquare } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
@@ -21,21 +21,6 @@ const adminItems = [
         title: "Dashboard",
         url: "/flutterflirt-admin-login/dashboard",
         icon: LayoutDashboard,
-    },
-    {
-        title: "IoT Masterclasses",
-        url: "/flutterflirt-admin-login/iot-labs",
-        icon: Video,
-    },
-    {
-        title: "Students",
-        url: "/flutterflirt-admin-login/students",
-        icon: Users,
-    },
-    {
-        title: "College Requests",
-        url: "/flutterflirt-admin-login/college-requests",
-        icon: GraduationCap,
     },
     {
         title: "Blog Management",
