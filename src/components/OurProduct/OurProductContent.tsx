@@ -439,41 +439,77 @@ export default function OurProductContent() {
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          ELEGANT BOTTOM BANNER / CONSULTATION CTA (FULLY RESPONSIVE)
+          ELEGANT BOTTOM BANNER / CONSULTATION CTA (ULTRA-PREMIUM)
       ════════════════════════════════════════════════════════════════ */}
       <section className="relative mx-auto max-w-[1440px] px-4 pb-24 sm:px-6 md:px-10 lg:px-14 xl:px-20">
-        <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0c1322] via-[#162238] to-[#0c1322] p-7 sm:p-10 md:p-12 lg:p-14 text-white shadow-2xl border border-white/10">
-          {/* Subtle Ambient Radial Highlight */}
-          <div className="pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-blue-600/20 blur-3xl" />
-          <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-indigo-600/15 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[32px] border border-white/20 bg-gradient-to-br from-[#0b1324]/95 via-[#132038]/95 to-[#0b1426]/95 p-8 sm:p-12 md:p-14 lg:p-16 text-white shadow-[0_24px_70px_rgba(15,23,42,0.4),0_0_1px_rgba(255,255,255,0.2)] backdrop-blur-2xl">
+          
+          {/* Animated Floating Gradient Orb Inside Card (Electric Cyan / Blue) */}
+          <motion.div
+            animate={{
+              x: [0, 40, -30, 0],
+              y: [0, -30, 20, 0],
+              scale: [1, 1.25, 0.95, 1],
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="pointer-events-none absolute -right-16 -bottom-16 h-80 w-80 rounded-full bg-gradient-to-br from-blue-500/35 via-cyan-400/25 to-indigo-600/30 blur-[75px]"
+          />
 
-          <div className="relative max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-400">
+          {/* Animated Floating Gradient Orb Inside Card (Violet / Indigo) */}
+          <motion.div
+            animate={{
+              x: [0, -35, 25, 0],
+              y: [0, 35, -25, 0],
+              scale: [1, 0.9, 1.15, 1],
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-gradient-to-tr from-indigo-500/30 via-purple-500/20 to-blue-400/20 blur-[70px]"
+          />
+
+          {/* Center Subtle Light Sweep */}
+          <motion.div
+            animate={{
+              opacity: [0.15, 0.35, 0.15],
+              scale: [0.95, 1.05, 0.95],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[380px] w-[620px] rounded-full bg-blue-600/15 blur-[90px]"
+          />
+
+          {/* Background Decorative Mesh Pattern */}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]" />
+
+          <div className="relative z-10 max-w-3xl">
+            {/* Pill Tag */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-950/60 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-blue-300 shadow-inner backdrop-blur-md">
               <Zap className="h-3.5 w-3.5 text-blue-400" />
-              Custom Enterprise Architecture
-            </span>
+              <span>Bespoke Architecture & Deployment</span>
+            </div>
 
-            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-bold font-serif tracking-tight leading-snug">
+            {/* Headline */}
+            <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif tracking-tight leading-[1.18] text-white">
               Looking for a tailored ERP or CRM configuration?
             </h2>
 
-            <p className="mt-3 text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
-              Our certified engineering architects and consultants customize workflows, integrate legacy systems, and build bespoke modules tailored specifically to your business operations.
+            {/* Subtext */}
+            <p className="mt-4 text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed font-light max-w-2xl">
+              Our certified engineering architects and consultants customize workflows, integrate legacy systems, and build bespoke cloud modules tailored specifically to your organization&apos;s operational rhythm.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
+            {/* Action Buttons */}
+            <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] active:scale-[0.98]"
+                className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-[length:200%_auto] hover:bg-[position:right_center] px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-[0_4px_24px_rgba(37,99,235,0.4)] transition-all duration-300 hover:shadow-[0_6px_32px_rgba(37,99,235,0.6)] hover:scale-[1.02] active:scale-[0.98]"
               >
-                Schedule Architecture Consultation
+                <span>Schedule Consultation</span>
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-xs sm:text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 px-5 py-3.5 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/35 active:scale-[0.98]"
               >
-                Explore Consulting Services
+                <span>Explore Services</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
