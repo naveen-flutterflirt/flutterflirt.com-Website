@@ -87,6 +87,10 @@ const STATUS_CONFIG: Record<
 };
 
 export default function CollegeRequestsAdminPage() {
+  // TEMPORARILY DISABLED — uncomment below to re-enable
+  return null;
+
+  // eslint-disable-next-line no-unreachable
   const router = useRouter();
 
   const [token, setToken] = useState<string | null>(null);

@@ -111,6 +111,10 @@ interface KitAccessCode {
 }
 
 export default function AdminIoTLabsPage() {
+  // TEMPORARILY DISABLED — uncomment below to re-enable
+  return null;
+
+  // eslint-disable-next-line no-unreachable
   const router = useRouter();
 
   // Auth State

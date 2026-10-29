@@ -47,6 +47,10 @@ interface StudentStats {
 }
 
 export default function AdminStudentsPage() {
+  // TEMPORARILY DISABLED — uncomment below to re-enable
+  return null;
+
+  // eslint-disable-next-line no-unreachable
   const router = useRouter();
 
   // Auth & Page State
