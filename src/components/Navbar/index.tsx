@@ -13,7 +13,6 @@ const navLinks = [
   { name: "Our Story", href: "/our-story" },
   // { name: "IoT Labs", href: "/iot-labs" },
   { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
 ];
 
 // Pill transform starts after this many px of scroll
