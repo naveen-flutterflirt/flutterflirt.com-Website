@@ -2077,7 +2077,7 @@ export default function AdminIoTLabsPage() {
               </div>
               <div className="relative aspect-video w-full bg-black rounded-xl overflow-hidden shadow-inner">
                 <video
-                  src={previewVideoUrl}
+                  src={previewVideoUrl ?? undefined}
                   controls
                   autoPlay
                   className="w-full h-full object-contain"

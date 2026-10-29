@@ -695,9 +695,9 @@ export default function CollegeRequestsAdminPage() {
                 <p className="text-xs text-[#617b9b]">
                   Institution:{" "}
                   <span className="text-[#142845] font-semibold">
-                    {activeInquiryForNotes.college_name}
+                    {activeInquiryForNotes!.college_name}
                   </span>{" "}
-                  ({activeInquiryForNotes.contact_person})
+                  ({activeInquiryForNotes!.contact_person})
                 </p>
               </div>
 
