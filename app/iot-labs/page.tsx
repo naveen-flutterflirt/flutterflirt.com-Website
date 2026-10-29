@@ -17,7 +17,6 @@ import {
   Radio,
   Wifi,
   Layers,
-  Sparkles,
   AlertCircle,
   Loader2,
   ChevronRight,

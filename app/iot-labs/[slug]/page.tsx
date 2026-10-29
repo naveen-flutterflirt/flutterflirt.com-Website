@@ -33,7 +33,6 @@ import {
   ShieldCheck,
   Radio,
   FileCode,
-  Sparkles,
   ArrowRight,
   AlertCircle
 } from "lucide-react";

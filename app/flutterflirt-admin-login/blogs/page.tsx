@@ -12,7 +12,7 @@ import {
   ExternalLink,
   ArrowUp,
   ArrowDown,
-  Sparkles,
+  ShieldCheck,
   CheckCircle2,
   FileText,
   Loader2,
@@ -530,7 +530,7 @@ export default function BlogsPage() {
           <div className="flex flex-col justify-between gap-4 border-b border-[#c9dff7] pb-6 md:flex-row md:items-center">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#dbe8fc] px-3 py-1 text-xs font-bold text-[#1e40af]">
-                <Sparkles className="h-3 w-3" />
+                <ShieldCheck className="h-3 w-3" />
                 <span>Premium Access</span>
               </div>
               <h1 className="mt-3 font-serif text-[32px] font-bold text-[#10223d] md:text-[42px]">

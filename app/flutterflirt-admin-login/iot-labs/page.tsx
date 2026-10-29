@@ -12,7 +12,6 @@ import {
   Check,
   UploadCloud,
   Film,
-  Sparkles,
   Loader2,
   AlertCircle,
   Eye,

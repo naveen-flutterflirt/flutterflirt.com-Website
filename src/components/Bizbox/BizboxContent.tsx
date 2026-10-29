@@ -22,7 +22,6 @@ import {
   Radio,
   Building2,
   ChevronDown,
-  Sparkles,
   Lock,
   Network,
   ClipboardList,
