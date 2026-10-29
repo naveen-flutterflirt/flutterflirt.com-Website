@@ -5,81 +5,81 @@ import Link from "next/link";
 
 const services = [
   {
-    icon: "icon-2.svg",
+    icon: "/icon-1.svg",
     color: "#D4E7E1",
     text_color : "#1A7A4A",
     title: "Dynamics 365 Finance & Operations",
-    image: "service-1.webp",
+    image: "/service-1.webp",
     description:
       "End-to-end ERP for finance, supply chain, manufacturing, and business operations.",
     tags: ["Finance", "Supply Chain", "Manufacturing", "Retail"],
   },
   {
-    icon: "icon-2.svg",
+    icon: "/icon-2.svg",
     color: "#E5EBF7",
     text_color : "#2C5BA9",
     title: "Dynamics 365 Business Central",
-    image: "service-2.svg",
+    image: "/service-2.svg",
     description:
       "The right-sized ERP for growing companies, helping streamline finance and operations.",
     tags: ["Localization", "NAV Upgrades", "Growing Businesses"],
   },
   {
-    icon: "icon-3.svg",
+    icon: "/icon-3.svg",
     color: "#F9EAEF",
     text_color : "#F14F57",
     title: "Customer Engagement (CRM)",
-    image: "service-3.svg",
+    image: "/service-3.svg",
     description:
       "Sales, Service, Field Service, and Marketing solutions to strengthen customer relationships.",
     tags: ["Sales", "Service", "Field Service", "Marketing"],
   },
   {
-    icon: "icon-4.svg",
+    icon: "/icon-4.svg",
     color: "#DAC3E4",
     text_color : "#6A0087",
     title: "Resource Augmentation & Outsourcing",
-    image: "service-4.svg",
+    image: "/service-4.svg",
     description:
       "On-demand D365 and React consultants to extend your team and accelerate delivery.",
     tags: ["Staff Augmentation", "Outsourcing", "On-Demand"],
   },
   {
-    icon: "icon-5.svg",
+    icon: "/icon-5.svg",
     color: "#F5BDE2",
     text_color : "#F80788",
     title: "Power Platform",
-    image: "service-5.svg",
+    image: "/service-5.svg",
     description:
       "Power Apps, Power Automate, Power BI, and Copilot Studio solutions for smarter workflows.",
     tags: ["Power Apps", "Automate", "BI", "Copilot Studio"],
   },
   {
-    icon: "icon-6.svg",
+    icon: "/icon-6.svg",
     color: "#FBECD7",
     text_color : "#FF9810",
     title: "Azure & Integrations",
-    image: "service-6.svg",
+    image: "/service-6.svg",
     description:
       "Landing zones, Data Factory, Synapse, and APIs to connect and scale your digital ecosystem.",
     tags: ["Landing Zones", "Data Factory", "Synapse", "APIs"],
   },
   {
-    icon: "icon-7.svg",
+    icon: "/icon-7.svg",
     color: "#F6F6D3",
     text_color : "#EBE425",
     title: "Custom Apps — React & Next.js",
-    image: "service-7.svg",
+    image: "/service-7.svg",
     description:
       "Portals, dashboards, and headless CMS solutions built for modern digital experiences.",
     tags: ["Web Portals", "Dashboards", "Headless CMS"],
   },
   {
-    icon: "icon-8.svg",
+    icon: "/icon-8.svg",
     color: "#FAEBEF",
     text_color : "#F14F57",
     title: "D365 Academy",
-    image: "service-8.svg",
+    image: "/service-8.svg",
     description:
       "Structured training and placement programs to build practical Dynamics 365 expertise.",
     tags: ["Training", "Certification", "Placement"],
