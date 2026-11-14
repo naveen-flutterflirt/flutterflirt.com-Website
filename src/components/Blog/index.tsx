@@ -144,42 +144,43 @@ export default function Blog({ initialBlogs = [] }: { initialBlogs?: BlogPost[] 
           >
             <Link
               href={`/blog/${featured.slug}`}
-              className="group grid overflow-hidden rounded-[28px] border border-[#a3b8e5] bg-white shadow-[0_20px_60px_rgba(59,100,160,0.10)] transition-all duration-500 hover:shadow-[0_30px_80px_rgba(59,100,160,0.16)] lg:grid-cols-[1.15fr_0.85fr]"
+              className="group grid overflow-hidden rounded-[28px] border border-[#a3b8e5] bg-white shadow-[0_20px_60px_rgba(59,100,160,0.10)] transition-all duration-500 hover:shadow-[0_30px_80px_rgba(59,100,160,0.16)] lg:grid-cols-[1fr_1fr]"
             >
-              {/* Image */}
-              <div className="relative h-[280px] overflow-hidden lg:h-[480px]">
+              {/* Image Container with Full Visual Coverage */}
+              <div className="relative min-h-[300px] sm:min-h-[380px] lg:min-h-[460px] w-full overflow-hidden bg-slate-900">
                 {featured && (
                   <Image
                     src={formatS3Url(featured.image || (featured as any).cover_image)}
                     alt={featured.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.04]"
                     priority
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                <span className="absolute left-5 top-5 rounded-full bg-[#2563eb] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute left-5 top-5 z-10 rounded-full bg-[#2563eb] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white shadow-md">
                   Featured
                 </span>
               </div>
 
               {/* Content */}
-              <div className="flex flex-col justify-center p-5 sm:p-8 md:p-12 lg:p-14">
+              <div className="flex flex-col justify-center p-6 sm:p-10 md:p-12 lg:p-14">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#edf3ff] px-3.5 py-1.5 text-[11.5px] font-semibold tracking-wide text-[#2563eb]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
                   {featured.category}
                 </span>
 
                 <h2
-                  className="mt-5 leading-[1.05] tracking-[-0.03em] text-[#17243a]"
+                  className="mt-5 leading-[1.12] tracking-[-0.03em] text-[#17243a]"
                   style={{
-                    fontSize: "clamp(1.55rem, 2.4vw, 2.6rem)",
+                    fontSize: "clamp(1.5rem, 2.2vw, 2.4rem)",
                   }}
                 >
                   {featured.title}
                 </h2>
 
-                <p className="mt-5 text-[15px] leading-[1.7] text-[#7184a0]">
+                <p className="mt-4 text-[15px] leading-[1.7] text-[#7184a0] line-clamp-3">
                   {featured.excerpt}
                 </p>
 
