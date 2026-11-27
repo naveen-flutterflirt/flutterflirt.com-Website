@@ -3,9 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     scrollRestoration: false,
+    optimizePackageImports: ["lucide-react", "date-fns"],
   },
+  compress: true,
+  poweredByHeader: false,
   images: {
-    qualities: [75, 100],
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: "https",
