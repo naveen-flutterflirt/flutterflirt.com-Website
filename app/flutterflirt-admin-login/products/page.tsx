@@ -41,7 +41,9 @@ import {
   AlertCircle,
   ArrowRight,
   Eye,
-  History
+  History,
+  FileText,
+  Wand2
 } from "lucide-react";
 
 interface SaaSProduct {
@@ -63,6 +65,64 @@ interface SaaSProduct {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+// Helper: Smart Parser to extract Schema DDL and Seed Data from initDb.js or .sql file
+function parseInitDbScript(rawContent: string): { schemaSql: string; seedSql: string; totalTables: number; totalInserts: number } {
+  let schemaParts: string[] = [];
+  let seedParts: string[] = [];
+
+  // 1. Extract raw SQL blocks from JavaScript files (e.g. client.query(`...`))
+  // Handles template literals `...`, single-quoted, and double-quoted strings inside query(...)
+  const queryBlocks: string[] = [];
+  const jsQueryRegex = /(?:client|pool|db)\.query\s*\(\s*`([\s\S]*?)`\s*(?:,\s*\[[\s\S]*?\])?\s*\)/gi;
+  let match;
+  while ((match = jsQueryRegex.exec(rawContent)) !== null) {
+    if (match[1] && match[1].trim()) {
+      queryBlocks.push(match[1].trim());
+    }
+  }
+
+  // If no JS query calls found, treat the entire content as raw SQL
+  const candidates = queryBlocks.length > 0 ? queryBlocks : [rawContent];
+
+  for (const block of candidates) {
+    // Split block into individual SQL statements separated by semicolon
+    // We avoid splitting inside quoted strings by simple regex cleaning
+    const statements = block
+      .split(/;\s*(?=(?:[^']*'[^']*')*[^']*$)/)
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+
+    for (const stmt of statements) {
+      const upper = stmt.toUpperCase();
+
+      // Check if statement is a Schema DDL statement
+      if (
+        upper.startsWith("CREATE TABLE") ||
+        upper.startsWith("CREATE EXTENSION") ||
+        upper.startsWith("CREATE TYPE") ||
+        upper.startsWith("CREATE INDEX") ||
+        upper.startsWith("CREATE SEQUENCE") ||
+        upper.startsWith("ALTER TABLE") ||
+        upper.startsWith("DROP TABLE")
+      ) {
+        schemaParts.push(stmt.endsWith(";") ? stmt : stmt + ";");
+      }
+      // Check if statement is a Seed Record DML statement
+      else if (upper.startsWith("INSERT INTO")) {
+        seedParts.push(stmt.endsWith(";") ? stmt : stmt + ";");
+      }
+    }
+  }
+
+  const schemaSql = schemaParts.join("\n\n");
+  const seedSql = seedParts.join("\n\n");
+
+  const totalTables = (schemaSql.match(/CREATE\s+TABLE/gi) || []).length;
+  const totalInserts = (seedSql.match(/INSERT\s+INTO/gi) || []).length;
+
+  return { schemaSql, seedSql, totalTables, totalInserts };
+}
+
 export default function ProductManagementPage() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
@@ -82,6 +142,7 @@ export default function ProductManagementPage() {
   // Form Live DB Testing State
   const [testingFormDb, setTestingFormDb] = useState(false);
   const [formDbTestResult, setFormDbTestResult] = useState<{ connected: boolean; message: string } | null>(null);
+  const [initDbExtractMsg, setInitDbExtractMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error" | "info">("success");
@@ -1447,6 +1508,82 @@ export default function ProductManagementPage() {
                             <p className="text-[11px] text-slate-400 italic">No tags added yet.</p>
                           )}
                         </div>
+
+                        {/* Performance Metric Stat Tags (e.g. Speed, Accuracy, Efficiency) */}
+                        <div className="pt-3 border-t border-slate-200/60 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <label className="font-semibold text-slate-700 block text-xs">
+                                Key Performance Metrics (Card Stat Badges)
+                              </label>
+                              <p className="text-[10px] text-slate-400">
+                                Stat highlights shown on the product card (e.g. Label: "Billing Speed", Value: "&lt; 5 sec").
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  metrics: [...(prev.metrics || []), { label: "", value: "" }],
+                                }));
+                              }}
+                              className="text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer"
+                            >
+                              <Plus className="w-3 h-3" />
+                              <span>Add Stat</span>
+                            </button>
+                          </div>
+
+                          <div className="space-y-2">
+                            {(formData.metrics && formData.metrics.length > 0
+                              ? formData.metrics
+                              : [{ label: "", value: "" }]
+                            ).map((m, idx) => (
+                              <div key={idx} className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  placeholder="Metric Label (e.g. Speed, Accuracy)"
+                                  value={m.label}
+                                  onChange={(e) => {
+                                    const updated = [...(formData.metrics || [])];
+                                    if (!updated[idx]) updated[idx] = { label: "", value: "" };
+                                    updated[idx].label = e.target.value;
+                                    setFormData((prev) => ({ ...prev, metrics: updated }));
+                                  }}
+                                  className="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 shadow-2xs"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="Value (e.g. < 5 sec, 98%)"
+                                  value={m.value}
+                                  onChange={(e) => {
+                                    const updated = [...(formData.metrics || [])];
+                                    if (!updated[idx]) updated[idx] = { label: "", value: "" };
+                                    updated[idx].value = e.target.value;
+                                    setFormData((prev) => ({ ...prev, metrics: updated }));
+                                  }}
+                                  className="w-36 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 shadow-2xs"
+                                />
+                                {(formData.metrics || []).length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setFormData((prev) => ({
+                                        ...prev,
+                                        metrics: (prev.metrics || []).filter((_, i) => i !== idx),
+                                      }));
+                                    }}
+                                    className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition cursor-pointer"
+                                    title="Remove metric stat"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -1617,6 +1754,87 @@ export default function ProductManagementPage() {
                             <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                           )}
                           <span className="leading-relaxed">{formDbTestResult.message}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ⚡ NEW FEATURE: SMART ONE-CLICK AUTO-EXTRACT FROM initDb.js / .sql */}
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-slate-50 border border-blue-200/80 shadow-2xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div className="flex items-start gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <Wand2 className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-xs font-bold text-slate-900">
+                                Smart One-Click Auto-Extract from Database File
+                              </h4>
+                              <span className="px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 text-[9px] font-bold uppercase tracking-wider">
+                                New Tool
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 mt-0.5">
+                              Upload your project's <code className="px-1 py-0.5 rounded bg-white border border-slate-200 font-mono text-[10px] text-blue-600 font-semibold">initDb.js</code>, <code className="px-1 py-0.5 rounded bg-white border border-slate-200 font-mono text-[10px] text-blue-600 font-semibold">schema.sql</code>, or SQL dump. It automatically parses all tables into <strong className="text-slate-800">Section A (Schema DDL)</strong> and records into <strong className="text-slate-800">Section B (Seed Data)</strong>!
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>Select initDb / .sql</span>
+                            <input
+                              type="file"
+                              accept=".js,.ts,.sql,.txt"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const r = new FileReader();
+                                  r.onload = (ev) => {
+                                    const content = (ev.target?.result as string) || "";
+                                    const result = parseInitDbScript(content);
+
+                                    if (!result.schemaSql && !result.seedSql) {
+                                      setInitDbExtractMsg({
+                                        type: "error",
+                                        text: "Could not find any CREATE TABLE or INSERT INTO statements in the uploaded file.",
+                                      });
+                                    } else {
+                                      if (result.schemaSql) {
+                                        setModalSchemaCode(result.schemaSql);
+                                      }
+                                      if (result.seedSql) {
+                                        setModalSeedCode(result.seedSql);
+                                      }
+                                      setInitDbExtractMsg({
+                                        type: "success",
+                                        text: `Extracted ${result.totalTables} table(s) into Schema DDL and ${result.totalInserts} insert batch(es) into Seed Records!`,
+                                      });
+                                    }
+                                  };
+                                  r.readAsText(file);
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      {initDbExtractMsg && (
+                        <div
+                          className={`mt-2.5 p-2 rounded-xl text-[11px] flex items-center gap-2 ${initDbExtractMsg.type === "success"
+                            ? "bg-emerald-100/70 border border-emerald-300 text-emerald-800 font-medium"
+                            : "bg-rose-100/70 border border-rose-300 text-rose-800 font-medium"
+                            }`}
+                        >
+                          {initDbExtractMsg.type === "success" ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          ) : (
+                            <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                          )}
+                          <span>{initDbExtractMsg.text}</span>
                         </div>
                       )}
                     </div>
